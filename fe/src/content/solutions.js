@@ -90,8 +90,8 @@ const SPLIT = {
 export const MACRO_CLASSES = [
   { id: 'india', name: 'India Equity', color: '#E36A1A' },
   { id: 'intl', name: 'International Equity', color: '#2B4A75' },
-  { id: 'debt', name: 'India Fixed Income', color: '#13A06E' },
-  { id: 'cash', name: 'Cash & Equivalents', color: '#A3A9B3' },
+  { id: 'debt', name: 'India Fixed Income', color: '#8A97AB' },
+  { id: 'cash', name: 'Cash & Equivalents', color: '#D9CBB8' },
 ];
 export const SUB_CLASSES = [
   { id: 'large', name: 'India Large Cap', color: '#C2550F', of: 'india' },
@@ -100,10 +100,10 @@ export const SUB_CLASSES = [
   { id: 'europe', name: 'Europe Equity', color: '#2B4A75', of: 'intl' },
   { id: 'us', name: 'US Equity', color: '#4F7CAC', of: 'intl' },
   { id: 'asia', name: 'Asia ex-Japan', color: '#9DBBD8', of: 'intl' },
-  { id: 'medium', name: 'Medium Term Debt', color: '#0F8A5F', of: 'debt' },
-  { id: 'long', name: 'Long Term Debt', color: '#3BC48F', of: 'debt' },
-  { id: 'short', name: 'Short Term Debt', color: '#A8E6CC', of: 'debt' },
-  { id: 'cashsub', name: 'Cash Equivalents', color: '#A3A9B3', of: 'cash' },
+  { id: 'medium', name: 'Medium Term Debt', color: '#5F708A', of: 'debt' },
+  { id: 'long', name: 'Long Term Debt', color: '#8A97AB', of: 'debt' },
+  { id: 'short', name: 'Short Term Debt', color: '#C3CBD8', of: 'debt' },
+  { id: 'cashsub', name: 'Cash Equivalents', color: '#D9CBB8', of: 'cash' },
 ];
 const round1 = (n) => Math.round(n * 10) / 10;
 export const allocationFor = (id) => {

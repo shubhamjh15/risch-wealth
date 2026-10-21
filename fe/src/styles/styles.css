@@ -30,9 +30,9 @@
   --orange-line:#E9C9AE;
   --accent:     #B04E0E;
   --brand:      #E36A1A;  /* the logo orange */
-  --green:      #0F8A5F;  /* growth: charts and gains on light grounds (4.6:1) */
-  --green-2:    #4CB88A;  /* growth on navy: the chart line only */
-  --green-soft: #DDF3E9;
+  --green:      #B04E0E;  /* accent on light grounds (was growth green; brand only now) */
+  --green-2:    #E36A1A;  /* accent on navy: the logo orange */
+  --green-soft: #FBEADF;
 
   --ink:        #1C1A17;  /* charcoal: text and primary button fill */
   --ink-2:      #4A443C;

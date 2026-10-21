@@ -2,7 +2,8 @@ import { useLayoutEffect, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import Nav from '../components/Nav/Nav';
 import Footer from '../components/Footer/Footer';
-import PortfolioCard from '../components/viz/PortfolioCard';
+import heroRidges from '../assets/hero-ridges-1400.webp';
+import heroRidgesSm from '../assets/hero-ridges-760.webp';
 import Compounding from '../components/viz/Compounding';
 import AllocationExplorer from '../components/viz/AllocationExplorer';
 import founderOffice from '../assets/founder-office.jpg';
@@ -20,21 +21,8 @@ const useIsoLayoutEffect = typeof window === 'undefined' ? useEffect : useLayout
 const Arrow = () => (
   <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M1 7H13M13 7L7.5 1.5M13 7L7.5 12.5" stroke="currentColor" strokeWidth="1.4" /></svg>
 );
-const Up = () => (
-  <svg width="10" height="10" viewBox="0 0 12 12" aria-hidden="true"><path d="M6 1l5 6H7v4H5V7H1z" fill="currentColor" /></svg>
-);
 
 const YEARS = new Date().getFullYear() - FIRM.careerStartYear;
-
-// The trust strip under the hero: verified facts only.
-const TRUST = [
-  `${YEARS} years in private banking`,
-  `AMFI-registered MF Distributor · ${FIRM.registrations[0].id}`,
-  `APMI-registered PMS Distributor · ${FIRM.registrations[1].id}`,
-  'Open architecture · no in-house products',
-  'Indian & global allocation',
-  'Mutual funds · PMS · AIF',
-];
 
 const STATS = [
   { n: YEARS, unit: 'years', l: 'Founder’s career in private banking' },
@@ -127,37 +115,40 @@ export default function Home() {
 
   return (
     <div ref={rootRef} className="hm">
-      <Nav overHero />
+      <Nav />
 
-      {/* ============ HERO ============ */}
-      <header className="hm-hero">
-        <div className="hm-hero-bg" aria-hidden="true" />
-        <div className="wrap hm-hero-grid">
-          <div className="hm-hero-copy">
-            <p className="hm-kicker hero-in" style={{ '--d': '.05s' }}><span className="hm-pulse" />RISCH Private Wealth · Since {FIRM.foundedYear}</p>
-            <h1 className="hm-title">
-              <span className="h-line"><span style={{ '--d': '.12s' }}>Capital deserves</span></span>
-              <span className="h-line"><span style={{ '--d': '.22s' }}>a <em>considered</em> hand.</span></span>
-            </h1>
-            {/* From the client brochure. The founder wants this line kept in the hero. */}
-            <p className="hm-tagline hero-in" style={{ '--d': '.4s' }}>We manage portfolios.</p>
-            <p className="hm-lede hero-in" style={{ '--d': '.48s' }}>Private wealth management for entrepreneurs, business owners, professionals and families, across Indian and global markets.</p>
-            <div className="hm-ctas hero-in" style={{ '--d': '.56s' }}>
-              <Link to="/contact" className="btn btn-green"><span>Start your wealth review</span> <Arrow /></Link>
-              <Link to="/risk-profiler" className="btn btn-ghost-light">Check your risk profile</Link>
-            </div>
-          </div>
-          <div className="hm-hero-card hero-in" style={{ '--d': '.3s' }}>
-            <PortfolioCard />
+      {/* ============ HERO ============
+          The photograph (misty ridges at dawn: patience, the long view), the
+          promise in ink on the pale sky, the facts in a navy strip at the foot. */}
+      <header className="hp-hero">
+        <div className="hp-hero-media" aria-hidden="true">
+          <img src={heroRidges} srcSet={`${heroRidgesSm} 760w, ${heroRidges} 1400w`} sizes="100vw" alt="" width="1400" height="1460" fetchPriority="high" />
+        </div>
+        <div className="wrap hp-hero-main">
+          <p className="hp-eyebrow hero-in" style={{ '--d': '.1s' }}>RISCH Private Wealth · Since {FIRM.foundedYear}</p>
+          <h1 className="hp-title">
+            <span className="h-line"><span style={{ '--d': '.18s' }}>Capital deserves</span></span>
+            <span className="h-line"><span style={{ '--d': '.28s' }}><em>a considered</em> hand.</span></span>
+          </h1>
+          {/* From the client brochure. The founder wants this line kept in the hero. */}
+          <p className="hp-tagline hero-in" style={{ '--d': '.5s' }}>We manage portfolios.</p>
+          <p className="hp-lede hero-in" style={{ '--d': '.6s' }}>Private wealth management for entrepreneurs, business owners, professionals and families, built around your goals, your risk and your long-term wealth, across Indian and global markets.</p>
+          <div className="hp-ctas hero-in" style={{ '--d': '.72s' }}>
+            <Link to="/contact" className="btn btn-dark"><span>Start Your Wealth Review</span> <Arrow /></Link>
+            <Link to="/about" className="btn btn-line">Meet the Founder</Link>
           </div>
         </div>
-        <div className="hm-trust" aria-label="RISCH at a glance">
-          <div className="hm-trust-track">
-            {[0, 1].map((k) => (
-              <ul key={k} aria-hidden={k === 1 ? 'true' : undefined}>
-                {TRUST.map((t) => <li key={t}><Up />{t}</li>)}
-              </ul>
-            ))}
+        <div className="hp-hero-foot hero-in" style={{ '--d': '.9s' }}>
+          <div className="wrap hp-hero-foot-inner">
+            <ul className="hp-points">
+              <li>{YEARS} years of private-banking experience</li>
+              <li>Open-architecture portfolios, no in-house products</li>
+              <li>Indian &amp; global allocation</li>
+            </ul>
+            <p className="hp-reg">
+              <span>AMFI-registered Mutual Fund Distributor <strong>{FIRM.registrations[0].id}</strong></span>
+              <span>APMI-registered PMS Distributor <strong>{FIRM.registrations[1].id}</strong></span>
+            </p>
           </div>
         </div>
       </header>
@@ -167,7 +158,7 @@ export default function Home() {
         <div className="wrap hm-stats-grid" data-reveal="stagger">
           {STATS.map((s) => (
             <div className="hm-stat" key={s.l}>
-              <p className="hm-stat-n"><span data-count={s.n}>{s.n}</span>{s.unit && <small>{s.unit}</small>}</p>
+              <p className="hm-stat-n"><span data-count={s.n === FIRM.foundedYear ? undefined : s.n}>{s.n}</span>{s.unit && <small>{s.unit}</small>}</p>
               <p className="hm-stat-l">{s.l}</p>
             </div>
           ))}
