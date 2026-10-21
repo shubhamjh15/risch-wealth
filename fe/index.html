@@ -11,6 +11,14 @@
             document.documentElement.setAttribute('data-theme', 'dark');
           }
         } catch (e) {}
+        // Scroll-revealed content starts hidden (styles/motion.css) only when
+        // motion is allowed. If the app hasn't taken over within 3.5s (slow
+        // network, script error), show everything rather than a blank page.
+        if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          var html = document.documentElement;
+          html.classList.add('js-motion');
+          setTimeout(function () { if (!window.__motionReady) html.classList.add('motion-fallback'); }, 3500);
+        }
       })();
     </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />

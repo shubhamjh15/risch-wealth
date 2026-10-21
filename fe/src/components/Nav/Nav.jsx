@@ -11,22 +11,40 @@ const NAV_LINKS = [
   { to: '/who-we-serve', label: 'Whom We Serve' },
   { to: '/solutions', label: 'What We Provide' },
   { to: '/testimonials', label: 'Testimonials' },
+  { to: '/perspective', label: 'Perspective' },
   { to: '/contact', label: 'Get In Touch' },
 ];
 
-export default function Nav({ showMobileProfilerLink = true }) {
+// overHero: transparent until the page scrolls (home hero only).
+export default function Nav({ showMobileProfilerLink = true, overHero = false }) {
   const { toggleTheme } = useTheme();
   const [scrolled, setScrolled] = useState(false);
+  const [tucked, setTucked] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);
   const loginMenuRef = useRef(null);
 
+  // Compact once scrolled; slides away while scrolling down, back on the way up.
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12);
+    let lastY = window.scrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > 12);
+      if (Math.abs(y - lastY) > 6) {
+        setTucked(y > lastY && y > 320);
+        lastY = y;
+      }
+    };
     onScroll();
     document.addEventListener('scroll', onScroll, { passive: true });
     return () => document.removeEventListener('scroll', onScroll);
   }, []);
+
+  // The full-screen mobile menu holds the page still underneath it.
+  useEffect(() => {
+    document.documentElement.classList.toggle('menu-open', menuOpen);
+    return () => document.documentElement.classList.remove('menu-open');
+  }, [menuOpen]);
 
   // Close the Login dropdown on an outside click or Escape. Hover opens
   // it too (CSS), this state is for click/tap and keyboard users.
@@ -49,15 +67,16 @@ export default function Nav({ showMobileProfilerLink = true }) {
   const closeMenu = () => setMenuOpen(false);
 
   return (
-    <nav className={'nav' + (scrolled ? ' scrolled' : '')}>
-      <NavLink to="/" className="nav-logo" onClick={closeMenu}>
+    <nav className={'nav' + (scrolled ? ' scrolled' : '') + (tucked && !menuOpen && !loginOpen ? ' tucked' : '') + (overHero && !scrolled ? ' over-hero' : '') + (menuOpen ? ' menu-is-open' : '')}>
+      <NavLink to="/" className="nav-logo" onClick={closeMenu} data-label="Home">
         <LogoRing />
         <span className="nav-wordmark">RISCH<BrandArrow className="wm-arrow" /></span>
       </NavLink>
       <div className={'nav-links' + (menuOpen ? ' open' : '')}>
-        {NAV_LINKS.map((link) => (
-          <NavLink key={link.to} to={link.to} className={navLinkClass} onClick={closeMenu}>
-            {link.label}
+        {NAV_LINKS.map((link, i) => (
+          <NavLink key={link.to} to={link.to} className={navLinkClass} onClick={closeMenu} style={{ '--i': i }} data-label={link.label}>
+            <span className="nav-link-i" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+            <span className="nav-link-text" data-text={link.label}>{link.label}</span>
           </NavLink>
         ))}
         <div className="nav-links-extra">
@@ -106,7 +125,7 @@ export default function Nav({ showMobileProfilerLink = true }) {
             </NavLink>
           </div>
         </div>
-        <NavLink to="/risk-profiler" className="nav-cta">Start Risk Profile</NavLink>
+        <NavLink to="/risk-profiler" className="nav-cta"><span>Start Risk Profile</span></NavLink>
       </div>
       <button
         className={'nav-burger' + (menuOpen ? ' open' : '')}

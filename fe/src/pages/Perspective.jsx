@@ -1,54 +1,101 @@
+import { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import Nav from '../components/Nav/Nav';
 import Footer from '../components/Footer/Footer';
-import { useScrollReveal } from '../hooks/useScrollReveal';
-import { PERSPECTIVES } from '../data/perspectives';
+import PageHero from '../components/page/PageHero';
+import ClosingCta from '../components/page/ClosingCta';
+import { useMotion } from '../motion/useMotion';
+import { PRESS, PRESS_OUTLETS, pressDate, pressYear } from '../data/press';
+
+const External = () => (
+  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M3.5 2.5h6v6M9.5 2.5L2.5 9.5" stroke="currentColor" strokeWidth="1.3" /></svg>
+);
+
+// His own writing leads; the press follows, grouped by year, newest first.
+const ARTICLES = PRESS.filter((p) => p.kind === 'article');
+const COVERAGE = PRESS.filter((p) => p.kind === 'press');
+const YEARS = [...new Set(COVERAGE.map(pressYear))];
 
 export default function Perspective() {
-  useScrollReveal();
+  const rootRef = useRef(null);
+  useMotion(rootRef);
 
   return (
-    <>
+    <div ref={rootRef}>
       <Nav />
 
-      <header className="page-head" style={{ position: 'relative', overflow: 'hidden' }}>
-        <div className="pattern-dots" style={{ top: 0, height: 420 }}></div>
-        <div className="wrap" style={{ position: 'relative' }}>
-          <p className="eyebrow kicker reveal in">Perspective</p>
-          <h1 className="display-xxl reveal in" style={{ maxWidth: '16em' }}>Notes on risk, <span className="italic">not</span> noise.</h1>
-          <p className="lede reveal in" style={{ maxWidth: '52ch', marginTop: 26 }}>Occasional writing on how we think about risk, portfolios and wealth coordination, not market commentary or calls.</p>
-        </div>
-      </header>
+      <PageHero
+        eyebrow="Perspective"
+        lines={[<>Notes on risk, <em>not</em> noise.</>]}
+        lede="Rishiraj Maheshwari’s writing, and his views as quoted in the financial press, on markets, mutual funds and how portfolios should be built."
+        aside={<p className="pv-outlets">As featured in <span>{PRESS_OUTLETS.join(' · ')}</span></p>}
+      />
 
-      <section className="section-tight">
-        <div className="wrap">
-          <div className="reveal-stagger">
-            {PERSPECTIVES.map((p) => (
-              <div className="numbered-row" key={p.title} style={{ gridTemplateColumns: '140px 1fr' }}>
-                <div className="num" style={{ fontSize: 12.5, letterSpacing: '.04em', textTransform: 'uppercase' }}>{p.date}</div>
-                <div>
-                  <p className="eyebrow" style={{ marginBottom: 10 }}>{p.tag}</p>
-                  <h2 className="display-s" style={{ marginBottom: 10, maxWidth: '40ch' }}>{p.title}</h2>
-                  <p className="mb-0" style={{ maxWidth: '62ch' }}>{p.excerpt}</p>
-                </div>
-              </div>
+      {ARTICLES.length > 0 && (
+        <section className="pg-sec pg-tint">
+          <div className="wrap">
+            <p className="eyebrow" data-reveal>By Rishiraj Maheshwari</p>
+            {ARTICLES.map((a) => (
+              <a key={a.url} href={a.url} target="_blank" rel="noopener noreferrer" className="pv-feature" data-reveal>
+                <span className="pv-feature-meta">
+                  <span>{a.outlet}</span>
+                  <span>{pressDate(a)}</span>
+                </span>
+                <span className="pv-feature-title">{a.title}</span>
+                <span className="pv-feature-note">{a.note}</span>
+                <span className="pv-read">Read on {a.outlet} <External /></span>
+              </a>
             ))}
           </div>
+        </section>
+      )}
+
+      <section className="pg-sec">
+        <div className="wrap">
+          <div className="pg-head">
+            <div>
+              <p className="eyebrow" data-reveal>In the press</p>
+              <h2 className="h-h2" data-split>Views on markets, <em>on the record.</em></h2>
+            </div>
+            <p className="lede" data-reveal>Comment from RISCH&rsquo;s founder in Business Today, ANI and others since {COVERAGE.length ? pressYear(COVERAGE[COVERAGE.length - 1]) : ''}. Each quote is as published; follow the link for the full article.</p>
+          </div>
+
+          {YEARS.map((year) => (
+            <div className="pv-year" key={year}>
+              <h3 className="pv-year-n" data-reveal>{year}</h3>
+              <ul className="pv-list" data-reveal="stagger">
+                {COVERAGE.filter((p) => pressYear(p) === year).map((p) => (
+                  <li key={p.url}>
+                    <a href={p.url} target="_blank" rel="noopener noreferrer" className="pv-item">
+                      <span className="pv-item-meta">
+                        <span className="pv-tag">{p.outlet}</span>
+                        <span className="pv-date">{pressDate(p)}</span>
+                      </span>
+                      <span className="pv-item-main">
+                        <span className="pv-title">{p.title}</span>
+                        {p.quote && <q className="pv-quote">{p.quote}</q>}
+                        <span className="pv-excerpt">{p.note}</span>
+                      </span>
+                      <span className="pv-arrow" aria-hidden="true"><External /></span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+
+          <p className="pv-disclaimer">Views expressed in the press reflect market conditions at the time of publication and are not investment advice or a recommendation to buy or sell any security. See <Link to="/disclosure">Disclosures</Link>.</p>
         </div>
       </section>
 
-      <section className="section on-paper-2" style={{ padding: '140px 0' }}>
-        <div className="wrap center">
-          <p className="eyebrow reveal" style={{ justifyContent: 'center' }}>Prefer A Direct Answer?</p>
-          <h2 className="display-xl reveal" style={{ maxWidth: '18ch', margin: '0 auto 36px' }}>Talk to us about your own portfolio instead.</h2>
-          <div className="flex gap-16 reveal" style={{ justifyContent: 'center', flexWrap: 'wrap' }}>
-            <Link to="/risk-profiler" className="btn btn-rust">Take the risk profiler</Link>
-            <Link to="/contact" className="btn btn-ghost-dark">Get in touch</Link>
-          </div>
-        </div>
-      </section>
+      <ClosingCta
+        eyebrow="Prefer A Direct Answer?"
+        title="Talk to us about your own portfolio instead."
+        primary={{ to: '/risk-profiler', label: 'Take the risk profiler' }}
+        secondary={{ to: '/contact', label: 'Get in touch' }}
+      />
 
       <Footer />
-    </>
+    </div>
   );
 }

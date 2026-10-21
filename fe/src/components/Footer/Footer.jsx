@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import LogoMark from '../LogoMark';
 import { FIRM } from '../../data/firm';
@@ -16,6 +17,7 @@ const FIRM_LINKS = [
   ['/who-we-serve', 'Who We Serve'],
   ['/solutions', 'What We Provide'],
   ['/testimonials', 'Testimonials'],
+  ['/perspective', 'Perspective'],
   ['/contact', 'Get In Touch'],
 ];
 const CLIENT_LINKS = [
@@ -37,6 +39,18 @@ const Icon = ({ children }) => (
 );
 
 export default function Footer({ showSocials = true, extendedLegal = false }) {
+  // The giant wordmark at the foot rises letter by letter when it comes into view.
+  const giantRef = useRef(null);
+  useEffect(() => {
+    const el = giantRef.current;
+    if (!el || !('IntersectionObserver' in window)) return undefined;
+    const io = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) { el.classList.add('is-in'); io.disconnect(); }
+    }, { threshold: 0.25 });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
   return (
     <footer className="footer">
       <div className="wrap">
@@ -122,6 +136,9 @@ export default function Footer({ showSocials = true, extendedLegal = false }) {
             {LEGAL_LINKS.map((l) => <li key={l.label}><Link to={l.to}>{l.label}</Link></li>)}
           </ul>
         </div>
+      </div>
+      <div className="f-giant" ref={giantRef} aria-hidden="true">
+        {'RISCH'.split('').map((ch, i) => <span key={i} style={{ '--i': i }}>{ch}</span>)}
       </div>
     </footer>
   );

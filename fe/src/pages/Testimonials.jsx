@@ -1,8 +1,10 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Nav from '../components/Nav/Nav';
 import Footer from '../components/Footer/Footer';
-import { useScrollReveal } from '../hooks/useScrollReveal';
+import PageHero from '../components/page/PageHero';
+import ClosingCta from '../components/page/ClosingCta';
+import { useMotion } from '../motion/useMotion';
 import { TESTIMONIALS, TESTIMONIAL_GROUPS } from '../data/testimonials';
 import skyline from '../assets/testimonials-skyline.webp';
 import skyline2x from '../assets/testimonials-skyline-2x.webp';
@@ -46,48 +48,44 @@ export default function Testimonials() {
     () => (filter === ALL ? REST : REST.filter((t) => t.group === filter)),
     [filter],
   );
-  useScrollReveal();
+  const rootRef = useRef(null);
+  useMotion(rootRef);
 
   return (
-    <>
+    <div ref={rootRef}>
       <Nav />
 
-      <section className="ts">
-        {/* the same faint arcs that ground the Get In Touch page */}
-        <svg className="ts-lines" viewBox="0 0 620 520" aria-hidden="true" focusable="false">
-          <path d="M-40 520 A 560 560 0 0 1 420 40" />
-          <path d="M-40 520 A 500 500 0 0 1 380 90" />
-          <path d="M-40 520 A 440 440 0 0 1 335 145" />
-        </svg>
-        {/* skyline at dusk: the same curved panel as Get In Touch, but a
-            global-city view whose warm sky sits with the ivory palette */}
-        <div className="ts-photo" aria-hidden="true" style={{ '--ct-img': `url(${skyline})` }}>
-          <img src={skyline} srcSet={`${skyline} 1x, ${skyline2x} 2x`} alt="" width="300" height="898" loading="lazy" />
+      <PageHero
+        eyebrow="In our clients&rsquo; words"
+        lines={['Entrusted with', <em key="e">a lifetime&rsquo;s work.</em>]}
+        lede="Business owners, founders, CXOs, doctors, families, global Indians and family offices. Different balance sheets, one method, risk understood first, then a portfolio built around it."
+      />
+
+      <section className="pg-sec ts2-lead-sec">
+        <div className="wrap ts2-lead">
+          {/* skyline at dusk: a global-city view whose warm sky sits with the ivory palette */}
+          <div className="pg-photo ts2-photo" data-reveal aria-hidden="true">
+            <img src={skyline} srcSet={`${skyline} 1x, ${skyline2x} 2x`} alt="" width="300" height="898" loading="lazy" data-parallax="0.14" />
+          </div>
+          <figure className="ts2-featured">
+            <span className="ts2-mark" aria-hidden="true">&ldquo;</span>
+            <blockquote data-split>{LEAD.quote}</blockquote>
+            <div data-reveal><Attribution person={LEAD} /></div>
+          </figure>
         </div>
+      </section>
 
-        <div className="ts-wrap">
-          {/* copy and the lead account share the first screen, so neither
-              column is left half empty the way two stacked blocks were */}
-          <div className="ts-hero">
-            <header className="ts-head">
-              <p className="eyebrow reveal in">In our clients&rsquo; words</p>
-              <h1 className="ts-title reveal in">Entrusted with<br /><span>a lifetime&rsquo;s work.</span></h1>
-              <p className="lede ts-lede reveal in">
-                Business owners, founders, CXOs, doctors, families, global Indians and family
-                offices. Different balance sheets, one method, risk understood first, then a
-                portfolio built around it.
-              </p>
-            </header>
-
-            <figure className="ts-featured reveal in">
-              <span className="ts-mark" aria-hidden="true">&ldquo;</span>
-              <blockquote>{LEAD.quote}</blockquote>
-              <Attribution person={LEAD} />
-            </figure>
+      <section className="pg-sec ts2-all">
+        <div className="wrap">
+          <div className="pg-head">
+            <div>
+              <p className="eyebrow" data-reveal>Client accounts</p>
+              <h2 className="h-h2" data-split>Different balance sheets, <em>one method.</em></h2>
+            </div>
           </div>
 
           {/* never gated behind the scroll-reveal: it must always be usable */}
-          <div className="ts-filter" role="group" aria-label="Filter accounts by client profile">
+          <div className="ts-filter ts2-filter" role="group" aria-label="Filter accounts by client profile">
             {FILTERS.map((g) => (
               <button
                 key={g}
@@ -103,16 +101,16 @@ export default function Testimonials() {
           </div>
 
           {/* keyed on the filter so the cards animate in again on each change */}
-          <div className="ts-grid" key={filter}>
-            {shown.map((t) => (
-              <figure className="ts-card" key={t.name}>
+          <div className="ts2-grid" key={filter}>
+            {shown.map((t, i) => (
+              <figure className="ts2-card" key={t.name} style={{ '--i': i }}>
                 <blockquote>{t.quote}</blockquote>
                 <Attribution person={t} />
               </figure>
             ))}
           </div>
 
-          <p className="ts-note">
+          <p className="ts-note ts2-note">
             Testimonials reflect the experience of individual clients and are not indicative of
             future results or a guarantee of any outcome. Names are shortened and portraits are
             published only with the client&rsquo;s permission. See <Link to="/disclosure">Disclosures</Link>.
@@ -120,7 +118,14 @@ export default function Testimonials() {
         </div>
       </section>
 
+      <ClosingCta
+        eyebrow="Start A Conversation"
+        title="Your portfolio deserves a considered second opinion."
+        primary={{ to: '/contact', label: 'Start a conversation' }}
+        secondary={{ to: '/risk-profiler', label: 'Take the risk profiler' }}
+      />
+
       <Footer />
-    </>
+    </div>
   );
 }

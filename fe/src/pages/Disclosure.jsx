@@ -1,6 +1,8 @@
+import { useEffect, useRef, useState } from 'react';
 import Nav from '../components/Nav/Nav';
 import Footer from '../components/Footer/Footer';
-import { useScrollReveal } from '../hooks/useScrollReveal';
+import PageHero from '../components/page/PageHero';
+import { useMotion } from '../motion/useMotion';
 import { FIRM } from '../data/firm';
 
 // Each entry becomes a numbered row (same pattern as the home page's
@@ -119,39 +121,52 @@ function buildSections() {
     .filter((g) => g.clauses.length);
 }
 
+const groupId = (name) => name.toLowerCase().replace(/[^a-z]+/g, '-');
+
 export default function Disclosure() {
-  useScrollReveal();
+  const rootRef = useRef(null);
+  useMotion(rootRef);
   const groups = buildSections();
 
+  // Contents list follows the reader: the group nearest the top is marked.
+  const [current, setCurrent] = useState(null);
+  useEffect(() => {
+    const els = [...document.querySelectorAll('.legal-group')];
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => { if (e.isIntersecting) setCurrent(e.target.id); });
+    }, { rootMargin: '-30% 0px -60% 0px' });
+    els.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, []);
+
   return (
-    <>
+    <div ref={rootRef}>
       <Nav />
 
-      <header className="page-head" style={{ position: 'relative', overflow: 'hidden', paddingBottom: 60 }}>
-        <div className="pattern-dots" style={{ top: 0, height: 380 }}></div>
-        <div className="wrap" style={{ position: 'relative' }}>
-          <p className="eyebrow kicker reveal in">Legal &amp; Regulatory</p>
-          <h1 className="display-xxl reveal in" style={{ maxWidth: '16em' }}>Disclosures.</h1>
-          <p className="lede reveal in" style={{ maxWidth: '58ch', marginTop: 24 }}>The information below governs how this site, the risk assessment and any proposal it generates should be read. If anything here is unclear, a conversation with RISCH resolves it faster than the fine print.</p>
-        </div>
-      </header>
+      <PageHero
+        eyebrow="Legal &amp; Regulatory"
+        lines={['Disclosures.']}
+        lede="The information below governs how this site, the risk assessment and any proposal it generates should be read. If anything here is unclear, a conversation with RISCH resolves it faster than the fine print."
+      />
 
-      <section className="section-tight">
+      <section className="pg-sec">
         <div className="wrap legal-doc">
-          <nav className="legal-toc reveal" aria-label="Disclosure sections">
+          <nav className="legal-toc" aria-label="Disclosure sections">
             <p>Contents</p>
             <ol>
               {groups.map((g) => (
-                <li key={g.group}><a href={`#${g.group.toLowerCase().replace(/[^a-z]+/g, '-')}`}>{g.group}</a></li>
+                <li key={g.group}>
+                  <a href={`#${groupId(g.group)}`} className={current === groupId(g.group) ? 'is-current' : undefined}>{g.group}</a>
+                </li>
               ))}
             </ol>
           </nav>
           <div className="legal-body">
             {groups.map((g) => (
-              <section className="legal-group" id={g.group.toLowerCase().replace(/[^a-z]+/g, '-')} key={g.group}>
-                <h2>{g.group}</h2>
+              <section className="legal-group" id={groupId(g.group)} key={g.group}>
+                <h2 data-split>{g.group}</h2>
                 {g.clauses.map((s) => (
-                  <div className="legal-clause" key={s.title}>
+                  <div className="legal-clause" key={s.title} data-reveal>
                     <h3><span>{String(s.n).padStart(2, '0')}</span>{s.title}</h3>
                     {typeof s.body === 'string' ? <p>{s.body}</p> : <div>{s.body}</div>}
                   </div>
@@ -163,6 +178,6 @@ export default function Disclosure() {
       </section>
 
       <Footer extendedLegal showSocials={false} />
-    </>
+    </div>
   );
 }

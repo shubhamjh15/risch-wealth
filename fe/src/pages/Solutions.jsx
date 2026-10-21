@@ -1,8 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Nav from '../components/Nav/Nav';
 import Footer from '../components/Footer/Footer';
 import { useScrollReveal } from '../hooks/useScrollReveal';
+import { useMotion } from '../motion/useMotion';
+import { scrollToY } from '../motion/gsap';
 import { useRiskProfile } from '../hooks/useRiskProfile';
 import ProfileToPortfolio from '../components/solutions/ProfileToPortfolio';
 import HorizonSelector from '../components/solutions/HorizonSelector';
@@ -41,6 +43,8 @@ const Crease = () => (
 
 export default function Solutions() {
   useScrollReveal();
+  const rootRef = useRef(null);
+  useMotion(rootRef);
   const { status, profile, isClient } = useRiskProfile();
   const complete = status === 'complete';
   const reviewHref = '/client-portal/risk-profile';
@@ -79,10 +83,13 @@ export default function Solutions() {
     if (!el) return;
     const head = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--nav-h-scrolled')) || 94;
     const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - head, behavior: still ? 'auto' : 'smooth' });
+    scrollToY(el.getBoundingClientRect().top + window.scrollY - head, { smooth: !still });
   };
   const onYears = (y) => { setYears(y); setPortfolio(horizonForYears(y)); };
-  const goUnderstand = () => document.getElementById('understand')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  const goUnderstand = () => {
+    const el = document.getElementById('understand');
+    if (el) scrollToY(el.getBoundingClientRect().top + window.scrollY - 80);
+  };
 
   const U = UNDERSTAND;
   const philTop = (
@@ -96,7 +103,7 @@ export default function Solutions() {
     </div>
   );
   return (
-    <>
+    <div ref={rootRef}>
       <Nav />
 
       <header className="wp-hero wp-ground">
@@ -107,9 +114,12 @@ export default function Solutions() {
         </svg>
         <div className="wrap wp-hero-grid">
           <div className="wp-hero-copy">
-            <h1 className="wp-h1 reveal in">{HERO.title[0]}<br /><em>{HERO.title[1]}</em></h1>
-            <p className="wp-lede reveal in">{HERO.body}</p>
-            <div className="wp-actions reveal in">
+            <h1 className="wp-h1">
+              <span className="h-line"><span style={{ '--d': '.15s' }}>{HERO.title[0]}</span></span>
+              <span className="h-line"><span style={{ '--d': '.27s' }}><em>{HERO.title[1]}</em></span></span>
+            </h1>
+            <p className="wp-lede hero-in" style={{ '--d': '.5s' }}>{HERO.body}</p>
+            <div className="wp-actions hero-in" style={{ '--d': '.65s' }}>
               <button type="button" className="btn wp-see" onClick={goUnderstand}>{HERO.secondary} <Down /></button>
             </div>
           </div>
@@ -122,7 +132,7 @@ export default function Solutions() {
         <div className="wrap">
           <div className="wp-head reveal">
             <Eyebrow>Your profile</Eyebrow>
-            <h2 className="wp-h2" id="und-h">{U.title}</h2>
+            <h2 className="wp-h2" id="und-h" data-split>{U.title}</h2>
             <p className="wp-body">{U.intro}</p>
             {complete && <p className="wp-saved">Your saved profile: <strong>{profile.tierName}</strong>. <Link to={reviewHref} className="wp-link">Review it <Arrow /></Link></p>}
           </div>
@@ -165,7 +175,7 @@ export default function Solutions() {
       <section className="wp-alloc" aria-labelledby="alloc-h">
         <div className="wrap">
           <div className="wp-head reveal">
-            <h2 className="wp-h2" id="alloc-h">{ALLOCATION.title}</h2>
+            <h2 className="wp-h2" id="alloc-h" data-split>{ALLOCATION.title}</h2>
             <p className="wp-body">{ALLOCATION.intro}</p>
           </div>
           <div className="reveal">
@@ -198,7 +208,7 @@ export default function Solutions() {
         <div className="wrap">
           <div className="wp-head reveal">
             <Eyebrow>Our process</Eyebrow>
-            <h2 className="wp-h2" id="tog-h">{TOGETHER.title}</h2>
+            <h2 className="wp-h2" id="tog-h" data-split>{TOGETHER.title}</h2>
           </div>
           <ProcessTimeline />
 
@@ -226,11 +236,11 @@ export default function Solutions() {
         <div className="wrap wp-cta-copy reveal">
           <p className="wp-eyebrow"><span>The right conversation</span></p>
           <h2 className="wp-h2">Start with your risk. We will take it from there.</h2>
-          <Link to={complete ? reviewHref : startHref} className="btn btn-primary">{complete ? 'Review Risk Profile' : 'Start Risk Profile'} <Arrow /></Link>
+          <Link to={complete ? reviewHref : startHref} className="btn btn-primary btn-fill" data-magnetic="0.25"><span>{complete ? 'Review Risk Profile' : 'Start Risk Profile'}</span> <Arrow /></Link>
         </div>
       </Band>
 
       <Footer />
-    </>
+    </div>
   );
 }

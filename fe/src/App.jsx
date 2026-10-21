@@ -13,7 +13,7 @@ import EmployeeLogin from './pages/EmployeeLogin';
 import ClientLogin from './pages/ClientLogin';
 import NotFound from './pages/NotFound';
 import RiskProfiler from './pages/RiskProfiler/RiskProfiler';
-import ScrollToTop from './components/ScrollToTop';
+import ScrollReset from './motion/ScrollReset';
 import RouteHead from './components/RouteHead';
 
 // The client dashboard is signed-in only, so it's kept out of the bundle
@@ -43,7 +43,7 @@ function StaffPortalLoader() {
 export default function App() {
   return (
     <ThemeProvider>
-      <ScrollToTop />
+      <ScrollReset />
       <RouteHead />
       <Routes>
         <Route path="/" element={<Home />} />

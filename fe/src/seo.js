@@ -42,7 +42,7 @@ export const PAGES = {
   },
   '/perspective': {
     title: 'Perspective | Notes on Risk and Portfolio Strategy | RISCH',
-    description: 'Notes from RISCH Wealth on portfolio construction, asset allocation and wealth coordination: how private wealth management works in practice.',
+    description: 'Rishiraj Maheshwari of RISCH Wealth in Business Today, Morningstar India and ANI: articles and commentary on markets, mutual funds and portfolios.',
   },
   '/disclosure': {
     title: 'Disclosures & Disclaimers | RISCH Wealth Private Limited',

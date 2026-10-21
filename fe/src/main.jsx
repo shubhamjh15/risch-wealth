@@ -12,6 +12,9 @@ import './styles/styles.css';
 import './styles/profiler.css';
 import './styles/portal.css';
 import './styles/solutions.css';
+import './styles/motion.css';
+import './styles/home.css';
+import './styles/pages.css';
 import App from './App.jsx';
 
 const app = (

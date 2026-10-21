@@ -6,6 +6,7 @@ import { submitRiskProfilerAnswers } from '../../api/riskProfilerApi';
 import { RiskProfilerConfigProvider, useRiskProfilerConfig } from './RiskProfilerConfigContext';
 import ReportView from './report/ReportView';
 import { Req, ReqLegend } from '../../components/Req';
+import { scrollToY } from '../../motion/gsap';
 
 // `embedded`: shown inside the client portal (/client-portal/risk-assessment)
 // instead of as a public page: no site nav or footer, the client's details
@@ -120,7 +121,7 @@ function RiskProfilerQuiz({
   const goToStep = (index) => {
     const clamped = Math.max(0, Math.min(index, STEP_ORDER.length - 1));
     setStepIndex(clamped);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    scrollToY(0);
   };
 
   // Name and amount are required: the proposal is addressed to the name

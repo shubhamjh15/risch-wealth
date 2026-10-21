@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import Nav from '../components/Nav/Nav';
 import Footer from '../components/Footer/Footer';
-import { useScrollReveal } from '../hooks/useScrollReveal';
+import { useMotion } from '../motion/useMotion';
 import { FIRM } from '../data/firm';
 import { Req } from '../components/Req';
 import officePhoto from '../assets/contact-office.webp';
@@ -44,7 +44,8 @@ const Icon = ({ children }) => (
 );
 
 export default function Contact() {
-  useScrollReveal();
+  const rootRef = useRef(null);
+  useMotion(rootRef);
 
   const [form, setForm] = useState({ name: '', email: '', dial: '+91', phone: '', topic: '', message: '' });
   // /contact?topic=Portfolio%20Construction pre-selects the topic. Set after
@@ -89,78 +90,84 @@ export default function Contact() {
   };
 
   return (
-    <>
+    <div ref={rootRef}>
       <Nav />
 
-      <section className="ct">
-        {/* faint arcs behind the form, as in the design */}
-        <svg className="ct-lines" viewBox="0 0 620 520" aria-hidden="true" focusable="false">
-          <path d="M-40 520 A 560 560 0 0 1 420 40" />
-          <path d="M-40 520 A 500 500 0 0 1 380 90" />
-          <path d="M-40 520 A 440 440 0 0 1 335 145" />
-        </svg>
-        <div className="ct-photo" aria-hidden="true" style={{ '--ct-img': `url(${officePhoto})` }}>
-          <img src={officePhoto} srcSet={`${officePhoto} 1x, ${officePhoto2x} 2x`} alt="" width="258" height="772" loading="lazy" />
-        </div>
-
-        <div className="ct-wrap">
-          <div className="ct-main">
-            <p className="eyebrow reveal in">Get in touch</p>
-            <h1 className="ct-title reveal in">Let&rsquo;s talk about<br /><span>your financial goals.</span></h1>
-            <p className="lede ct-lede reveal in">We&rsquo;re here to listen. Tell us a little about your situation and what you&rsquo;d like help with, and our team will get back to you personally.</p>
-
-            <form id="contactForm" className="ct-card reveal in" noValidate onSubmit={handleSubmit}>
-              <div className="ct-card-head">
-                <h2>Send us a message</h2>
-                <p className="ct-secure">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2" /><path d="M8 11V8a4 4 0 0 1 8 0v3" /></svg>
-                  <span><strong>Your information is secure</strong>and will only be used to respond to your enquiry.</span>
-                </p>
-              </div>
-
-              <div className="field-row">
-                <div className="field">
-                  <label htmlFor="cName">Full name <Req /></label>
-                  <input type="text" id="cName" name="name" autoComplete="name" aria-required="true" placeholder="e.g. Rishi Maheshwari" value={form.name} onChange={handleChange} />
-                </div>
-                <div className="field">
-                  <label htmlFor="cEmail">Email address <Req /></label>
-                  <input type="email" id="cEmail" name="email" autoComplete="email" aria-required="true" placeholder="e.g. rishi@example.com" value={form.email} onChange={handleChange} />
-                </div>
-              </div>
-              <div className="field-row">
-                <div className="field">
-                  <label htmlFor="cPhone">Phone number</label>
-                  <div className="ct-phone">
-                    <select name="dial" aria-label="Country code" value={form.dial} onChange={handleChange}>
-                      {DIAL_CODES.map(([code, flag, country]) => <option key={code} value={code} title={country}>{flag} {code}</option>)}
-                    </select>
-                    <input type="tel" id="cPhone" name="phone" autoComplete="tel-national" inputMode="tel" placeholder="99999 99999" value={form.phone} onChange={handleChange} />
-                  </div>
-                </div>
-                <div className="field">
-                  <label htmlFor="cTopic">I&rsquo;m interested in</label>
-                  <select id="cTopic" name="topic" value={form.topic} onChange={handleChange} className={form.topic ? '' : 'ct-placeholder'}>
-                    <option value="">Select an option</option>
-                    {TOPICS.map((t) => <option key={t}>{t}</option>)}
-                  </select>
-                </div>
-              </div>
-              <div className="field ct-message">
-                <label htmlFor="cMsg">Message <Req /></label>
-                <textarea id="cMsg" name="message" aria-required="true" aria-describedby="cMsgCount" maxLength={MESSAGE_MAX} placeholder="Tell us a little about your financial goals, current situation or how we can help…" value={form.message} onChange={handleChange} />
-              </div>
-              <div className="ct-actions">
-                <button type="submit" className="btn btn-primary">Send message
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M1 7H13M13 7L7.5 1.5M13 7L7.5 12.5" stroke="currentColor" strokeWidth="1.3" /></svg>
-                </button>
-                <span id="cMsgCount" className="ct-count">{form.message.length}/{MESSAGE_MAX}</span>
-              </div>
-              {note.text && <p className={'auth-note' + (note.ok ? ' ok' : '')} role="status">{note.text}</p>}
-            </form>
+      <section className="cx">
+        <div className="wrap cx-grid">
+          <div className="cx-intro">
+            <p className="h-eyebrow hero-in" style={{ '--d': '.1s' }}><span className="h-dot" aria-hidden="true" />Get in touch</p>
+            <h1 className="pg-title cx-title">
+              <span className="h-line"><span style={{ '--d': '.15s' }}>Let&rsquo;s talk about</span></span>
+              <span className="h-line"><span style={{ '--d': '.26s' }}><em>your financial goals.</em></span></span>
+            </h1>
+            <p className="pg-lede hero-in" style={{ '--d': '.45s' }}>We&rsquo;re here to listen. Tell us a little about your situation and what you&rsquo;d like help with, and our team will get back to you personally.</p>
+            <div className="pg-photo cx-photo hero-in" style={{ '--d': '.6s' }} aria-hidden="true">
+              <img src={officePhoto} srcSet={`${officePhoto} 1x, ${officePhoto2x} 2x`} alt="" width="258" height="772" />
+            </div>
           </div>
 
-          <aside className="ct-info reveal in" aria-label="Contact details">
+          <form id="contactForm" className="ct-card cx-card hero-in" style={{ '--d': '.5s' }} noValidate onSubmit={handleSubmit}>
+            <div className="ct-card-head">
+              <h2>Send us a message</h2>
+              <p className="ct-secure">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2" /><path d="M8 11V8a4 4 0 0 1 8 0v3" /></svg>
+                <span><strong>Your information is secure</strong>and will only be used to respond to your enquiry.</span>
+              </p>
+            </div>
+
+            <div className="field-row">
+              <div className="field">
+                <label htmlFor="cName">Full name <Req /></label>
+                <input type="text" id="cName" name="name" autoComplete="name" aria-required="true" placeholder="e.g. Rishi Maheshwari" value={form.name} onChange={handleChange} />
+              </div>
+              <div className="field">
+                <label htmlFor="cEmail">Email address <Req /></label>
+                <input type="email" id="cEmail" name="email" autoComplete="email" aria-required="true" placeholder="e.g. rishi@example.com" value={form.email} onChange={handleChange} />
+              </div>
+            </div>
+            <div className="field-row">
+              <div className="field">
+                <label htmlFor="cPhone">Phone number</label>
+                <div className="ct-phone">
+                  <select name="dial" aria-label="Country code" value={form.dial} onChange={handleChange}>
+                    {DIAL_CODES.map(([code, flag, country]) => <option key={code} value={code} title={country}>{flag} {code}</option>)}
+                  </select>
+                  <input type="tel" id="cPhone" name="phone" autoComplete="tel-national" inputMode="tel" placeholder="99999 99999" value={form.phone} onChange={handleChange} />
+                </div>
+              </div>
+              <div className="field">
+                <label htmlFor="cTopic">I&rsquo;m interested in</label>
+                <select id="cTopic" name="topic" value={form.topic} onChange={handleChange} className={form.topic ? '' : 'ct-placeholder'}>
+                  <option value="">Select an option</option>
+                  {TOPICS.map((t) => <option key={t}>{t}</option>)}
+                </select>
+              </div>
+            </div>
+            <div className="field ct-message">
+              <label htmlFor="cMsg">Message <Req /></label>
+              <textarea id="cMsg" name="message" aria-required="true" aria-describedby="cMsgCount" maxLength={MESSAGE_MAX} placeholder="Tell us a little about your financial goals, current situation or how we can help…" value={form.message} onChange={handleChange} />
+            </div>
+            <div className="ct-actions">
+              <button type="submit" className="btn btn-primary btn-fill"><span>Send message</span>
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M1 7H13M13 7L7.5 1.5M13 7L7.5 12.5" stroke="currentColor" strokeWidth="1.3" /></svg>
+              </button>
+              <span id="cMsgCount" className="ct-count">{form.message.length}/{MESSAGE_MAX}</span>
+            </div>
+            {note.text && <p className={'auth-note' + (note.ok ? ' ok' : '')} role="status">{note.text}</p>}
+          </form>
+        </div>
+      </section>
+
+      <section className="pg-sec cx-details">
+        <div className="wrap">
+          <div className="pg-head">
+            <div>
+              <p className="eyebrow" data-reveal>Reach us directly</p>
+              <h2 className="h-h2" data-split>One relationship, <em>one point of contact.</em></h2>
+            </div>
+          </div>
+          <aside className="ct-info cx-info" data-reveal="stagger" aria-label="Contact details">
             <div className="ct-item">
               <Icon><rect x="3" y="5" width="18" height="14" rx="2" /><path d="M3 7l9 6 9-6" /></Icon>
               <div>
@@ -220,6 +227,6 @@ export default function Contact() {
       </section>
 
       <Footer />
-    </>
+    </div>
   );
 }
