@@ -18,10 +18,10 @@ const { getHeadTags, getJsonLd, PAGES, canonicalUrl } = await import(pathToFileU
 
 const template = fs.readFileSync(path.join(dist, 'index.html'), 'utf8');
 
-// Preload the Latin files of both fonts (Inter body, Cormorant headings)
+// Preload the Latin file of the main font (Geist, text and headings)
 // so text paints in the right font first time.
 const assetFiles = fs.readdirSync(path.join(dist, 'assets'));
-const fontPreload = [/^inter-latin-wght-normal-.*\.woff2$/, /^cormorant-garamond-latin-wght-normal-.*\.woff2$/]
+const fontPreload = [/^geist-latin-wght-normal-.*\.woff2$/]
   .map((re) => {
     const file = assetFiles.find((f) => re.test(f));
     if (!file) throw new Error(`Font file matching ${re} not found in dist/assets`);

@@ -19,23 +19,27 @@
   --white:      #FFFFFF;  /* constant — never themed, used for text-on-accent & the report */
   --surface:    #FFFFFF;  /* card/nav/input backgrounds — themed */
   --nav-glass:  rgba(250,246,240,0.9);
-  --bg:         #FAF6F0;  /* warm ivory */
-  --bg-tint:    #F2EBE0;  /* sand — alternate sections */
-  --bg-tint-2:  #EBE2D4;
-  --bg-soft:    #FCF9F5;
+  --bg:         #F7F6F2;  /* clean off-white */
+  --bg-tint:    #EFEDE7;  /* alternate sections */
+  --bg-tint-2:  #E6E3DB;
+  --bg-soft:    #FBFAF7;
 
-  --orange:     #F1650C;  /* the logo orange: graphics, rules and large display only (2.95:1 on ivory) */
+  --orange:     #E36A1A;  /* the logo orange: graphics, rules and large display only (2.95:1 on ivory) */
   --orange-2:   #FF8A3D;
-  --orange-deep:#B24A07;  /* accent text, links, hover fills (5:1 on ivory, AA) */
+  --orange-deep:#B04E0E;  /* accent text, links, hover fills (5:1 on ivory, AA) */
   --orange-line:#E9C9AE;
-  --accent:     #B24A07;
+  --accent:     #B04E0E;
+  --brand:      #E36A1A;  /* the logo orange */
+  --green:      #0F8A5F;  /* growth: charts and gains on light grounds (4.6:1) */
+  --green-2:    #4CB88A;  /* growth on navy: the chart line only */
+  --green-soft: #DDF3E9;
 
   --ink:        #1C1A17;  /* charcoal: text and primary button fill */
   --ink-2:      #4A443C;
   --muted:      #6B6358;  /* 5.5:1 on ivory */
   --muted-2:    #8C8375;
-  --line:       #E6DDD0;
-  --line-strong:#D8CCBB;
+  --line:       #E3E0D8;
+  --line-strong:#D2CEC4;
 
   /* fixed (not themed): the footer is always charcoal */
   --footer-bg:  #0F1E33;  /* deep private-bank navy */
@@ -47,8 +51,11 @@
   --neg:        #C7401F;
 
   /* ---- type: one global family ---- */
-  --f-sans: 'Inter Variable', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --f-serif: 'Cormorant Garamond Variable', 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  --f-sans: 'Geist Variable', 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  /* --f-serif is kept as a name for headings across the site, now Geist too */
+  --f-serif: 'Geist Variable', 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --f-accent: 'Instrument Serif', Georgia, serif;
+  --f-mono: 'Geist Variable', 'Geist', -apple-system, sans-serif; /* labels and figures: Geist, tabular */
 
   --container: 1240px;
   --pad: clamp(20px, 5vw, 64px);
@@ -97,8 +104,9 @@ body{
   background:var(--bg);
   color:var(--ink);
   font-family:var(--f-sans);
-  font-size:17px;
-  line-height:1.7;
+  font-size:16.5px;
+  line-height:1.65;
+  font-feature-settings:'ss01';
   -webkit-font-smoothing:antialiased;
   -moz-osx-font-smoothing:grayscale;
 }
@@ -242,38 +250,10 @@ section{ position:relative; }
    just above the capitals. It takes the wordmark's colour and halo. */
 .wm-arrow{ position:absolute; left:1.03em; top:-.41em; width:1.55em; height:auto; fill:currentColor; pointer-events:none; }
 /* ...and over the wordmark image (logo.png), sized from --h, its height */
-.logo-mark{ --h:56px; position:relative; display:inline-block; padding-top:calc(var(--h) * .56); line-height:0; vertical-align:top; }
-.logo-mark img{ display:block; height:var(--h); width:auto; }
-.logo-mark .brand-arrow{ position:absolute; top:0; left:var(--h); width:calc(var(--h) * 1.729); height:auto; fill:#F47A0C; }
+.logo-mark{ --h:56px; display:inline-block; line-height:0; color:var(--brand); }
+.logo-mark .risch-logo{ height:var(--h); width:auto; display:block; }
+.risch-logo{ display:block; }
 
-/* ===================== LOGO RING =====================
-   The single large ring from the brochure cover, sized so the whole
-   RISCH wordmark sits inside it, spinning slowly about its centre
-   (components/LogoRing: Three.js once idle, static SVG before that). */
-.logo-ring{
-  --lr-strong-color:var(--orange-deep); --lr-medium-color:var(--orange); --lr-light-color:var(--orange-2); --lr-faint-color:#F7DCB8;
-  --lr-strong:.94; --lr-medium:.82; --lr-light:.66; --lr-faint:.46;
-  position:absolute; z-index:-1; left:50%; top:50%;
-  width:var(--ring-d); height:var(--ring-d);
-  transform:translate(-50%, -50%); pointer-events:none;
-  filter:drop-shadow(0 6px 14px rgba(178,74,7,0.16));
-}
-html[data-theme="dark"] .logo-ring{ --lr-faint-color:#5A3418; --lr-strong:.92; --lr-medium:.8; --lr-light:.62; --lr-faint:.5; }
-.logo-ring-svg, .logo-ring-gl, .logo-ring-gl canvas{ position:absolute; inset:0; width:100%; height:100%; display:block; }
-.logo-ring-svg .lr-strong{ fill:var(--lr-strong-color); fill-opacity:var(--lr-strong); }
-.logo-ring-svg .lr-medium{ fill:var(--lr-medium-color); fill-opacity:var(--lr-medium); }
-.logo-ring-svg .lr-light{ fill:var(--lr-light-color); fill-opacity:var(--lr-light); }
-.logo-ring-svg .lr-faint{ fill:var(--lr-faint-color); fill-opacity:var(--lr-faint); }
-/* WebGL fades in over the identical static ring, so the swap is invisible */
-.logo-ring-svg{ transition:opacity .8s ease; }
-.logo-ring-gl{ opacity:0; transition:opacity .8s ease; }
-.logo-ring.is-live .logo-ring-gl{ opacity:1; }
-.logo-ring.is-live .logo-ring-svg{ opacity:0; }
-/* the CSS spin runs from first paint; Three.js takes over at the same angle.
-   18s must match PERIOD in LogoRing.jsx / logoRingScene.js. Reduced motion
-   stops it via the global prefers-reduced-motion rule. */
-.logo-ring-svg{ animation:logoSpin 18s linear infinite; }
-@keyframes logoSpin{ to{ transform:rotate(360deg); } }
 .nav-links{
   display:flex; align-items:center; gap:22px;
   font-family:var(--f-sans); font-weight:500; font-size:14px;
@@ -1344,3 +1324,10 @@ html[data-theme="dark"] .ceo-btn{ color:#1C1A17; }
   .ts-chip{ padding:8px 13px; font-size:12.5px; }
 }
 
+
+/* Geist headings: tighter tracking than the old serif needed */
+.display-xxl, .display-xl, .display-l, .display-m{ letter-spacing:-.035em; font-weight:500; }
+.display-xxl{ font-size:clamp(40px, 5.6vw, 80px); }
+.display-xl{ font-size:clamp(34px, 4.6vw, 64px); }
+.display-l{ font-size:clamp(28px, 3.1vw, 46px); }
+.display-m{ font-size:clamp(22px, 2vw, 30px); }

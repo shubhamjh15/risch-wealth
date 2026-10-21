@@ -6,7 +6,7 @@ import PageHero from '../components/page/PageHero';
 export default function NotFound() {
   return (
     <>
-      <Nav />
+      <Nav overHero />
 
       <PageHero
         className="pg-hero-full"

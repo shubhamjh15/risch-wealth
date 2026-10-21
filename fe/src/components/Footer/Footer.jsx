@@ -1,6 +1,5 @@
-import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import LogoMark from '../LogoMark';
+import Logo from '../Logo';
 import { FIRM } from '../../data/firm';
 
 // Site footer (Figma, Sept 2026): brand and mission, The Firm and Clients
@@ -39,25 +38,13 @@ const Icon = ({ children }) => (
 );
 
 export default function Footer({ showSocials = true, extendedLegal = false }) {
-  // The giant wordmark at the foot rises letter by letter when it comes into view.
-  const giantRef = useRef(null);
-  useEffect(() => {
-    const el = giantRef.current;
-    if (!el || !('IntersectionObserver' in window)) return undefined;
-    const io = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) { el.classList.add('is-in'); io.disconnect(); }
-    }, { threshold: 0.25 });
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
-
   return (
     <footer className="footer">
       <div className="wrap">
         <div className="f-top">
           <div className="f-brand">
             <Link to="/" className="f-logo">
-              <LogoMark />
+              <Logo />
               <span>Private Wealth</span>
             </Link>
             <span className="f-rule" aria-hidden="true" />
@@ -136,9 +123,6 @@ export default function Footer({ showSocials = true, extendedLegal = false }) {
             {LEGAL_LINKS.map((l) => <li key={l.label}><Link to={l.to}>{l.label}</Link></li>)}
           </ul>
         </div>
-      </div>
-      <div className="f-giant" ref={giantRef} aria-hidden="true">
-        {'RISCH'.split('').map((ch, i) => <span key={i} style={{ '--i': i }}>{ch}</span>)}
       </div>
     </footer>
   );

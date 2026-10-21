@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useTheme } from '../../hooks/ThemeContext';
-import LogoRing from '../LogoRing/LogoRing';
-import BrandArrow from '../BrandArrow';
+import Logo from '../Logo';
 
 const navLinkClass = ({ isActive }) => (isActive ? 'active' : undefined);
 
@@ -15,7 +14,7 @@ const NAV_LINKS = [
   { to: '/contact', label: 'Get In Touch' },
 ];
 
-// overHero: transparent until the page scrolls (home hero only).
+// overHero: transparent, light-on-navy until the page scrolls (home hero).
 export default function Nav({ showMobileProfilerLink = true, overHero = false }) {
   const { toggleTheme } = useTheme();
   const [scrolled, setScrolled] = useState(false);
@@ -68,13 +67,12 @@ export default function Nav({ showMobileProfilerLink = true, overHero = false })
 
   return (
     <nav className={'nav' + (scrolled ? ' scrolled' : '') + (tucked && !menuOpen && !loginOpen ? ' tucked' : '') + (overHero && !scrolled ? ' over-hero' : '') + (menuOpen ? ' menu-is-open' : '')}>
-      <NavLink to="/" className="nav-logo" onClick={closeMenu} data-label="Home">
-        <LogoRing />
-        <span className="nav-wordmark">RISCH<BrandArrow className="wm-arrow" /></span>
+      <NavLink to="/" className="nav-logo" onClick={closeMenu}>
+        <Logo title="RISCH Wealth, home" />
       </NavLink>
       <div className={'nav-links' + (menuOpen ? ' open' : '')}>
         {NAV_LINKS.map((link, i) => (
-          <NavLink key={link.to} to={link.to} className={navLinkClass} onClick={closeMenu} style={{ '--i': i }} data-label={link.label}>
+          <NavLink key={link.to} to={link.to} className={navLinkClass} onClick={closeMenu} style={{ '--i': i }}>
             <span className="nav-link-i" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
             <span className="nav-link-text" data-text={link.label}>{link.label}</span>
           </NavLink>

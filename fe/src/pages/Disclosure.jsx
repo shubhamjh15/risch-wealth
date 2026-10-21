@@ -141,7 +141,7 @@ export default function Disclosure() {
 
   return (
     <div ref={rootRef}>
-      <Nav />
+      <Nav overHero />
 
       <PageHero
         eyebrow="Legal &amp; Regulatory"

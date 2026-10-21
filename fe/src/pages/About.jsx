@@ -43,7 +43,7 @@ export default function About() {
 
   return (
     <div ref={rootRef}>
-      <Nav />
+      <Nav overHero />
 
       <PageHero
         eyebrow="Who We Are"

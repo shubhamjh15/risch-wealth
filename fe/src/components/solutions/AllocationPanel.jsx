@@ -25,7 +25,7 @@ function FlatDonut({ classes, values, hover, onHover }) {
 }
 
 // one donut with its legend: 3D when WebGL is available, flat otherwise
-function DonutBlock({ title, classes, values, name }) {
+export function DonutBlock({ title, classes, values, name }) {
   const hostRef = useRef(null);
   const handle = useRef(null);
   const latest = useRef(values);

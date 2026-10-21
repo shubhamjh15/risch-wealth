@@ -53,7 +53,7 @@ export default function Testimonials() {
 
   return (
     <div ref={rootRef}>
-      <Nav />
+      <Nav overHero />
 
       <PageHero
         eyebrow="In our clients&rsquo; words"

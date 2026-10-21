@@ -49,7 +49,7 @@ export default function WhoWeServe() {
 
   return (
     <div ref={rootRef}>
-      <Nav />
+      <Nav overHero />
 
       <PageHero
         eyebrow="Who We Serve"

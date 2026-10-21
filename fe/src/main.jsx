@@ -1,11 +1,13 @@
 import { StrictMode } from 'react';
 import { createRoot, hydrateRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
-// Self-hosted Inter (one variable file covers every weight). Served from
-// our own domain: no third-party request, no visitor IPs sent to Google.
-import '@fontsource-variable/inter';
-// Display serif for large headings, chosen to echo the logo.
-import '@fontsource-variable/cormorant-garamond';
+// Self-hosted fonts, served from our own domain (no third-party request, no
+// visitor IPs sent to Google). Geist for text and headings, Geist Mono for
+// figures, Instrument Serif italic for the odd accent word.
+import '@fontsource-variable/geist';
+import '@fontsource-variable/geist-mono';
+import '@fontsource/instrument-serif/400.css';
+import '@fontsource/instrument-serif/400-italic.css';
 // Script face, used only for the signed client names on Testimonials.
 import '@fontsource/parisienne';
 import './styles/styles.css';

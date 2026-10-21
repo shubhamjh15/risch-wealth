@@ -22,7 +22,7 @@ export default function Perspective() {
 
   return (
     <div ref={rootRef}>
-      <Nav />
+      <Nav overHero />
 
       <PageHero
         eyebrow="Perspective"
