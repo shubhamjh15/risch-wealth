@@ -20,6 +20,17 @@ export const PAGES = {
     title: 'RISCH Wealth | Private Wealth Management in Bengaluru',
     description: 'RISCH Wealth is a private wealth management firm in Bengaluru, led by a career private banker, for entrepreneurs, families, professionals and global Indians.',
   },
+  // Home page redesigns, under review. Kept out of search until one replaces '/'.
+  '/v2': {
+    title: 'RISCH Wealth | Private Wealth Management in Bengaluru',
+    description: 'RISCH Wealth is a private wealth management firm in Bengaluru, led by a career private banker, for entrepreneurs, families, professionals and global Indians.',
+    noindex: true,
+  },
+  '/v3': {
+    title: 'RISCH Wealth | Private Wealth Management in Bengaluru',
+    description: 'RISCH Wealth is a private wealth management firm in Bengaluru, led by a career private banker, for entrepreneurs, families, professionals and global Indians.',
+    noindex: true,
+  },
   '/about': {
     title: 'About RISCH Wealth | Founder & CEO Rishiraj Maheshwari',
     description: 'Meet Rishiraj Maheshwari, founder of RISCH Wealth: a career private banker whose roles include ICICI Securities and Edelweiss Financial Services.',
