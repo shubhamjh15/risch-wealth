@@ -19,7 +19,7 @@ export default function ReportPage2({ meta, ambiguous, mandate, answers, questio
       </div>
 
       <div className="r-section">
-        <h3 className="r-title">Section: Recommended Portfolio</h3>
+        <h3 className="r-title">Section: Indicative Asset Mix</h3>
         <p className="r-sub">Based on your time horizon and risk preference responses above.</p>
         {ambiguous && (
           <p className="body-s" style={{ marginTop: 0, marginBottom: 12, color: 'var(--muted)', fontSize: '10.5px' }}>

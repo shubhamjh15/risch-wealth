@@ -41,7 +41,7 @@ function Report({ data }) {
 
   const back = <Link to="/client-portal/risk-profile" className="sp-backlink"><Icons.back /> Your risk profile</Link>;
   if (err || configError) return <>{back}<p className="auth-note" role="alert">{err || configError}</p></>;
-  if (!ready) return <>{back}<p className="cp-loading">Preparing your proposal…</p></>;
+  if (!ready) return <>{back}<p className="cp-loading">Preparing your report…</p></>;
 
   // Stored answers are points per question; the report shows the options.
   const answers = Object.fromEntries(config.questions.map((q) => [q.id, q.options.find((o) => o.points === report.answers[q.id])]));

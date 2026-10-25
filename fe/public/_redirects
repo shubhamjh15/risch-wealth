@@ -1,0 +1,3 @@
+# Cloudflare Pages: every /employee-portal/... path is the same app page
+# (same as the employee-portal location in docker/nginx.conf).
+/employee-portal/*  /employee-portal  200

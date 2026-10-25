@@ -1,23 +1,25 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import Logo from '../components/Logo';
 import { FIRM } from '../data/firm';
-import { getLenis } from '../v2/smooth';
-import { Arrow } from '../v2/ui';
+import { getLenis } from './smooth';
+import { Arrow } from './ui';
 
 const LINKS = [
   { to: '/about', label: 'The Firm' },
   { to: '/solutions', label: 'What We Provide' },
   { to: '/who-we-serve', label: 'Whom We Serve' },
-  { to: '/testimonials', label: 'Clients' },
+  { to: '/testimonials', label: 'Testimonials' },
   { to: '/perspective', label: 'Perspective' },
+  { to: '/contact', label: 'Contact' },
 ];
 
-// The v3 header: a light bar that tightens and frosts once the page
-// scrolls, with a Login menu and the one call to action (the risk profile,
-// as on the current site). On small screens
-// the links move into a full-screen menu.
-export default function V3Nav() {
+// The site header: transparent over a page's hero film, then a light bar
+// that tightens and frosts once the page scrolls. `solid` starts it frosted,
+// for pages that open on ivory rather than footage. A Login menu and the one
+// call to action (the risk profile). On small screens the links move into a
+// full-screen menu.
+export default function V3Nav({ solid = false }) {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [login, setLogin] = useState(false);
@@ -51,11 +53,11 @@ export default function V3Nav() {
 
   return (
     <>
-      <header className={'v3-nav' + (scrolled ? ' is-scrolled' : '') + (open ? ' is-open' : '')}>
+      <header className={'v3-nav' + (scrolled || solid ? ' is-scrolled' : '') + (open ? ' is-open' : '')}>
         <div className="v3-nav-inner">
-          <Link to="/v3" className="v3-nav-logo" onClick={close}><Logo title="RISCH Wealth, home" /></Link>
+          <Link to="/" className="v3-nav-logo" onClick={close}><Logo title="RISCH Wealth, home" /></Link>
           <nav className="v3-nav-links" aria-label="Main">
-            {LINKS.map((l) => <Link key={l.to} to={l.to}>{l.label}</Link>)}
+            {LINKS.map((l) => <NavLink key={l.to} to={l.to} className={({ isActive }) => (isActive ? 'is-active' : undefined)}>{l.label}</NavLink>)}
           </nav>
           <div className="v3-nav-right">
             <div className={'v3-login' + (login ? ' is-open' : '')} ref={loginRef}>
@@ -78,7 +80,7 @@ export default function V3Nav() {
 
       <div id="v3-menu" className={'v3-menu' + (open ? ' is-open' : '')} aria-hidden={!open}>
         <ol>
-          {[...LINKS, { to: '/contact', label: 'Get in touch' }, { to: '/risk-profiler', label: 'Risk profile' }].map((l, i) => (
+          {[{ to: '/', label: 'Home' }, ...LINKS, { to: '/risk-profiler', label: 'Risk profile' }].map((l, i) => (
             <li key={l.to} style={{ '--i': i }}>
               <Link to={l.to} onClick={close} tabIndex={open ? 0 : -1}><small>{String(i + 1).padStart(2, '0')}</small>{l.label}</Link>
             </li>
@@ -88,6 +90,7 @@ export default function V3Nav() {
           <a href={FIRM.phoneHref} tabIndex={open ? 0 : -1}>{FIRM.phone}</a>
           <a href={`mailto:${FIRM.email}`} tabIndex={open ? 0 : -1}>{FIRM.email}</a>
           <Link to="/client-login" onClick={close} tabIndex={open ? 0 : -1}>Client login</Link>
+          <Link to="/employee-login" onClick={close} tabIndex={open ? 0 : -1}>Employee login</Link>
         </div>
       </div>
     </>

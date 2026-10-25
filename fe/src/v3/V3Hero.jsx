@@ -1,13 +1,13 @@
 import { Link } from 'react-router-dom';
 import { FIRM } from '../data/firm';
-import { Arrow, MEDIA, RiseLine } from '../v2/ui';
-import { useReel } from '../v2/useReel';
-import { SCENES } from '../v2/scenes';
+import { Arrow, MEDIA, MEDIA_V, RiseLine } from './ui';
+import { useReel } from './useReel';
+import { SCENES } from './scenes';
 
 const SCENE_MS = 6500;
 
-// The v3 opening: the same five-scene reel as v2, set in a rounded frame
-// inside the page, with a floating card that leads to the risk profiler and
+// The home page opening: a five-scene reel set in a rounded frame inside
+// the page, with a floating card that leads to the risk profiler and
 // the firm's registrations in a strip underneath.
 export default function V3Hero() {
   const n = SCENES.length;
@@ -23,8 +23,8 @@ export default function V3Hero() {
               key={s.clip}
               ref={(el) => { vids.current[k] = el; }}
               className={'v3-cover v3-hero-clip' + (k === i ? ' is-on' : '')}
-              src={`${MEDIA}/${s.clip}.mp4`}
-              poster={`${MEDIA}/${s.clip}.jpg`}
+              src={`${MEDIA}/${s.clip}.mp4?v=${MEDIA_V}`}
+              poster={`${MEDIA}/${s.clip}.jpg?v=${MEDIA_V}`}
               muted
               playsInline
               loop
@@ -48,8 +48,8 @@ export default function V3Hero() {
           </h1>
           <p className="v3-hero-lede" data-hero>Open-architecture private wealth management for entrepreneurs, families, professionals and global Indians. No in-house products, so every conversation starts with you, not a product.</p>
           <div className="v3-hero-ctas" data-hero>
-            <Link to="/contact" className="v3-pill v3-pill-light"><span>Begin a wealth review</span><i><Arrow /></i></Link>
-            <Link to="/about" className="v3-textlink v3-textlink-light">Meet the founder <Arrow /></Link>
+            <Link to="/contact" className="v3-pill v3-pill-dark"><span>Begin a wealth review</span><i><Arrow /></i></Link>
+            <Link to="/about" className="v3-textlink">Meet the founder <Arrow /></Link>
           </div>
         </div>
 

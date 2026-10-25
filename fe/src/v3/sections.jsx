@@ -4,7 +4,8 @@ import { TOGETHER } from '../content/solutions';
 import { SEGMENTS } from '../data/segments';
 import { PRINCIPLES } from '../data/principles';
 import { ScrollTrigger, prefersReducedMotion } from '../motion/gsap';
-import { Arrow, Clip, MEDIA } from '../v2/ui';
+import { Arrow, Clip, MEDIA } from './ui';
+import { PRODUCT_VIZ, VizCards } from './principles';
 
 const useIsoLayoutEffect = typeof window === 'undefined' ? useEffect : useLayoutEffect;
 
@@ -36,43 +37,15 @@ function useSeen(ref) {
   return seen && onScreen;
 }
 
-/* ---------------- What we provide: three expanding tiles ---------------- */
+/* ---------------- What we provide: the three products, drawn ---------------- */
 
-const ROUTES = [
-  { clip: 'reel-growth', short: 'Mutual Funds', tag: 'The core' },
-  { clip: 'reel-strategy', short: 'PMS', tag: 'Concentrated' },
-  { clip: 'reel-perspective', short: 'AIFs', tag: 'Beyond listed markets' },
-];
+const TAGS = ['The core', 'Concentrated', 'Beyond listed markets'];
 
 export function Solutions() {
-  const [on, setOn] = useState(0);
+  const items = TOGETHER.blocks.map((b, k) => ({ t: b.name, d: b.role, tag: TAGS[k], more: b.through }));
   return (
     <div className="v3-routes">
-      <div className="v3-routes-row">
-        {TOGETHER.blocks.map((b, k) => (
-          <article
-            key={b.name}
-            className={'v3-route' + (k === on ? ' is-on' : '')}
-            onPointerEnter={() => setOn(k)}
-            onFocus={() => setOn(k)}
-            tabIndex={0}
-          >
-            <Clip name={ROUTES[k].clip} className="v3-cover" />
-            <div className="v3-route-shade" aria-hidden="true" />
-            <div className="v3-route-body">
-              <span className="v3-route-n">0{k + 1}</span>
-              <span className="v3-route-tag">{ROUTES[k].tag}</span>
-              <h3>{b.name}</h3>
-              <div className="v3-route-more">
-                <div>
-                  <p>{b.role}</p>
-                  <small>{b.through}</small>
-                </div>
-              </div>
-            </div>
-          </article>
-        ))}
-      </div>
+      <div className="v3-wrap"><VizCards items={items} viz={PRODUCT_VIZ} cols={3} /></div>
       <p className="v3-routes-note">{TOGETHER.disclosure}</p>
     </div>
   );
@@ -142,11 +115,12 @@ export function Framework() {
 
 /* ---------------- Whom we serve: list with a sticky picture ---------------- */
 
-// Pictures: serve-business and serve-executive are Pexels photos (Pexels licence,
-// photo IDs 30535785 and 7580860); the rest are stills from Mixkit Free clips.
+// Pictures: Pexels photos (Pexels licence) serve-business 30535785,
+// serve-founder 39204824, serve-nri 10875890, serve-executive 36766664,
+// serve-office 1367274; serve-families is a still from a Mixkit Free clip.
 const SERVE = [
   ['Business Owners', 'serve-business'],
-  ['Entrepreneurs & Founders', 'serve-founders'],
+  ['Entrepreneurs & Founders', 'serve-founder'],
   ['Private Clients & Families', 'serve-families'],
   ['NRIs & Global Indians', 'serve-nri'],
   ['Senior Executives & Professionals', 'serve-executive'],
@@ -193,7 +167,7 @@ export function ServeSticky() {
   );
 }
 
-/* ---------------- Principles: a media band that turns over ---------------- */
+/* ---------------- Principles: the active one large, all seven listed ---------------- */
 
 const BAND_MS = 6000;
 const RING = 2 * Math.PI * 92;
@@ -205,9 +179,7 @@ export function PrinciplesBand() {
   const p = PRINCIPLES[i];
   return (
     <div className="v3-band" ref={root}>
-      <Clip name="band-forest" className="v3-cover" />
-      <div className="v3-band-shade" aria-hidden="true" />
-      <div className="v3-band-inner">
+      <div className="v3-band-main">
         <div className="v3-band-ring" aria-hidden="true">
           <svg viewBox="0 0 200 200">
             <circle className="v3-band-track" cx="100" cy="100" r="92" />
@@ -228,14 +200,17 @@ export function PrinciplesBand() {
           <p>{p.body}</p>
         </div>
       </div>
-      <div className="v3-band-tabs" role="tablist" aria-label="Our investment principles">
+      <ol className="v3-band-list" role="tablist" aria-label="Our investment principles">
         {PRINCIPLES.map((x, k) => (
-          <button key={x.title} type="button" role="tab" aria-selected={k === i} className={k === i ? 'is-on' : k < i ? 'is-done' : undefined} onClick={() => setI(k)}>
-            <span>0{k + 1}</span>
-            <b>{x.title.replace(/^We('re| are)? /, '').replace(/\.$/, '')}</b>
-          </button>
+          <li key={x.title}>
+            <button type="button" role="tab" aria-selected={k === i} className={k === i ? 'is-on' : undefined} onClick={() => setI(k)}>
+              <span>0{k + 1}</span>
+              <b>{x.title.replace(/^We('re| are)? /, '').replace(/\.$/, '')}</b>
+              <i aria-hidden="true"><em key={k === i ? `on-${i}` : 'off'} style={{ animationDuration: `${BAND_MS}ms`, animationPlayState: run ? 'running' : 'paused' }} /></i>
+            </button>
+          </li>
         ))}
-      </div>
+      </ol>
     </div>
   );
 }

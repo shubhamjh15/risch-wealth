@@ -61,7 +61,7 @@ export default function ReportView({
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7H13M13 7L7.5 1.5M13 7L7.5 12.5" stroke="currentColor" strokeWidth="1.3" /></svg>
         </Link>
         <button className="btn" onClick={handleDownload}>
-          Download / Print Proposal
+          Download / Print Report
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1V10M7 10L3.5 6.5M7 10L10.5 6.5M2 13H12" stroke="currentColor" strokeWidth="1.3" /></svg>
         </button>
         {!saved && <button className="btn" onClick={onRestart}>Start over</button>}

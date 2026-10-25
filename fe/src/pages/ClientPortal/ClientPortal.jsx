@@ -32,7 +32,7 @@ export const SECTIONS = [
   { path: 'profile', label: 'Profile & Security', icon: Icons.profile, Component: ProfileSecurity },
   // Not in the sidebar; "Risk Profile" stays highlighted while it's open.
   { path: 'risk-assessment', label: 'Risk assessment', Component: RiskAssessment, hidden: true, parent: 'risk-profile' },
-  { path: 'risk-report', label: 'Risk proposal', Component: RiskReport, hidden: true, parent: 'risk-profile' },
+  { path: 'risk-report', label: 'Risk report', Component: RiskReport, hidden: true, parent: 'risk-profile' },
 ];
 const to = (path) => (path ? `/client-portal/${path}` : '/client-portal');
 

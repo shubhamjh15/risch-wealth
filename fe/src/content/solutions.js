@@ -35,6 +35,10 @@ export const UNDERSTAND = {
     body: 'Tolerance on paper is not behaviour in a crisis. We study the patterns that quietly cost investors returns, like the urge to sell in a fall or chase a rally, and shape the portfolio so that you can stay with it.',
     figure: '1.2%',
     figureText: 'a year lost by the average investor to the timing of their buying and selling. The funds returned 9.9% a year; their investors earned 8.7%.',
+    // the same two figures, for the bar visual
+    fundsReturned: 9.9,
+    investorsEarned: 8.7,
+    gapCaption: 'a year lost by the average investor to the timing of their buying and selling.',
     // COMPLIANCE: third-party statistic. Verified against Morningstar's "Mind the
     // Gap" study (10 years to 31 Dec 2025, US open-end funds and ETFs).
     // source line removed from the page at the owner's request (Morningstar, Mind the Gap, US funds, 10 years to 31 Dec 2025)
@@ -52,6 +56,10 @@ export const HORIZONS = [
   { id: 'aggressive', name: 'RISCH Active Aggressive', span: '7 to 10 years', from: 7, to: 10, at: 8 },
   { id: 'aggressive-plus', name: 'RISCH Active Aggressive Plus', span: '10 years and beyond', from: 10, to: 15, at: 12 },
 ];
+// How a mix is named on the site: by its risk level, not as a RISCH-branded
+// product (RISCH is a distributor; these are illustrative mixes). The full
+// names stay in the risk profiler's proposal, explained on the Disclosure page.
+export const mixLabel = (h) => h.name.replace(/^RISCH Active /, '');
 export const SLIDER_MIN = 1;
 export const SLIDER_MAX = 15; // shown as "15+"
 // the one place the slider's years are turned into a portfolio id
@@ -65,7 +73,7 @@ export const ALLOCATION = {
   macroTitle: 'Macro asset allocation',
   subTitle: 'Sub-asset class breakdown',
   // COMPLIANCE
-  disclaimer: 'Illustrative only. These are the model mixes of the four RISCH portfolios, shown to explain how they differ. They are not a recommendation, and your own allocation is set from your full risk profile.',
+  disclaimer: 'Illustrative only. These are example asset mixes by time horizon, shown to explain how they differ. They are not a recommendation or an offer of any product, and your own allocation is set from your full risk profile and circumstances.',
   points: [
     ['Set from your risk profile.', 'The mix follows who you are and what the capital is for, not what is popular this year.'],
     ['Rebalanced when markets pull it off target.', 'When one asset class runs ahead or falls behind, we bring the portfolio back to its intended shape.'],

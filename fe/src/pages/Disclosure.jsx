@@ -1,8 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
-import Nav from '../components/Nav/Nav';
-import Footer from '../components/Footer/Footer';
-import PageHero from '../components/page/PageHero';
-import { useMotion } from '../motion/useMotion';
+import { useEffect, useState } from 'react';
+import { PageShell, LightHero } from '../v3/page';
 import { FIRM } from '../data/firm';
 
 // Each entry becomes a numbered row (same pattern as the home page's
@@ -91,7 +88,7 @@ function buildSections() {
     title: 'Questions about this disclosure',
     body: (
       <>
-        Write to <a href={`mailto:${FIRM.email}`} style={{ color: 'var(--accent)', fontWeight: 600 }}>{FIRM.email}</a> or call <a href={FIRM.phoneHref} style={{ color: 'var(--accent)', fontWeight: 600 }}>{FIRM.phone}</a>.
+        Write to <a href={`mailto:${FIRM.email}`} style={{ color: 'var(--accent-ink)', fontWeight: 600 }}>{FIRM.email}</a> or call <a href={FIRM.phoneHref} style={{ color: 'var(--accent-ink)', fontWeight: 600 }}>{FIRM.phone}</a>.
       </>
     ),
   });
@@ -124,14 +121,12 @@ function buildSections() {
 const groupId = (name) => name.toLowerCase().replace(/[^a-z]+/g, '-');
 
 export default function Disclosure() {
-  const rootRef = useRef(null);
-  useMotion(rootRef);
   const groups = buildSections();
 
   // Contents list follows the reader: the group nearest the top is marked.
   const [current, setCurrent] = useState(null);
   useEffect(() => {
-    const els = [...document.querySelectorAll('.legal-group')];
+    const els = [...document.querySelectorAll('.v3-legal-group')];
     const io = new IntersectionObserver((entries) => {
       entries.forEach((e) => { if (e.isIntersecting) setCurrent(e.target.id); });
     }, { rootMargin: '-30% 0px -60% 0px' });
@@ -140,35 +135,34 @@ export default function Disclosure() {
   }, []);
 
   return (
-    <div ref={rootRef}>
-      <Nav overHero />
-
-      <PageHero
-        eyebrow="Legal &amp; Regulatory"
+    <PageShell solid smooth={false}>
+      <LightHero
+        kicker="Legal & regulatory"
         lines={['Disclosures.']}
         lede="The information below governs how this site, the risk assessment and any proposal it generates should be read. If anything here is unclear, a conversation with RISCH resolves it faster than the fine print."
       />
 
-      <section className="pg-sec">
-        <div className="wrap legal-doc">
-          <nav className="legal-toc" aria-label="Disclosure sections">
+      <section className="v3-sec v3-sec-legal">
+        <div className="v3-wrap v3-legal">
+          <nav className="v3-legal-toc" aria-label="Disclosure sections">
             <p>Contents</p>
             <ol>
-              {groups.map((g) => (
+              {groups.map((g, i) => (
                 <li key={g.group}>
-                  <a href={`#${groupId(g.group)}`} className={current === groupId(g.group) ? 'is-current' : undefined}>{g.group}</a>
+                  <a href={`#${groupId(g.group)}`} className={current === groupId(g.group) ? 'is-current' : undefined}><span>0{i + 1}</span>{g.group}</a>
                 </li>
               ))}
             </ol>
+            <a className="v3-legal-ask" href={`mailto:${FIRM.email}`}>Questions? {FIRM.email}</a>
           </nav>
-          <div className="legal-body">
+          <div className="v3-legal-body">
             {groups.map((g) => (
-              <section className="legal-group" id={groupId(g.group)} key={g.group}>
-                <h2 data-split>{g.group}</h2>
-                {g.clauses.map((s) => (
-                  <div className="legal-clause" key={s.title} data-reveal>
-                    <h3><span>{String(s.n).padStart(2, '0')}</span>{s.title}</h3>
-                    {typeof s.body === 'string' ? <p>{s.body}</p> : <div>{s.body}</div>}
+              <section className="v3-legal-group" id={groupId(g.group)} key={g.group}>
+                <h2>{g.group}</h2>
+                {g.clauses.map((c) => (
+                  <div className="v3-legal-clause" key={c.title}>
+                    <h3><span>{String(c.n).padStart(2, '0')}</span>{c.title}</h3>
+                    {typeof c.body === 'string' ? <p>{c.body}</p> : <div>{c.body}</div>}
                   </div>
                 ))}
               </section>
@@ -176,8 +170,6 @@ export default function Disclosure() {
           </div>
         </div>
       </section>
-
-      <Footer extendedLegal showSocials={false} />
-    </div>
+    </PageShell>
   );
 }

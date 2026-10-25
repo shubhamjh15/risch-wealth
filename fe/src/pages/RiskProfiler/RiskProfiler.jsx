@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import Nav from '../../components/Nav/Nav';
-import Footer from '../../components/Footer/Footer';
+import V3Nav from '../../v3/V3Nav';
+import V3Footer from '../../v3/V3Footer';
 import { fmtINR, pct } from '../../utils/format';
 import { submitRiskProfilerAnswers } from '../../api/riskProfilerApi';
 import { RiskProfilerConfigProvider, useRiskProfilerConfig } from './RiskProfilerConfigContext';
@@ -18,8 +18,12 @@ export default function RiskProfiler({ embedded = false, prefill = null, onSaved
       <RiskProfilerBody embedded={embedded} prefill={prefill} onSaved={onSaved} />
     </RiskProfilerConfigProvider>
   );
-  return embedded ? <div className="profiler-embedded">{body}</div> : body;
+  return embedded ? <div className="profiler-embedded">{body}</div> : <div className="v3 v3-profiler">{body}</div>;
 }
+
+const ArrowIcon = () => (
+  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M1 7H13M13 7L7.5 1.5M13 7L7.5 12.5" stroke="currentColor" strokeWidth="1.3" /></svg>
+);
 
 function RiskProfilerBody({ embedded, prefill, onSaved }) {
   const { config, error } = useRiskProfilerConfig();
@@ -27,7 +31,7 @@ function RiskProfilerBody({ embedded, prefill, onSaved }) {
   if (error) {
     return (
       <>
-        {!embedded && <Nav showMobileProfilerLink={false} />}
+        {!embedded && <V3Nav solid />}
         <main className="wrap profiler-wrap">
           <p className="lede">The risk profiler couldn't load right now ({error}). Please make sure the API server is running and try again.</p>
         </main>
@@ -40,7 +44,7 @@ function RiskProfilerBody({ embedded, prefill, onSaved }) {
   if (!config) {
     return (
       <>
-        {!embedded && <Nav showMobileProfilerLink={false} />}
+        {!embedded && <V3Nav solid />}
         <div className="prog-rail">
           <div className="wrap prog-inner">
             <span className="mono prog-label">Introduction</span>
@@ -60,18 +64,16 @@ function RiskProfilerBody({ embedded, prefill, onSaved }) {
 function ProfilerIntro({ onBegin }) {
   return (
     <section className="p-step is-active" data-step="intro">
-      <p className="eyebrow reveal in">Portfolio Suitability Questionnaire</p>
+      <p className="eyebrow reveal in">Risk Profile Questionnaire</p>
       <h1 className="display-xl reveal in" style={{ maxWidth: '14em' }}>Know your risk profile <span className="italic">before you invest.</span></h1>
-      <p className="lede reveal in" style={{ maxWidth: '52ch', marginTop: 26 }}>This diagnostic follows a documented time-horizon and risk-preference methodology. It takes about three minutes. At the end, you'll receive a preliminary proposal (allocation, sub-asset breakdown and hypothetical outcomes) built around your answers, as a starting point for a conversation with RISCH.</p>
+      <p className="lede reveal in" style={{ maxWidth: '52ch', marginTop: 26 }}>This questionnaire follows a documented time-horizon and risk-preference methodology and takes about three minutes. At the end you&rsquo;ll see your risk profile and an illustrative asset mix for it: a starting point for a conversation with RISCH, not a recommendation.</p>
       <div className="intro-facts reveal in">
         <div><span className="mono">01</span> Basic details</div>
         <div><span className="mono">02</span> Time horizon: 2 questions</div>
         <div><span className="mono">03</span> Risk preference: 6 questions</div>
-        <div><span className="mono">04</span> Your proposal, instantly</div>
+        <div><span className="mono">04</span> Your risk profile, instantly</div>
       </div>
-      <button className="btn btn-primary" style={{ marginTop: 40 }} disabled={!onBegin} onClick={onBegin}>Begin
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7H13M13 7L7.5 1.5M13 7L7.5 12.5" stroke="currentColor" strokeWidth="1.3" /></svg>
-      </button>
+      <button className="btn btn-primary" style={{ marginTop: 40 }} disabled={!onBegin} onClick={onBegin}><span>Begin</span><i><ArrowIcon /></i></button>
     </section>
   );
 }
@@ -79,7 +81,7 @@ function ProfilerIntro({ onBegin }) {
 function stepLabel(key, questions) {
   if (key === 'intro') return 'Introduction';
   if (key === 'basics') return 'Your details';
-  if (key === 'report') return 'Your proposal';
+  if (key === 'report') return 'Your risk profile';
   const q = questions.find((q) => q.id === key);
   return `${q.group}: Question ${q.groupIndex} of ${q.groupTotal}`;
 }
@@ -154,7 +156,7 @@ function RiskProfilerQuiz({
 
   return (
     <>
-      {!embedded && <Nav showMobileProfilerLink={false} />}
+      {!embedded && <V3Nav solid />}
 
       <div className="prog-rail">
         <div className="wrap prog-inner">
@@ -202,9 +204,7 @@ function RiskProfilerQuiz({
               {basicsError && <p className="auth-note" role="alert">{basicsError}</p>}
               <div className="p-nav">
                 <button type="button" className="btn btn-back" onClick={() => goToStep(stepIndex - 1)}>Back</button>
-                <button type="submit" className="btn btn-primary">Continue
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7H13M13 7L7.5 1.5M13 7L7.5 12.5" stroke="currentColor" strokeWidth="1.3" /></svg>
-                </button>
+                <button type="submit" className="btn btn-primary"><span>Continue</span><i><ArrowIcon /></i></button>
               </div>
             </form>
           </section>
@@ -224,10 +224,10 @@ function RiskProfilerQuiz({
         {currentStepKey === 'report' && (
           <section className="p-step is-active" data-step="report">
             {scoreError && (
-              <p className="lede">Couldn't generate your proposal ({scoreError}). Please make sure the API server is running, then try restarting.</p>
+              <p className="lede">Couldn't generate your risk profile ({scoreError}). Please make sure the API server is running, then try restarting.</p>
             )}
             {!scoreError && !scoreResult && (
-              <p className="lede">Generating your proposal…</p>
+              <p className="lede">Working out your risk profile…</p>
             )}
             {scoreResult && (
               <ReportView basics={basics} answers={answers} questions={questions} scoreResult={scoreResult} onRestart={handleRestart} embedded={embedded} />
@@ -236,7 +236,7 @@ function RiskProfilerQuiz({
         )}
       </main>
 
-      {showFooter && !embedded && <Footer extendedLegal showSocials={false} />}
+      {showFooter && !embedded && <V3Footer />}
     </>
   );
 }
@@ -289,9 +289,7 @@ function QuestionStep({ question: q, amount, answer, onSelect, onBack, onNext })
       </div>
       <div className="p-nav">
         <button className="btn btn-back" onClick={onBack}>Back</button>
-        <button className="btn btn-primary" disabled={!answer} onClick={onNext}>Continue
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7H13M13 7L7.5 1.5M13 7L7.5 12.5" stroke="currentColor" strokeWidth="1.3" /></svg>
-        </button>
+        <button className="btn btn-primary" disabled={!answer} onClick={onNext}><span>Continue</span><i><ArrowIcon /></i></button>
       </div>
     </section>
   );

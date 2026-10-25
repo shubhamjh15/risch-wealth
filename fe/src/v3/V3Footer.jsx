@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { FIRM } from '../data/firm';
-import { BrandMark } from '../v2/ui';
+import { BrandMark } from './ui';
 
 const COLS = [
   ['The Firm', [['/about', 'About RISCH'], ['/about', 'Our founder'], ['/perspective', 'Perspective'], ['/disclosure', 'Regulatory information']]],
@@ -16,7 +16,7 @@ export default function V3Footer() {
       <div className="v3-wrap">
         <div className="v3-footer-top">
           <div className="v3-footer-brand">
-            <Link to="/v3" className="v3-footer-logo" aria-label="RISCH Wealth, home"><BrandMark /></Link>
+            <Link to="/" className="v3-footer-logo" aria-label="RISCH Wealth, home"><BrandMark /></Link>
             <p>Private wealth management for entrepreneurs, families, professionals and global Indians. Bengaluru, since {FIRM.foundedYear}.</p>
             <p className="v3-footer-contact">
               <a href={FIRM.phoneHref}>{FIRM.phone}</a>

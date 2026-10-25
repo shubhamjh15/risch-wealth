@@ -2,7 +2,7 @@ import { useLayoutEffect, useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { TESTIMONIALS, TESTIMONIAL_GROUPS } from '../data/testimonials';
 import { gsap, Draggable, prefersReducedMotion } from '../motion/gsap';
-import { Arrow } from '../v2/ui';
+import { Arrow } from './ui';
 
 const useIsoLayoutEffect = typeof window === 'undefined' ? useEffect : useLayoutEffect;
 

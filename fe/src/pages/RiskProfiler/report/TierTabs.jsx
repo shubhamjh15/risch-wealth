@@ -11,7 +11,7 @@ export default function TierTabs({ tiers, tierOrder, recommendedTier, activeTab,
             className={'tier-tab' + (t === activeTab ? ' active' : '')}
             onClick={() => onSelect(t)}
           >
-            {m.short}{isRec && <span className="rec-badge">Recommended</span>}
+            {m.short}{isRec && <span className="rec-badge">Your profile</span>}
           </button>
         );
       })}

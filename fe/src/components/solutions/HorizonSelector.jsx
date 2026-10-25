@@ -1,5 +1,5 @@
 import {
-  HORIZONS, SLIDER_MAX, SLIDER_MIN, UNDERSTAND, horizonForYears,
+  HORIZONS, MACRO_CLASSES, SLIDER_MAX, SLIDER_MIN, UNDERSTAND, allocationFor, horizonForYears, mixLabel,
 } from '../../content/solutions';
 
 const Down = () => (
@@ -12,6 +12,8 @@ export default function HorizonSelector({ years, onYears, onSeeMix }) {
   const fit = HORIZONS.find((h) => h.id === horizonForYears(years));
   const pct = ((years - SLIDER_MIN) / (SLIDER_MAX - SLIDER_MIN)) * 100;
   const label = years >= SLIDER_MAX ? `${SLIDER_MAX}+ years` : `${years} ${years === 1 ? 'year' : 'years'}`;
+  const mix = allocationFor(fit.id).macro;
+  const equity = Math.round(mix[0] + mix[1]);
   return (
     <div className="hz">
       <div className="hz-slider">
@@ -33,8 +35,13 @@ export default function HorizonSelector({ years, onYears, onSeeMix }) {
       </div>
       <div className="hz-fit" aria-live="polite">
         <span className="hz-fit-label">{UNDERSTAND.horizon.fitLabel}</span>
-        <strong key={fit.id} className="hz-fit-name">{fit.name}</strong>
-        <a href="#alloc-h" className="wp-link hz-fit-link" onClick={(e) => { e.preventDefault(); onSeeMix(); }}>
+        <strong key={fit.id} className="hz-fit-name">{mixLabel(fit)} mix</strong>
+        {/* the illustrative mix itself, as one bar that reshapes with the slider */}
+        <div className="hz-mix" aria-hidden="true">
+          {MACRO_CLASSES.map((c, i) => <i key={c.id} style={{ width: `${mix[i]}%`, background: c.color }} />)}
+        </div>
+        <span className="hz-mix-key">{equity}% equity · {100 - equity}% fixed income &amp; cash</span>
+        <a href="#alloc-h" className="v3-textlink hz-fit-link" onClick={(e) => { e.preventDefault(); onSeeMix(); }}>
           {UNDERSTAND.horizon.fitLink} <Down />
         </a>
       </div>

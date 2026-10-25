@@ -8,7 +8,7 @@ export function PageHead({ dateStr }) {
         <p className="body-s" style={{ marginTop: 8, color: 'var(--muted)', fontSize: '10.5px', fontWeight: 600, letterSpacing: '.04em', textTransform: 'uppercase' }}>RISCH Private Wealth</p>
       </div>
       <div className="rh-right">
-        <p className="tag">RISCH Investment Proposal</p>
+        <p className="tag">RISCH Risk Profile Report</p>
         <h2>{dateStr}</h2>
       </div>
     </div>
@@ -29,7 +29,7 @@ export function PageMeta({ meta }) {
 export function PageFoot({ n }) {
   return (
     <div className="pg-foot">
-      <span>www.rischwealth.com · Confidential Proposal</span>
+      <span>www.rischwealth.com · Confidential</span>
       <span>Page {n} of 4</span>
     </div>
   );

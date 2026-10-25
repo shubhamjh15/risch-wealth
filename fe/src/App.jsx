@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider } from './hooks/ThemeContext';
 import Home from './pages/Home';
 import About from './pages/About';
@@ -38,22 +38,6 @@ function StaffPortalLoader() {
   return Page ? <Page /> : null;
 }
 
-// The home page redesigns under review (/v2, /v3) load the same way, so
-// their footage, 3D scenes and fonts never weigh on the live site.
-// One import() per page, each in its own function: a single conditional
-// import() makes the bundler preload only one page's stylesheet for both.
-const DESIGNS = {
-  v2: () => import('./pages/HomeV2'),
-  v3: () => import('./pages/HomeV3'),
-};
-function DesignLoader({ version }) {
-  const [Page, setPage] = useState(null);
-  useEffect(() => {
-    DESIGNS[version]().then((m) => setPage(() => m.default));
-  }, [version]);
-  return Page ? <Page /> : <div style={{ minHeight: '100vh', background: version === 'v3' ? '#F6F2EC' : '#0C0B0A' }} />;
-}
-
 // The router itself is supplied by the caller: BrowserRouter in the
 // browser (main.jsx), StaticRouter when prerendering (entry-server.jsx).
 export default function App() {
@@ -63,9 +47,9 @@ export default function App() {
       <RouteHead />
       <Routes>
         <Route path="/" element={<Home />} />
-        {/* Redesigns under review; one replaces "/" once approved. */}
-        <Route path="/v2" element={<DesignLoader version="v2" />} />
-        <Route path="/v3" element={<DesignLoader version="v3" />} />
+        {/* Old links to the redesign previews */}
+        <Route path="/v2" element={<Navigate to="/" replace />} />
+        <Route path="/v3" element={<Navigate to="/" replace />} />
         <Route path="/about" element={<About />} />
         <Route path="/who-we-serve" element={<WhoWeServe />} />
         <Route path="/solutions" element={<Solutions />} />

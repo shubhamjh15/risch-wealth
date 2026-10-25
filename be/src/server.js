@@ -23,7 +23,9 @@ const HOST = process.env.HOST || '127.0.0.1';
 
 // We're behind nginx, so trust its X-Forwarded-* headers (correct
 // req.ip / req.protocol for logging and any future rate limiting).
-app.set('trust proxy', 1);
+// TRUST_PROXY = number of proxies in front of us: 1 behind nginx; more
+// on hosts that add their own (Cloudflare Pages -> Render).
+app.set('trust proxy', Number(process.env.TRUST_PROXY) || 1);
 
 // Same-origin requests (the normal case: nginx serves the frontend and
 // proxies /api on the same domain, or Vite's dev proxy does the same

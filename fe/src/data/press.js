@@ -73,6 +73,15 @@ export const PRESS = [
     note: 'Seven practices every adviser must follow to earn investors’ trust: a client-first approach, understanding investors, behavioural coaching, diversification, ongoing monitoring, independence and minimising costs. The same principles RISCH sets out for every new client.',
     url: 'https://www.morningstar.in/posts/59816/7-principles-sound-advice.aspx',
   },
+  {
+    kind: 'press',
+    date: '2019-08-30',
+    outlet: 'Morningstar India',
+    title: 'Why this adviser is gung-ho about outsourcing investment management',
+    quote: 'I don’t believe in pushing products. It is all about maintaining relationships.',
+    note: 'A profile of RISCH’s founder: relationships over products, risk profiling to find the right asset mix, and staying in touch with clients all the time.',
+    url: 'https://morningstar.in/posts/54540/adviser-gung-ho-outsourcing-investment-management.aspx',
+  },
 ];
 
 export const pressYear = (p) => p.date.slice(0, 4);
