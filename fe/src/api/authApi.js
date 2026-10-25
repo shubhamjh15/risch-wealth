@@ -40,6 +40,14 @@ export const updateClientProfile = (data) => call('/client/profile', { method: '
 export const listRiskProfiles = () => call('/client/risk-profiles');
 export const sendClientRequest = (topic, message) => post('/client/requests', { topic, message });
 
+// Public: testimonials go live as soon as they're submitted.
+export const listTestimonials = () => call('/testimonials');
+export const submitTestimonial = (data) => post('/testimonials', data);
+
+// Staff (employees and admins): testimonials, which they can hide.
+export const listStaffTestimonials = (status) => call(`/staff/testimonials${status ? `?status=${status}` : ''}`);
+export const setTestimonialStatus = (id, status) => call(`/staff/testimonials/${id}`, { method: 'PATCH', body: JSON.stringify({ status }) });
+
 // Staff (employees and admins): client request inbox.
 export const listClientRequests = (status) => call(`/staff/requests${status ? `?status=${status}` : ''}`);
 export const setClientRequestStatus = (id, status) => call(`/staff/requests/${id}`, { method: 'PATCH', body: JSON.stringify({ status }) });

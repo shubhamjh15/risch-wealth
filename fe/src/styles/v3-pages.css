@@ -670,3 +670,8 @@ a.v3-reach-value:hover{ color:var(--accent-ink); }
 .v3-pv-listed i{ width:14px; height:14px; }
 .v3-pv-beyond{ grid-template-columns:auto auto; justify-content:center; }
 .v3-pv-blocks{ grid-template-columns:repeat(3, 34px); grid-auto-rows:34px; max-width:none; justify-content:center; }
+
+/* Testimonials: share form */
+.v3-check{ display:flex; align-items:flex-start; gap:12px; margin:4px 0 22px; font-size:13.5px; line-height:1.55; color:var(--ink-2); cursor:pointer; }
+.v3-check input{ width:18px; height:18px; flex:none; margin-top:1px; accent-color:var(--accent); cursor:pointer; }
+.v3-hp{ position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden; }

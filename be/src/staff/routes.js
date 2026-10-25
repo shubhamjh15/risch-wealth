@@ -7,6 +7,8 @@ import { requireRole } from '../auth/routes.js';
 //                                   portfolio counts, recent orders, NAV date
 //   GET   /api/staff/requests?status=open|in_progress|closed|all
 //   PATCH /api/staff/requests/:id   { status }
+//   GET   /api/staff/testimonials?status=published|hidden|all
+//   PATCH /api/staff/testimonials/:id   { status: 'published'|'hidden' }
 
 const router = Router();
 router.use(requireRole('employee', 'admin'));
@@ -90,6 +92,46 @@ router.patch('/requests/:id', async (req, res, next) => {
     );
     if (!rows.length) return res.status(404).json({ error: 'Request not found.' });
     return res.json({ request: rows[0] });
+  } catch (err) {
+    return next(err);
+  }
+});
+
+const T_STATUSES = ['published', 'hidden'];
+const testimonialRow = (t) => ({
+  id: t.id, name: t.name, email: t.email, role: t.role, place: t.place, group: t.client_group,
+  quote: t.quote, status: t.status, createdAt: t.created_at, updatedAt: t.updated_at,
+});
+
+router.get('/testimonials', async (req, res, next) => {
+  try {
+    const filter = req.query.status;
+    const [{ rows }, { rows: counts }] = await Promise.all([
+      query(
+        `SELECT * FROM testimonials WHERE ${T_STATUSES.includes(filter) ? 'status = $1' : 'TRUE'}
+          ORDER BY created_at DESC LIMIT 200`,
+        T_STATUSES.includes(filter) ? [filter] : [],
+      ),
+      query('SELECT status, count(*)::int AS n FROM testimonials GROUP BY status'),
+    ]);
+    const n = Object.fromEntries(counts.map((r) => [r.status, r.n]));
+    res.json({ testimonials: rows.map(testimonialRow), counts: { published: n.published || 0, hidden: n.hidden || 0 } });
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.patch('/testimonials/:id', async (req, res, next) => {
+  try {
+    const id = Number(req.params.id);
+    const status = req.body?.status;
+    if (!Number.isInteger(id) || !T_STATUSES.includes(status)) return res.status(400).json({ error: 'Invalid update.' });
+    const { rows } = await query(
+      'UPDATE testimonials SET status = $2, updated_at = now() WHERE id = $1 RETURNING id, status',
+      [id, status],
+    );
+    if (!rows.length) return res.status(404).json({ error: 'Testimonial not found.' });
+    return res.json({ testimonial: rows[0] });
   } catch (err) {
     return next(err);
   }

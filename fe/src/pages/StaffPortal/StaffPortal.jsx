@@ -10,6 +10,7 @@ import Clients from './Clients';
 import ClientDetail from './ClientDetail';
 import RecordPurchase from './RecordPurchase';
 import Requests from './Requests';
+import Testimonials from './Testimonials';
 import Team from './Team';
 import Profile from './Profile';
 
@@ -22,6 +23,7 @@ const NAV = [
   { to: '', label: 'Dashboard', icon: Icons.home },
   { to: '/clients', label: 'Client Portfolios', icon: Icons.clients, admin: true },
   { to: '/requests', label: 'Client Requests', icon: Icons.inbox },
+  { to: '/testimonials', label: 'Testimonials', icon: Icons.quote },
   { to: '/team', label: 'Team Accounts', icon: Icons.team, admin: true },
   { to: '/profile', label: 'Profile & Security', icon: Icons.profile },
 ];
@@ -40,7 +42,7 @@ function route(pathname) {
     if (['holdings', 'transactions'].includes(parts[2]) && parts.length === 3) return { screen: 'client', id, tab: parts[2] };
     return { screen: 'missing' };
   }
-  if (['requests', 'team', 'profile'].includes(parts[0]) && parts.length === 1) return { screen: parts[0] };
+  if (['requests', 'testimonials', 'team', 'profile'].includes(parts[0]) && parts.length === 1) return { screen: parts[0] };
   return { screen: 'missing' };
 }
 const ADMIN_SCREENS = ['clients', 'client', 'purchase', 'team'];
@@ -78,6 +80,7 @@ export default function StaffPortal() {
     client: <ClientDetail id={r.id} tab={r.tab} />,
     purchase: <RecordPurchase id={r.id} />,
     requests: <Requests />,
+    testimonials: <Testimonials />,
     team: <Team selfId={user.id} />,
     profile: <Profile user={user} />,
   }[r.screen];

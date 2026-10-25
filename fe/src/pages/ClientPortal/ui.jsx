@@ -123,6 +123,7 @@ export const Icons = {
   home: icon(<><path d="M3 11l9-7 9 7" /><path d="M5 10v10h14V10" /></>),
   clients: icon(<><circle cx="9" cy="8" r="3.2" /><path d="M2.5 20c0-3.5 3-6 6.5-6s6.5 2.5 6.5 6" /><circle cx="17" cy="8.5" r="2.6" /><path d="M15 14.2c2.7.4 4.7 2.5 4.7 5.8" /></>),
   inbox: icon(<><path d="M4 13l2.5-8h11L20 13v6H4z" /><path d="M4 13h5l1 2h4l1-2h5" /></>),
+  quote: icon(<><path d="M4 20V5h16v11H8z" /><path d="M9 9.5v2.5M15 9.5v2.5" /></>),
   team: icon(<><circle cx="12" cy="7.5" r="3" /><path d="M6 20c0-3.3 2.7-6 6-6s6 2.7 6 6" /><circle cx="5" cy="9.5" r="2" /><circle cx="19" cy="9.5" r="2" /></>),
   plus: icon(<path d="M12 5v14M5 12h14" />),
   more: icon(<><circle cx="5" cy="12" r="1.3" /><circle cx="12" cy="12" r="1.3" /><circle cx="19" cy="12" r="1.3" /></>),
