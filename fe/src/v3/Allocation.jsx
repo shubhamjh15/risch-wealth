@@ -4,7 +4,7 @@ import { ScrollTrigger, prefersReducedMotion } from '../motion/gsap';
 import { HORIZONS, MACRO_CLASSES, PORTFOLIO_NOTES, PORTFOLIO_SUITS, allocationFor, mixLabel } from '../content/solutions';
 import { scrollToTarget } from './smooth';
 import { Arrow } from './ui';
-import Donut3D from './Donut3D';
+import AllocationDial from './AllocationDial';
 
 const useIsoLayoutEffect = typeof window === 'undefined' ? useEffect : useLayoutEffect;
 
@@ -63,7 +63,7 @@ export default function Allocation({ num = '03', className = '', ref = null }) {
       <div className="v2-wrap v2-alloc-inner">
         <div className="v2-alloc-stage">
           <div className="v2-alloc-visual">
-            <Donut3D values={mix} colors={COLORS} names={NAMES} equity={equity} label={`Illustrative ${mixLabel(tier).toLowerCase()} mix`} hover={hover} onHover={setHover} />
+            <AllocationDial values={mix} colors={COLORS} names={NAMES} equity={equity} label={`Illustrative ${mixLabel(tier).toLowerCase()} mix`} hover={hover} onHover={setHover} />
           </div>
 
           <div className="v2-alloc-info">
