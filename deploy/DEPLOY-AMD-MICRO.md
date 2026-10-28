@@ -24,7 +24,8 @@ firewall above Oracle's catch-all REJECT rule.
 
 ## 3. Deploy (every release)
 
-From the repo root on the PC (Docker Desktop running):
+`bash deploy/deploy.sh` does all of this (see [../DEPLOY.md](../DEPLOY.md)).
+By hand, from the repo root on the PC (Docker Desktop running):
 
 ```bash
 POSTGRES_PASSWORD=x docker compose -p risch-wealth build

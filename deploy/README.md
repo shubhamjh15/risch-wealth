@@ -1,5 +1,9 @@
 # Deploying to the Ubuntu server (80.225.229.175, rischwealth.com)
 
+> **Out of date.** This describes the old server. Production moved to an
+> Oracle AMD Micro in October 2026: see [../DEPLOY.md](../DEPLOY.md) to
+> deploy, and [DEPLOY-AMD-MICRO.md](DEPLOY-AMD-MICRO.md) to set up a server.
+
 Everything the app needs (frontend + backend) runs as two Docker
 containers, managed by one `docker-compose.yml` at the repo root. The
 only thing that lives outside Docker is nginx + the TLS certificate,
