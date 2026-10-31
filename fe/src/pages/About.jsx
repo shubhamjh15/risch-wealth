@@ -44,6 +44,7 @@ const FOUNDER = {
     { href: 'https://www.linkedin.com/in/rishiraj-maheshwari-81240b5/', label: 'LinkedIn', pill: true },
     { href: FIRM.phoneHref, label: `Call ${FIRM.phone}` },
   ],
+  history: `Before founding **RISCH** in ${FIRM.foundedYear}, Rishiraj spent two decades in private banking at **Nuvama**, **ICICI Securities**, **RBS**, **Edelweiss** and **Indiabulls**.`,
   career: [
     { firm: 'RISCH Wealth', role: 'Founder & Chief Executive Officer', where: `Bengaluru · since ${FIRM.foundedYear}`, now: true },
     { firm: 'Nuvama Private Wealth & Family Office', role: 'Vice President', where: 'Mumbai' },
@@ -74,6 +75,7 @@ const COFOUNDER = {
   ],
   facts: [['10+', 'years in private banking'], ['3', 'private banks'], ['MBA', 'in Finance']],
   links: [{ to: '/contact', label: 'Start a conversation' }],
+  history: 'Before co-founding **RISCH**, Kratika spent more than ten years in private banking at **HDFC Bank**, **ICICI Securities** and **Kotak Securities**.',
   career: [
     { firm: 'RISCH Wealth', role: 'Co-Founder & Chief Client Experience Officer', where: 'Bengaluru', now: true },
     { firm: 'HDFC Bank Global Private Clients', role: 'Private Banking' },
@@ -120,19 +122,9 @@ function Person({ p, tint = false }) {
         <div className="v3-exp">
           <div>
             <p className="v3-exp-h" data-reveal>Experience</p>
-            <ol className="v3-exp-line" data-reveal>
-              {p.career.map((x) => (
-                <li key={x.firm} className={x.now ? 'is-now' : undefined}>
-                  <div>
-                    {x.now
-                      ? <b className="v3-exp-now"><em aria-hidden="true"><BrandMark /></em><span className="v3-sr">{x.firm}</span><i>Now</i></b>
-                      : <b>{x.firm}</b>}
-                    <span>{x.role}</span>
-                  </div>
-                  {x.where && <small>{x.where}</small>}
-                </li>
-              ))}
-            </ol>
+            <p className="v3-exp-sent" data-reveal>
+              {p.history.split(/\*\*(.+?)\*\*/).map((t, k) => (k % 2 ? <b key={k}>{t}</b> : t))}
+            </p>
           </div>
           <aside className="v3-exp-side" data-reveal>
             <div>
