@@ -54,8 +54,8 @@ const FOUNDER = {
     { firm: 'Indiabulls Securities', role: 'Relationship Manager', where: 'Bengaluru' },
   ],
   education: [
-    { what: 'MBA, Marketing & Systems', where: 'Canara Bank School of Management Studies, Bangalore University', note: 'First Division' },
-    { what: 'Bachelor of Computer Applications', where: 'Prestige Institute of Management & Research', note: 'First Division' },
+    { what: 'MBA, Marketing & Systems', where: 'Canara Bank School of Management Studies, Bangalore University' },
+    { what: 'Bachelor of Computer Applications', where: 'Prestige Institute of Management & Research' },
   ],
   extra: {
     h: 'In his words',
