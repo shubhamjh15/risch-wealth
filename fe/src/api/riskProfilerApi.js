@@ -18,12 +18,13 @@ export function fetchRiskProfilerConfig() {
 }
 
 // `amount` and `age` are only stored when a signed-in client's result is
-// saved to their portal; the scoring itself doesn't use them.
-export function submitRiskProfilerAnswers(answers, amount, age) {
+// saved to their portal; the scoring itself doesn't use them. `contact`
+// (name, email, phone) is emailed to RISCH with the result.
+export function submitRiskProfilerAnswers(answers, amount, age, contact) {
   return fetch(`${API_BASE_URL}/api/risk-profiler/score`, {
     method: 'POST',
     credentials: 'same-origin',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ answers, amount, age }),
+    body: JSON.stringify({ answers, amount, age, contact }),
   }).then(handleResponse);
 }

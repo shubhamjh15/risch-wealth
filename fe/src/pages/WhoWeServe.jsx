@@ -6,12 +6,12 @@ import { SEGMENTS } from '../data/segments';
 // One picture per client profile, in the order the segments are listed
 // (sources listed in v3/sections.jsx).
 const PICTURES = {
-  'Business Owners': 'serve-business',
+  'Business Owners': 'serve-business-2',
   'Entrepreneurs & Founders': 'serve-founder',
   'Private Clients & Families': 'serve-families',
   'NRIs & Global Indians': 'serve-nri',
   'Senior Executives & Professionals': 'serve-executive',
-  'Family Offices': 'serve-office',
+  'Family Offices': 'serve-office-2',
 };
 
 export default function WhoWeServe() {
@@ -19,8 +19,8 @@ export default function WhoWeServe() {
     <PageShell>
       <PageHero
         kicker="Whom we serve"
-        lines={[<>Built around <em>your</em> balance sheet,</>, 'whatever shape it takes.']}
-        lede="RISCH works with a small number of clients directly. These are the people we work with most often, not a checklist you need to fit."
+        lines={['Whatever you’ve built,', <em key="e">we plan around it.</em>]}
+        lede="We work closely with a small number of clients. These are the people we help most often. You don’t need to fit a box."
       />
 
       <section className="v3-sec">
@@ -53,7 +53,7 @@ export default function WhoWeServe() {
 
       <CloseBand
         kicker="Not sure where you fit?"
-        title="The risk profile is a better starting point than a category."
+        title="Start with your risk profile, not a label."
         primary={{ to: '/risk-profiler', label: 'Start Risk Profile' }}
         secondary={{ to: '/contact', label: 'Get in touch' }}
       />

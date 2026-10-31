@@ -152,20 +152,21 @@ export const TOGETHER = {
   ],
   blocksTitle: 'Solutions',
   blocksIntro: 'There is no model portfolio. These are the solutions that may form part of one, and how much weight each carries is set with you, not in advance.',
-  // COMPLIANCE: "held through" lines name product categories. PMS and AIF are
+  // COMPLIANCE: "held through" lines name product categories. SIF, PMS and AIF are
   // offered as a distributor and only to eligible investors.
   blocks: [
     { name: 'Mutual Fund', role: 'Professionally managed funds across equity, debt and hybrid strategies, for the core of a portfolio.', through: 'Mutual funds across equity, debt and hybrid categories, distributed by RISCH.' },
+    { name: 'Specialized Investment Fund (SIF)', role: 'A newer SEBI category run by mutual fund houses, with more flexible strategies such as long-short, for investments of ₹10 lakh and above.', through: 'SIF strategies, distributed by RISCH.' },
     { name: 'Portfolio Management Services (PMS)', role: 'A dedicated, concentrated equity portfolio for larger investments.', through: 'PMS strategies, distributed by RISCH.' },
     { name: 'Alternative Investment Funds (AIF)', role: 'Strategies beyond listed markets, such as private credit and private equity, for eligible investors.', through: 'AIFs, distributed by RISCH.' },
   ],
 
   // COMPLIANCE: existing disclosure, keep verbatim.
   disclosure: 'Portfolio components shown here illustrate RISCH’s investment framework; they are not a recommendation. A suitable portfolio also depends on your wider net worth, liabilities, illiquid assets, taxes and liquidity needs, which we go through with you in conversation.',
-  disciplinesTitle: 'Four disciplines. One coherent portfolio.',
+  disciplinesTitle: 'Four areas we handle. One portfolio that fits together.',
   disciplines: [
     { t: 'Portfolio Construction', d: 'A portfolio built around your objectives, liquidity needs, time horizon and ability to withstand losses, sized to you and not to a model.' },
-    { t: 'Fund & Strategy Selection', d: 'Mutual funds, PMS and AIFs from across the market, each chosen for the role it plays in your portfolio. Our research and risk assessment drive the selection.' },
+    { t: 'Fund & Strategy Selection', d: 'Mutual funds, SIFs, PMS and AIFs from across the market, each chosen for the role it plays in your portfolio. Our research and risk assessment drive the selection.' },
     { t: 'Global Diversification', d: 'Access to opportunities beyond Indian markets (the US, Europe, Asia and Taiwan), held as part of one plan rather than as a separate bet.' },
     { t: 'Wealth Coordination', d: 'Investments, liquidity, succession and your legal and tax advisers brought into one view, with one point of contact and regular reviews.' },
   ],

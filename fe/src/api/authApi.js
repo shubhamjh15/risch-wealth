@@ -40,11 +40,14 @@ export const updateClientProfile = (data) => call('/client/profile', { method: '
 export const listRiskProfiles = () => call('/client/risk-profiles');
 export const sendClientRequest = (topic, message) => post('/client/requests', { topic, message });
 
-// Public: testimonials go live as soon as they're submitted.
+// A path the API returned (e.g. a testimonial photo), as a usable URL.
+export const apiUrl = (path) => (path ? `${API_BASE_URL}${path}` : null);
+
+// Public: testimonials wait for staff review before they're listed.
 export const listTestimonials = () => call('/testimonials');
 export const submitTestimonial = (data) => post('/testimonials', data);
 
-// Staff (employees and admins): testimonials, which they can hide.
+// Staff (employees and admins): testimonials, which they publish or hide.
 export const listStaffTestimonials = (status) => call(`/staff/testimonials${status ? `?status=${status}` : ''}`);
 export const setTestimonialStatus = (id, status) => call(`/staff/testimonials/${id}`, { method: 'PATCH', body: JSON.stringify({ status }) });
 

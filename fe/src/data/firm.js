@@ -59,6 +59,7 @@ export const FIRM = {
   ],
   // The founder's EUIN (E11449, valid 24/05/2025 – 23/05/2028) is no longer
   // shown on the site, but renew it before it expires.
-  // e.g. 'Grievance Officer: Name, grievance@…, +91 …'
-  grievance: null,
+  // Shown on the Disclosure page. Supplied by RISCH (October 2026); switch
+  // the email to a domain address once one is set up.
+  grievance: 'For any complaint, write to or call our Grievance Officer, R K Maheshwari, at rischwealth@gmail.com or +91 94830 03456. If you are not satisfied with our response, you may raise it with the fund house or portfolio manager concerned, on SEBI’s SCORES portal (scores.sebi.gov.in), or through SMART ODR (smartodr.in).',
 };

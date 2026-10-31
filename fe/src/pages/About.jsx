@@ -1,14 +1,10 @@
+import { Link } from 'react-router-dom';
 import { PageShell, PageHero, Head, CloseBand } from '../v3/page';
-import { Arrow } from '../v3/ui';
+import { Arrow, BrandMark } from '../v3/ui';
 import { HowWeWork } from '../v3/principles';
 import founderOffice from '../assets/founder-office.jpg';
-import founderHeadshot from '../assets/founder-headshot.jpg';
 import kratikaPhoto from '../assets/kratika-maheshwari.jpg';
 import { FIRM } from '../data/firm';
-
-const Svg = ({ children, sw = 1.5 }) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={sw} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{children}</svg>
-);
 
 // "Independence" is avoided on purpose: RISCH is a distributor, and the
 // AMFI code steers distributors away from calling themselves independent.
@@ -23,145 +19,164 @@ const HOW_WE_WORK = [
     icon: <path d="M12 3v18M5 7l-3 6a3 3 0 0 0 6 0l-3-6zM19 7l-3 6a3 3 0 0 0 6 0l-3-6zM5 7h14M9 21h6" /> },
 ];
 
+// Open architecture and bounded deviation are already in How we work, so
+// they aren't repeated here.
 const GOVERNANCE = [
-  { t: 'Open architecture', d: 'No proprietary product.', icon: <><circle cx="12" cy="12" r="9" /><path d="M15 9l-2 6-6 2 2-6 6-2z" /></> },
-  { t: '8-point diagnostic', d: 'Scored separately, every time.', icon: <><circle cx="12" cy="12" r="9" /><circle cx="12" cy="12" r="5" /><circle cx="12" cy="12" r="1" /></> },
-  { t: 'Bounded deviation', d: 'Jointly signed, always.', icon: <path d="M12 3v18M5 7l-3 6a3 3 0 0 0 6 0l-3-6zM19 7l-3 6a3 3 0 0 0 6 0l-3-6zM5 7h14M9 21h6" /> },
-  { t: 'Conflict walls', d: 'Managed separately.', icon: <><rect x="4" y="4" width="7" height="7" rx="1.2" /><rect x="13" y="4" width="7" height="7" rx="1.2" /><rect x="4" y="13" width="7" height="7" rx="1.2" /><rect x="13" y="13" width="7" height="7" rx="1.2" /></> },
+  { t: '8-point diagnostic', d: 'Scored separately, every time.' },
+  { t: 'Conflict walls', d: 'Managed separately.' },
 ];
 
-// The founder's career, as RISCH sets it out (no dates are given for the
-// earlier roles, so none are shown).
-const TIMELINE = [
-  { label: 'Current', t: 'Founder & CEO', d: `RISCH Wealth Private Limited · Bengaluru · Since ${FIRM.foundedYear}`, now: true },
-  { label: 'Previously', t: 'Edelweiss Financial Services', d: 'Mumbai' },
-  { t: 'Senior Private Banker', d: 'ICICI Securities · Bengaluru' },
-  { t: 'Assistant Vice President, Private Wealth', d: 'Unicon Investment Solutions · Bengaluru' },
-  { t: 'Relationship Manager', d: 'Indiabulls Securities' },
-  { label: 'Education', t: 'MBA, Marketing & Systems', d: 'Canara Bank School of Management Studies', extra: ['BCA', 'DAVV University'] },
-];
-
-// His own words in the press, verbatim (Morningstar India, 30 August 2019).
-const ON_RECORD = {
-  quote: 'I don’t believe in pushing products. It is all about maintaining relationships.',
-  source: 'Morningstar India, 2019',
-  url: 'https://morningstar.in/posts/54540/adviser-gung-ho-outsourcing-investment-management.aspx',
+// The two founders, shown by the same Person component. Text and roles are
+// from RISCH's own profiles of them, reworded where needed for a distributor
+// (no "independent", "fiduciary" or "advisory"; see firm.js). No dates are
+// given for earlier roles, so none are shown.
+const FOUNDER = {
+  num: '01', label: 'The founder',
+  name: 'Rishiraj Maheshwari', title: 'Founder & Chief Executive Officer',
+  photo: founderOffice, photoW: 538, photoH: 632,
+  statement: 'Wealth deserves a higher standard of stewardship.',
+  body: [
+    `Rishiraj founded RISCH Wealth in ${FIRM.foundedYear} on one conviction: wealth management must go beyond products and market cycles, and become a disciplined, enduring partnership built around the client’s interests.`,
+    'Over two decades in India’s private banking and institutional wealth management, he has worked with promoters, corporate leaders and ultra-high-net-worth families on asset allocation, business liquidity and the passing of wealth between generations. At RISCH he leads the investment philosophy and multi-asset allocation: a clear view of risk, diversification, valuation discipline and a margin of safety.',
+  ],
+  facts: [['20+', 'years in private banking'], ['7', 'institutions'], [String(FIRM.foundedYear), 'founded RISCH']],
+  links: [
+    { href: 'https://www.linkedin.com/in/rishiraj-maheshwari-81240b5/', label: 'LinkedIn', pill: true },
+    { href: FIRM.phoneHref, label: `Call ${FIRM.phone}` },
+  ],
+  career: [
+    { firm: 'RISCH Wealth', role: 'Founder & Chief Executive Officer', where: `Bengaluru · since ${FIRM.foundedYear}`, now: true },
+    { firm: 'Nuvama Private Wealth & Family Office', role: 'Vice President', where: 'Mumbai' },
+    { firm: 'ICICI Securities', role: 'Senior Private Banker, Private Wealth Management', where: 'Bengaluru' },
+    { firm: 'The Royal Bank of Scotland (RBS)', role: 'Wealth Management' },
+    { firm: 'Unicon Investment Solutions', role: 'Assistant Vice President, Private Wealth Management, South', where: 'Bengaluru' },
+    { firm: 'Edelweiss Financial Services', role: 'Senior Relationship Manager' },
+    { firm: 'Indiabulls Securities', role: 'Relationship Manager' },
+  ],
+  education: [
+    { what: 'MBA, Marketing & Systems', where: 'Canara Bank School of Management Studies, Bangalore University', note: 'First Division' },
+    { what: 'Bachelor of Computer Applications', where: 'Prestige Institute of Management & Research', note: 'First Division' },
+  ],
+  extra: {
+    h: 'In his words',
+    quote: 'Wealth management is not merely about choosing investments. It is about making considered decisions, managing risk with discipline and preserving the freedom to make choices across generations.',
+  },
+  after: { h: 'Beyond the boardroom', text: 'Badminton, golf, travel and soulful music; a lasting curiosity about global macroeconomics; community engagement and social service.' },
 };
+
+const COFOUNDER = {
+  num: '02', label: 'The co-founder',
+  name: 'Kratika Maheshwari', title: 'Co-Founder & Chief Client Experience Officer',
+  photo: kratikaPhoto, photoW: 640, photoH: 800,
+  statement: 'A decade with HNI clients.',
+  body: [
+    'Kratika leads the RISCH client experience end to end: relationship management, portfolio reviews, reporting and day-to-day service, so that every client relationship is proactive, transparent and personal.',
+    'More than ten years in private banking at HDFC Bank, ICICI Securities and Kotak Securities, managing HNI portfolios and cross-border relationships, taught her that how a portfolio is experienced matters as much as how it is built: the cadence of reviews, the clarity of reporting and the speed of execution.',
+  ],
+  facts: [['10+', 'years in private banking'], ['3', 'private banks'], ['MBA', 'in Finance']],
+  links: [{ to: '/contact', label: 'Start a conversation' }],
+  career: [
+    { firm: 'RISCH Wealth', role: 'Co-Founder & Chief Client Experience Officer', where: 'Bengaluru', now: true },
+    { firm: 'HDFC Bank Global Private Clients', role: 'Private Banking' },
+    { firm: 'ICICI Securities', role: 'Private Wealth' },
+    { firm: 'Kotak Securities', role: 'Private Banking' },
+  ],
+  education: [
+    { what: 'MBA, Finance', where: 'Christ University' },
+    { what: 'BBM', where: 'Center for Management Studies, Jain (Deemed-to-be University)' },
+    { what: 'Schooling', where: 'Bishop Cotton Girls’ School, Bengaluru' },
+  ],
+  extra: { h: 'What she leads', list: ['Relationship management', 'Portfolio reviews', 'Client reporting', 'Day-to-day service'] },
+};
+
+// One founder: the portrait and introduction, then their experience as a
+// timeline with education and one more note beside it.
+function Person({ p, tint = false }) {
+  return (
+    <section className={'v3-sec' + (tint ? ' v3-tint' : '')} id={p.num === '02' ? 'team' : undefined}>
+      <div className="v3-wrap">
+        <div className="v3-person">
+          <figure className="v3-person-photo" data-reveal>
+            <img src={p.photo} alt={`${p.name}, ${p.title}, RISCH Wealth`} width={p.photoW} height={p.photoH} loading={p.num === '01' ? undefined : 'lazy'} />
+          </figure>
+          <div className="v3-person-intro">
+            <p className="v3-kicker" data-reveal><span>{p.num}</span>{p.label}</p>
+            <h2 className="v3-person-name" data-split>{p.name}</h2>
+            <p className="v3-person-title" data-reveal>{p.title}</p>
+            <p className="v3-person-statement" data-reveal>{p.statement}</p>
+            {p.body.map((t) => <p key={t.slice(0, 24)} className="v3-body" data-reveal>{t}</p>)}
+            <dl className="v3-person-facts" data-reveal="stagger">
+              {p.facts.map(([n, l]) => <div key={l}><dt>{n}</dt><dd>{l}</dd></div>)}
+            </dl>
+            <div className="v3-row-actions" data-reveal>
+              {p.links.map((l) => (l.to
+                ? <Link key={l.label} to={l.to} className="v3-textlink">{l.label} <Arrow /></Link>
+                : l.pill
+                  ? <a key={l.label} href={l.href} target="_blank" rel="noopener noreferrer" className="v3-pill v3-pill-dark"><span>{l.label}</span><i><Arrow /></i></a>
+                  : <a key={l.label} href={l.href} className="v3-textlink">{l.label} <Arrow /></a>))}
+            </div>
+          </div>
+        </div>
+
+        <div className="v3-exp">
+          <div>
+            <p className="v3-exp-h" data-reveal>Experience</p>
+            <ol className="v3-exp-line" data-reveal>
+              {p.career.map((x) => (
+                <li key={x.firm} className={x.now ? 'is-now' : undefined}>
+                  <div>
+                    {x.now
+                      ? <b className="v3-exp-now"><em aria-hidden="true"><BrandMark /></em><span className="v3-sr">{x.firm}</span><i>Now</i></b>
+                      : <b>{x.firm}</b>}
+                    <span>{x.role}</span>
+                  </div>
+                  {x.where && <small>{x.where}</small>}
+                </li>
+              ))}
+            </ol>
+          </div>
+          <aside className="v3-exp-side" data-reveal>
+            <div>
+              <p className="v3-exp-h">Education</p>
+              <ul className="v3-exp-edu">
+                {p.education.map((e) => <li key={e.what}><b>{e.what}</b><span>{e.where}</span>{e.note && <small>{e.note}</small>}</li>)}
+              </ul>
+            </div>
+            <div>
+              <p className="v3-exp-h">{p.extra.h}</p>
+              {p.extra.quote
+                ? <blockquote className="v3-exp-quote">{p.extra.quote}</blockquote>
+                : <ul className="v3-exp-tags">{p.extra.list.map((t) => <li key={t}>{t}</li>)}</ul>}
+            </div>
+            {p.after && (
+              <div>
+                <p className="v3-exp-h">{p.after.h}</p>
+                <p className="v3-exp-note">{p.after.text}</p>
+              </div>
+            )}
+          </aside>
+        </div>
+      </div>
+    </section>
+  );
+}
 
 export default function About() {
   return (
     <PageShell>
       <PageHero
         kicker="The Firm"
-        lines={['Built for people who ask', <><em>why</em>, not just how much.</>]}
-        lede={`A Bengaluru private wealth practice, founded in ${FIRM.foundedYear} by a career private banker, for clients who want fewer products, clearer reasoning and one accountable relationship.`}
-        aside={(
-          <div className="v3-ph-person">
-            <img src={founderHeadshot} alt="" width="380" height="380" />
-            <span><b>Rishiraj Maheshwari</b><small>Founder &amp; CEO · two decades in private banking</small></span>
-          </div>
-        )}
+        lines={['Clear thinking about', <em key="e">your money.</em>]}
+        lede={`A Bengaluru wealth firm, started in ${FIRM.foundedYear} by a career private banker. Fewer products, clear reasons for each one, and one person you can call.`}
       />
 
-      {/* ============ THE FOUNDER ============ */}
-      <section className="v3-sec">
-        <div className="v3-wrap v3-founder">
-          <figure className="v3-founder-photo" data-reveal>
-            <img src={founderOffice} alt="Rishiraj Maheshwari, Founder & CEO of RISCH Wealth" width="538" height="632" />
-            <figcaption><b>Rishiraj Maheshwari</b><span>Founder &amp; CEO</span></figcaption>
-          </figure>
-          <div className="v3-founder-text">
-            <p className="v3-kicker" data-reveal><span>01</span>The founder</p>
-            <h2 className="v3-h2" data-split>Two decades in private banking.</h2>
-            <p className="v3-lead" data-reveal>Rishiraj founded RISCH after more than two decades in private banking, most recently at Edelweiss Financial Services, and before that as a Senior Private Banker at ICICI Securities.</p>
-            <p className="v3-body" data-reveal>That career is why RISCH is built the way it is: risk understood first, in a documented and repeatable way, before a single recommendation is made.</p>
-            <ul className="v3-chips" data-reveal="stagger">
-              <li><Svg><path d="M2 9l10-5 10 5-10 5-10-5z" /><path d="M6 11v5c0 1.5 3 3 6 3s6-1.5 6-3v-5" /></Svg>MBA</li>
-              <li><Svg><rect x="3" y="7" width="18" height="13" rx="2" /><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" /><path d="M3 12h18" /></Svg>20+ years</li>
-              <li><Svg><path d="M12 22s7-7.2 7-12a7 7 0 1 0-14 0c0 4.8 7 12 7 12z" /><circle cx="12" cy="10" r="2.4" /></Svg>Bengaluru</li>
-            </ul>
-            <a className="v3-record" href={ON_RECORD.url} target="_blank" rel="noopener noreferrer" data-reveal>
-              <span>On record</span>
-              <q>{ON_RECORD.quote}</q>
-              <small>{ON_RECORD.source} <Arrow /></small>
-            </a>
-            <div className="v3-row-actions" data-reveal>
-              <a href="https://www.linkedin.com/in/rishiraj-maheshwari-81240b5/" target="_blank" rel="noopener noreferrer" className="v3-pill v3-pill-dark"><span>LinkedIn</span><i><Arrow /></i></a>
-              <a href={FIRM.phoneHref} className="v3-textlink">Call {FIRM.phone} <Arrow /></a>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ============ ABOUT RISCH + CREED ============ */}
-      <section className="v3-sec v3-tint">
-        <div className="v3-wrap">
-          <div className="v3-split">
-            <Head num="02" label="About RISCH" title="Built from private banking. Designed around the client." />
-            <div className="v3-split-side" data-reveal>
-              <p className="v3-lead">RISCH was founded in {FIRM.foundedYear} by Rishiraj Maheshwari, after a career working with wealthy individuals and families at some of India&rsquo;s best-known financial institutions.</p>
-              <p className="v3-body">Today, RISCH works with a select group of clients who want a more disciplined, personal approach to their wealth: fewer products, clearer reasoning, and one accountable relationship.</p>
-            </div>
-          </div>
-          <div className="v3-creed">
-            <p data-split>Understand the client.</p>
-            <p data-split>Build around the client.</p>
-            <p data-split><em>Stay accountable to the client.</em></p>
-          </div>
-        </div>
-      </section>
-
-      {/* ============ EXPERIENCE ============ */}
-      <section className="v3-sec">
-        <div className="v3-wrap">
-          <div className="v3-split">
-            <Head num="03" label="Experience" title="Two decades across India’s leading wealth institutions." />
-            <p className="v3-lead v3-split-side" data-reveal>Private banking and family-office work at ICICI Securities and Edelweiss, before founding RISCH in {FIRM.foundedYear}.</p>
-          </div>
-          <ol className="v3-tl">
-            <span className="v3-tl-rail" aria-hidden="true"><i data-scrub-line /></span>
-            {TIMELINE.map((x) => (
-              <li key={x.t} className={x.now ? 'is-now' : undefined} data-reveal>
-                <span className="v3-tl-label">{x.label || ''}</span>
-                <span className="v3-tl-dot" aria-hidden="true" />
-                <div>
-                  <h3>{x.t}</h3>
-                  <p>{x.d}</p>
-                  {x.extra && <><h3 className="v3-tl-second">{x.extra[0]}</h3><p>{x.extra[1]}</p></>}
-                </div>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
-
-      {/* ============ LEADERSHIP ============ */}
-      <section className="v3-sec v3-tint" id="team">
-        <div className="v3-wrap">
-          <Head num="04" label="Leadership" title="The people behind every client relationship." />
-          <article className="v3-member">
-            <figure className="v3-member-photo" data-reveal>
-              <img src={kratikaPhoto} alt="Kratika Maheshwari, Co-Founder & Chief Client Experience Officer, RISCH Wealth" width="640" height="800" loading="lazy" />
-            </figure>
-            <div className="v3-member-text">
-              <h3 className="v3-member-name" data-split>Kratika Maheshwari</h3>
-              <p className="v3-member-role" data-reveal>Co-Founder &amp; Chief Client Experience Officer</p>
-              <p className="v3-lead" data-reveal>Kratika leads the RISCH client experience end to end: relationship management, portfolio reviews, reporting and day-to-day service, so that every client relationship is proactive, transparent and personal.</p>
-              <p className="v3-body" data-reveal>She brings more than a decade of experience in private banking and wealth management at HDFC Bank Global Private Clients, ICICI Securities Private Wealth and Kotak Securities, where she managed HNI portfolios, worked on cross-border client acquisition and structured business banking relationships.</p>
-              <p className="v3-body" data-reveal>At RISCH, she connects portfolio strategy with how clients actually experience it: the cadence of reviews, the clarity of reporting and the speed of execution.</p>
-              <dl className="v3-facts" data-reveal="stagger">
-                <div><dt>Previously</dt><dd>HDFC Bank Global Private Clients · ICICI Securities Private Wealth · Kotak Securities</dd></div>
-                <div><dt>Education</dt><dd>MBA, Finance · Christ University<br />BBM · Center for Management Studies, Jain (Deemed-to-be University)<br />Bishop Cotton Girls&rsquo; School, Bengaluru</dd></div>
-              </dl>
-            </div>
-          </article>
-        </div>
-      </section>
+      <Person p={FOUNDER} />
+      <Person p={COFOUNDER} tint />
 
       {/* ============ HOW WE WORK ============ */}
       <section className="v3-sec">
         <div className="v3-wrap">
-          <Head num="05" label="How we work" title="Four principles, applied the same way every time." />
+          <Head num="03" label="How we work" title="Four principles, applied the same way every time." />
           <HowWeWork items={HOW_WE_WORK} />
         </div>
       </section>
@@ -170,7 +185,7 @@ export default function About() {
       <section className="v3-sec v3-sec-tight">
         <div className="v3-wrap">
           <div className="v3-gov">
-            <Head num="06" label="Governance & standing" title="Documented, structured, accountable." />
+            <Head num="04" label="Governance & standing" title="Written down, clear and accountable." />
             <ol className="v3-ledger" data-reveal="stagger">
               {GOVERNANCE.map((g, i) => (
                 <li key={g.t}>

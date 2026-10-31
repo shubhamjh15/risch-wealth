@@ -1,13 +1,15 @@
 import { Router } from 'express';
 import { query } from '../db/pool.js';
 import { requireRole } from '../auth/routes.js';
+import { sendPhoto } from '../testimonials/routes.js';
 
 // Staff portal (employees and admins).
 //   GET   /api/staff/dashboard      counts, recent requests; for admins also
 //                                   portfolio counts, recent orders, NAV date
 //   GET   /api/staff/requests?status=open|in_progress|closed|all
 //   PATCH /api/staff/requests/:id   { status }
-//   GET   /api/staff/testimonials?status=published|hidden|all
+//   GET   /api/staff/testimonials?status=pending|published|hidden|all
+//   GET   /api/staff/testimonials/:id/photo   portrait, whatever the status
 //   PATCH /api/staff/testimonials/:id   { status: 'published'|'hidden' }
 
 const router = Router();
@@ -97,10 +99,10 @@ router.patch('/requests/:id', async (req, res, next) => {
   }
 });
 
-const T_STATUSES = ['published', 'hidden'];
+const T_STATUSES = ['pending', 'published', 'hidden'];
 const testimonialRow = (t) => ({
   id: t.id, name: t.name, email: t.email, role: t.role, place: t.place, group: t.client_group,
-  quote: t.quote, status: t.status, createdAt: t.created_at, updatedAt: t.updated_at,
+  quote: t.quote, status: t.status, photo: t.has_photo ? `/api/staff/testimonials/${t.id}/photo` : null, createdAt: t.created_at, updatedAt: t.updated_at,
 });
 
 router.get('/testimonials', async (req, res, next) => {
@@ -108,16 +110,29 @@ router.get('/testimonials', async (req, res, next) => {
     const filter = req.query.status;
     const [{ rows }, { rows: counts }] = await Promise.all([
       query(
-        `SELECT * FROM testimonials WHERE ${T_STATUSES.includes(filter) ? 'status = $1' : 'TRUE'}
+        `SELECT *, photo IS NOT NULL AS has_photo FROM testimonials WHERE ${T_STATUSES.includes(filter) ? 'status = $1' : 'TRUE'}
           ORDER BY created_at DESC LIMIT 200`,
         T_STATUSES.includes(filter) ? [filter] : [],
       ),
       query('SELECT status, count(*)::int AS n FROM testimonials GROUP BY status'),
     ]);
     const n = Object.fromEntries(counts.map((r) => [r.status, r.n]));
-    res.json({ testimonials: rows.map(testimonialRow), counts: { published: n.published || 0, hidden: n.hidden || 0 } });
+    res.json({ testimonials: rows.map(testimonialRow), counts: { pending: n.pending || 0, published: n.published || 0, hidden: n.hidden || 0 } });
   } catch (err) {
     next(err);
+  }
+});
+
+router.get('/testimonials/:id/photo', async (req, res, next) => {
+  try {
+    const id = Number(req.params.id);
+    if (!Number.isInteger(id)) return res.status(404).end();
+    const { rows } = await query('SELECT photo FROM testimonials WHERE id = $1 AND photo IS NOT NULL', [id]);
+    if (!rows.length) return res.status(404).end();
+    res.set('Cache-Control', 'private, max-age=3600');
+    return sendPhoto(res, rows[0].photo);
+  } catch (err) {
+    return next(err);
   }
 });
 
@@ -125,7 +140,7 @@ router.patch('/testimonials/:id', async (req, res, next) => {
   try {
     const id = Number(req.params.id);
     const status = req.body?.status;
-    if (!Number.isInteger(id) || !T_STATUSES.includes(status)) return res.status(400).json({ error: 'Invalid update.' });
+    if (!Number.isInteger(id) || !['published', 'hidden'].includes(status)) return res.status(400).json({ error: 'Invalid update.' });
     const { rows } = await query(
       'UPDATE testimonials SET status = $2, updated_at = now() WHERE id = $1 RETURNING id, status',
       [id, status],

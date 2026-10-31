@@ -59,6 +59,11 @@
 .opt-table td{ padding:2px 14px 2px 0; font-family:var(--f-sans); font-size:12px; color:var(--muted); }
 .opt-table td.v-neg{ color:var(--neg); font-weight:600; }
 .opt-table td.v-pos{ color:var(--pos); font-weight:600; }
+@media (max-width:600px){
+  .opt-table, .opt-table tbody, .opt-table tr{ display:block; }
+  .opt-table tr{ display:grid; grid-template-columns:auto 1fr; gap:2px 12px; }
+  .opt-table td{ padding:0; }
+}
 
 /* =========================================================
    REPORT — replicates the RISCH PDF proposal page-for-page.
@@ -141,6 +146,11 @@
 .payoff-table tr.selected-row td:first-child{ color:var(--orange-deep); font-weight:700; }
 .payoff-table td.neg{ color:var(--neg); font-weight:600; }
 .payoff-table td.pos{ color:var(--pos); font-weight:600; }
+@media (max-width:600px){
+  .payoff-table{ font-size:9.5px; }
+  .payoff-table th, .payoff-table td{ padding:6px 5px; }
+  .payoff-table td{ white-space:normal; }
+}
 
 /* ---- Q7 grouped bar chart (worst/best), no navy — orange + warm tan ----
    Structure: each column reserves a fixed top/bottom gutter for its value
@@ -274,3 +284,30 @@
   .tier-panel{ display:none !important; }
   .tier-panel.is-recommended{ display:block !important; }
 }
+
+/* ---------- result summary, shown before the full report ---------- */
+.rp-sum{ --o:#E36A1A; --oi:#A9480B; margin:0 0 28px; padding:clamp(24px, 3.4vw, 48px); border-radius:28px; background:rgba(227,106,26,.07); border:1px solid rgba(227,106,26,.22); }
+.rp-sum-k{ margin:0 0 8px; font-size:12px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--oi); }
+.rp-sum-name{ margin:0; font-family:'Cormorant Garamond Variable', 'Cormorant Garamond', Georgia, serif; font-size:clamp(44px, 5.4vw, 80px); font-weight:500; line-height:1; letter-spacing:-.02em; color:#141311; }
+.rp-sum-meaning{ max-width:640px; margin:16px 0 26px; font-size:17px; line-height:1.6; color:#3B3732; }
+.rp-sum-scale{ list-style:none; margin:0 0 30px; padding:0; display:grid; grid-template-columns:repeat(4, 1fr); gap:8px; }
+.rp-sum-scale li{ display:grid; gap:8px; font-size:13px; font-weight:600; color:rgba(20,19,17,.5); }
+.rp-sum-scale i{ display:block; height:8px; border-radius:8px; background:rgba(20,19,17,.1); }
+.rp-sum-scale li.is-on{ color:var(--oi); }
+.rp-sum-scale li.is-on i{ background:var(--o); }
+.rp-sum-grid{ display:grid; grid-template-columns:1fr 1fr; gap:clamp(20px, 4vw, 56px); }
+.rp-sum-scores{ display:grid; gap:18px; align-content:start; }
+.rp-sum-bar p{ display:flex; justify-content:space-between; margin:0 0 8px; font-size:14px; color:#3B3732; }
+.rp-sum-bar i{ display:block; height:10px; border-radius:10px; background:rgba(20,19,17,.1); overflow:hidden; }
+.rp-sum-bar i b{ display:block; height:100%; border-radius:10px; background:var(--o); }
+.rp-sum-mix > p{ margin:0 0 10px; font-size:14px; color:#3B3732; }
+.rp-sum-stack{ display:flex; gap:3px; height:14px; border-radius:10px; overflow:hidden; }
+.rp-sum-stack span{ display:block; background:var(--o); }
+.rp-sum-stack span:nth-child(2){ background:#D9B48A; }
+.rp-sum-stack span:nth-child(3){ background:rgba(20,19,17,.2); }
+.rp-sum-mix ul{ list-style:none; margin:12px 0 0; padding:0; display:flex; gap:22px; font-size:13.5px; color:#3B3732; }
+.rp-sum-mix li b{ display:block; font-family:'Cormorant Garamond Variable', 'Cormorant Garamond', Georgia, serif; font-size:30px; font-weight:500; line-height:1.1; color:#141311; }
+.rp-sum-note{ margin:24px 0 0; font-size:12.5px; color:rgba(20,19,17,.55); }
+.rp-sum-full{ margin:0 0 14px; font-size:12px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:rgba(20,19,17,.55); }
+@media (max-width:700px){ .rp-sum-grid{ grid-template-columns:1fr; } .rp-sum-scale li{ font-size:11px; } }
+@media print{ .rp-sum, .rp-sum-full{ display:none; } }

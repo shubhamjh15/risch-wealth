@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Arrow } from './ui';
 
 // Cards that carry a small diagram instead of an icon or a photo: "How we
-// work" on The Firm, the three products and the four disciplines. They
+// work" on The Firm, the four products and the four disciplines. They
 // draw in once on screen.
 
 function useOnScreen() {
@@ -55,13 +55,13 @@ function DisclosureViz() {
   );
 }
 
-// Five tiers; an override can move one step either way, never more.
-const TIERS = ['Conservative', 'Balanced', 'Growth', 'Aggressive', 'Aggressive+'];
+// RISCH's four portfolios; an override can move one step either way, never more.
+const TIERS = ['Balanced', 'Growth', 'Aggressive', 'Aggressive Plus'];
 function DeviationViz() {
   return (
     <div className="v3-pv-tiers">
       {TIERS.map((t, k) => (
-        <span key={t} className={k === 2 ? 'is-on' : Math.abs(k - 2) === 1 ? 'is-near' : undefined} style={{ '--h': `${34 + k * 14}%` }}>
+        <span key={t} className={k === 1 ? 'is-on' : Math.abs(k - 1) === 1 ? 'is-near' : undefined} style={{ '--h': `${38 + k * 20}%` }}>
           <i />
           <small>{t}</small>
         </span>
@@ -102,7 +102,7 @@ export function VizCards({ items, viz, cols = 2, linkLabel }) {
 
 export const HowWeWork = ({ items }) => <VizCards items={items} viz={VIZ} />;
 
-/* ---- the three products ---- */
+/* ---- the four products ---- */
 
 // Many holdings, spread across equity, debt and hybrid.
 function MfViz() {
@@ -111,6 +111,17 @@ function MfViz() {
     <div className="v3-pv-dots">
       {kinds.map((c, k) => <i key={k} className={c} style={{ '--i': k }} />)}
       <p><b className="eq" />Equity <b className="dt" />Debt <b className="hy" />Hybrid</p>
+    </div>
+  );
+}
+
+// Mostly long, with some short positions: the flexibility a SIF adds.
+function SifViz() {
+  const bars = [62, 80, 48, 70, 90, -34, 56, -22];
+  return (
+    <div className="v3-pv-ls">
+      <div>{bars.map((h, k) => <span key={k} className={h < 0 ? 'is-short' : undefined}><i style={{ '--h': `${Math.abs(h)}%`, '--i': k }} /></span>)}</div>
+      <p><b />Long <b className="is-short" />Short</p>
     </div>
   );
 }
@@ -139,7 +150,7 @@ function AifViz() {
   );
 }
 
-export const PRODUCT_VIZ = [MfViz, PmsViz, AifViz];
+export const PRODUCT_VIZ = [MfViz, SifViz, PmsViz, AifViz];
 
 /* ---- the four disciplines ---- */
 

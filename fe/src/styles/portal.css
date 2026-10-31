@@ -313,6 +313,9 @@ a.sp-stat:hover{ border-color:var(--line-strong); box-shadow:0 10px 28px -20px r
 .sp-contact{ white-space:normal !important; }
 .sp-contact span{ display:block; font-size:13px; color:var(--muted); margin-top:2px; }
 .sp-contact strong{ color:var(--ink); }
+.sp-tm-from{ display:flex; gap:12px; align-items:flex-start; }
+.sp-tm-from img, .sp-tm-from > i{ width:44px; height:44px; flex:none; border-radius:50%; object-fit:cover; }
+.sp-tm-from > i{ display:grid; place-items:center; font-style:normal; font-weight:600; background:rgba(238,122,30,.14); color:var(--accent); }
 .sp-chev svg{ transform:rotate(-90deg); color:var(--muted); vertical-align:middle; }
 .sp-sub{ display:block; font-size:12.5px; color:var(--muted); margin-top:2px; }
 

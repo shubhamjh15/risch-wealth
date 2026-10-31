@@ -22,7 +22,7 @@ export const PAGES = {
   },
   '/about': {
     title: 'About RISCH Wealth | Founder & CEO Rishiraj Maheshwari',
-    description: 'Meet Rishiraj Maheshwari, founder of RISCH Wealth: a career private banker whose roles include ICICI Securities and Edelweiss Financial Services.',
+    description: 'Meet Rishiraj Maheshwari, founder of RISCH Wealth: a career private banker whose roles include ICICI Securities and Nuvama Private Wealth.',
   },
   '/who-we-serve': {
     title: 'Who We Serve | Private Wealth for Families, NRIs & Founders',
@@ -132,7 +132,7 @@ export function canonicalUrl(pathname) {
 export const FAQS = [
   {
     q: 'What is RISCH Wealth?',
-    a: 'RISCH Wealth Private Limited is a private wealth management firm based in Bengaluru. It was founded in 2014 by Rishiraj Maheshwari, a career private banker whose career includes Senior Private Banker at ICICI Securities and Edelweiss Financial Services.',
+    a: 'RISCH Wealth Private Limited is a private wealth management firm based in Bengaluru. It was founded in 2014 by Rishiraj Maheshwari, a career private banker whose career includes Senior Private Banker at ICICI Securities and Nuvama Private Wealth.',
   },
   {
     q: 'Who does RISCH Wealth work with?',

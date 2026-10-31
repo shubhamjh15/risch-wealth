@@ -11,7 +11,7 @@ export default function ReportPage3({ meta, tiers, tierOrder, recommendedTier, a
       <div className="r-section">
         <h3 className="r-title">Section: Strategic Asset Allocation &amp; Granular Breakdown</h3>
         <p className="r-sub">
-          Client-specific recommended portfolio structure: <strong style={{ color: 'var(--ink-2)' }}>{recMandate.name}</strong>.{' '}
+          Illustrative asset mix for your risk profile: <strong style={{ color: 'var(--ink-2)' }}>{recMandate.name}</strong>.{' '}
           <span className="screen-only" style={{ color: 'var(--muted)' }}>Use the tabs below to see how each of our four portfolios would be built.</span>
         </p>
 

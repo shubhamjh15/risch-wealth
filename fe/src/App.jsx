@@ -55,6 +55,8 @@ export default function App() {
         <Route path="/solutions" element={<Solutions />} />
         <Route path="/risk-profiler" element={<RiskProfiler />} />
         <Route path="/testimonials" element={<Testimonials />} />
+        {/* the link sent to clients: the Testimonials page, at the share form */}
+        <Route path="/share-testimonial" element={<Navigate to="/testimonials#share" replace />} />
         <Route path="/perspective" element={<Perspective />} />
         <Route path="/disclosure" element={<Disclosure />} />
         <Route path="/contact" element={<Contact />} />

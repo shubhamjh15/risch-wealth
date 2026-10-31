@@ -14,6 +14,7 @@ RUN npm run build
 # --- serve stage ---
 FROM nginx:1.27-alpine
 COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
+COPY docker/security-headers.inc /etc/nginx/security-headers.inc
 COPY --from=build /app/dist /usr/share/nginx/html
 
 EXPOSE 80

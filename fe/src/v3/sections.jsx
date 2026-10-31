@@ -37,15 +37,15 @@ function useSeen(ref) {
   return seen && onScreen;
 }
 
-/* ---------------- What we provide: the three products, drawn ---------------- */
+/* ---------------- What we provide: the four products, drawn ---------------- */
 
-const TAGS = ['The core', 'Concentrated', 'Beyond listed markets'];
+const TAGS = ['The core', 'More flexible', 'Concentrated', 'Beyond listed markets'];
 
 export function Solutions() {
   const items = TOGETHER.blocks.map((b, k) => ({ t: b.name, d: b.role, tag: TAGS[k], more: b.through }));
   return (
     <div className="v3-routes">
-      <div className="v3-wrap"><VizCards items={items} viz={PRODUCT_VIZ} cols={3} /></div>
+      <div className="v3-wrap"><VizCards items={items} viz={PRODUCT_VIZ} cols={4} /></div>
       <p className="v3-routes-note">{TOGETHER.disclosure}</p>
     </div>
   );
@@ -59,7 +59,7 @@ const STEPS = [
   { t: 'Define the objective', k: 'Set the destination', clip: 'stage-objective',
     d: 'Liquidity, income, growth, preservation or legacy. Each goal gets its own horizon, and its own money, across India and the world.' },
   { t: 'Build the allocation', k: 'Build to plan', clip: 'stage-build',
-    d: 'Every holding has a role, chosen from the whole market with no in-house products to place. Mutual funds, PMS and AIFs, each where it fits.' },
+    d: 'Every holding has a role, chosen from the whole market with no in-house products to place. Mutual funds, SIFs, PMS and AIFs, each where it fits.' },
   { t: 'Review & rebalance', k: 'Hold the course', clip: 'stage-course',
     d: 'Kept on target as markets move and your life changes. When one part runs ahead or falls behind, we bring the portfolio back to shape.' },
 ];
@@ -115,16 +115,18 @@ export function Framework() {
 
 /* ---------------- Whom we serve: list with a sticky picture ---------------- */
 
-// Pictures: Pexels photos (Pexels licence) serve-business 30535785,
-// serve-founder 39204824, serve-nri 10875890, serve-executive 36766664,
-// serve-office 1367274; serve-families is a still from a Mixkit Free clip.
+// Pictures (also used on Whom We Serve), cropped to 900x1200: dusk and warm
+// low light throughout. Unsplash Licence: serve-founder -Cr5ZifES7s (Pavel
+// Gromov), serve-families DgmK-H2VqTU (Maverick Frame), serve-nri K2Z2Y3hZgc0
+// (Nellie Adamyan). Pexels Licence: serve-business-2 11043708, serve-executive 34341284,
+// serve-office-2 31386711.
 const SERVE = [
-  ['Business Owners', 'serve-business'],
+  ['Business Owners', 'serve-business-2'],
   ['Entrepreneurs & Founders', 'serve-founder'],
   ['Private Clients & Families', 'serve-families'],
   ['NRIs & Global Indians', 'serve-nri'],
   ['Senior Executives & Professionals', 'serve-executive'],
-  ['Family Offices', 'serve-office'],
+  ['Family Offices', 'serve-office-2'],
 ].map(([title, img]) => ({ ...SEGMENTS.find((s) => s.title === title), img })).filter((s) => s.title);
 
 export function ServeSticky() {

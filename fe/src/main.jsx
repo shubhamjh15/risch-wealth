@@ -2,9 +2,10 @@ import { StrictMode } from 'react';
 import { createRoot, hydrateRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 // Self-hosted fonts, served from our own domain (no third-party request, no
-// visitor IPs sent to Google). Manrope for the public site, Geist for the
-// signed-in portals.
-import '@fontsource-variable/manrope/wght.css';
+// visitor IPs sent to Google). Figtree and Cormorant Garamond (display) for
+// the public site, Geist for the signed-in portals.
+import '@fontsource-variable/figtree/wght.css';
+import '@fontsource-variable/cormorant-garamond/wght.css';
 import '@fontsource-variable/geist';
 import '@fontsource-variable/geist-mono';
 import './styles/styles.css';

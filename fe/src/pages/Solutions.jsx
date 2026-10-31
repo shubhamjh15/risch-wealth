@@ -89,7 +89,7 @@ export default function Solutions() {
       <div className="v3-stage v3-stage-tint"><Allocation num="02" className="v3-stage-panel" ref={alloc} /></div>
       <section className="v3-sec v3-sec-after v3-tint">
         <div className="v3-wrap">
-          <ul className="v3-points" data-reveal="stagger">
+          <ul className="v3-points v3-warm" data-reveal="stagger">
             {ALLOCATION.points.map(([t, d], i) => (
               <li key={t}><span>0{i + 1}</span><b>{t}</b><p>{d}</p></li>
             ))}
@@ -139,7 +139,7 @@ export default function Solutions() {
       <section className="v3-sec">
         <div className="v3-wrap">
           <div className="v3-split">
-            <Head num="06" label="Disciplines" title={TOGETHER.disciplinesTitle} />
+            <Head num="06" label="What we handle" title={TOGETHER.disciplinesTitle} />
             <p className="v3-lead v3-split-side" data-reveal>{CLOSING.title}</p>
           </div>
           <VizCards

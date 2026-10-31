@@ -110,7 +110,7 @@ function RiskProfilerQuiz({
       Object.entries(answers).map(([id, opt]) => [id, opt.points])
     );
     let cancelled = false;
-    submitRiskProfilerAnswers(pointsByQuestion, Number(basics.amount) || undefined, Number(basics.age) || undefined)
+    submitRiskProfilerAnswers(pointsByQuestion, Number(basics.amount) || undefined, Number(basics.age) || undefined, { name: basics.name, email: basics.email, phone: basics.phone })
       .then((result) => {
         if (cancelled) return;
         setScoreResult(result);

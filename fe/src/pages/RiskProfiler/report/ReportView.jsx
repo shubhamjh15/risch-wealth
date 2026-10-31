@@ -4,6 +4,7 @@ import ReportPage1 from './ReportPage1';
 import ReportPage2 from './ReportPage2';
 import ReportPage3 from './ReportPage3';
 import ReportPage4 from './ReportPage4';
+import ResultSummary from './ResultSummary';
 
 // `scoreResult` is exactly what the backend returned from
 // POST /api/risk-profiler/score (be/src/riskProfiler/scoring.js) —
@@ -42,6 +43,8 @@ export default function ReportView({
 
   return (
     <>
+      <ResultSummary name={basics.name} scoreResult={scoreResult} />
+      <p className="rp-sum-full">Full report</p>
       <div className="report-scroll">
         <ReportPage1 meta={meta} amount={amount} answers={answers} questions={questions} />
         <ReportPage2 meta={meta} ambiguous={ambiguous} mandate={mandate} answers={answers} questions={questions} />

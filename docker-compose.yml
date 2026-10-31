@@ -37,6 +37,11 @@ services:
       # host — see the missing `ports:` below, only `expose`.
       HOST: 0.0.0.0
       CORS_ORIGIN: ${CORS_ORIGIN:-https://rischwealth.com,https://www.rischwealth.com}
+      # Staff emails (new testimonials). Sent from SMTP_USER; SMTP_PASS is
+      # a Gmail App Password, set in .env. Without it nothing is sent.
+      SMTP_USER: ${SMTP_USER:-rischwealth@gmail.com}
+      SMTP_PASS: ${SMTP_PASS:-}
+      MAIL_TO: ${MAIL_TO:-rischwealth@gmail.com}
     expose:
       - "4000"
 

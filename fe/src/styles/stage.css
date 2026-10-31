@@ -24,7 +24,7 @@
   --accent:#E36A1A; --accent-d:#A9480B;
   --mute-d:rgba(20,19,17,.6);
   --line-d:rgba(20,19,17,.12);
-  --serif:var(--font); --sans:var(--font);
+  --serif:'Cormorant Garamond Variable', 'Cormorant Garamond', Georgia, serif; --sans:var(--font);
   --expo:cubic-bezier(.16,1,.3,1);
   background:var(--bg);
   color:var(--paper);
@@ -89,9 +89,9 @@
 .v2-alloc-note{ font-size:12.5px; color:rgba(20,19,17,.62); }
 
 
-/* the panel speaks Manrope, not the v2 serif */
-.v3-stage .v2-alloc-span, .v3-stage .v2-dial-big{ letter-spacing:-.05em; font-style:normal; }
-.v3-stage .v2-alloc-title{ font-weight:300; letter-spacing:-.04em; }
+/* display lines in the site serif (Cormorant), like every other heading */
+.v3-stage .v2-alloc-span, .v3-stage .v2-dial-big, .v3-stage .v2-alloc-rail button b{ font-weight:500; letter-spacing:-.012em; font-style:normal; font-variant-numeric:lining-nums; }
+.v3-stage .v2-alloc-title{ font-family:var(--serif); font-weight:500; letter-spacing:-.012em; }
 
 @media (max-width:899px){
   .v2-alloc{ height:auto; min-height:0; }

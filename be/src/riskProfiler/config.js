@@ -53,13 +53,14 @@ const QUESTIONS = [
     id: 'q4', group: 'Risk Preference', groupIndex: 2, groupTotal: 6,
     prompt: 'Which hypothetical 1-year portfolio outcome would you prefer to hold?',
     type: 'payoff',
-    sub: 'Range shown on your indicative investment amount.',
+    sub: 'Hypothetical range on your indicative amount; not based on any scheme and not a forecast.',
     options: [
-      { label: 'Portfolio 1: Conservative', points: 0, worst: -0.017, exp: 0.076, best: 0.148 },
-      { label: 'Portfolio 2: Moderate', points: 4, worst: -0.233, exp: 0.102, best: 0.357 },
-      { label: 'Portfolio 3: Balanced', points: 8, worst: -0.346, exp: 0.114, best: 0.464 },
-      { label: 'Portfolio 4: Growth', points: 12, worst: -0.456, exp: 0.124, best: 0.566 },
-      { label: 'Portfolio 5: Aggressive', points: 17, worst: -0.511, exp: 0.129, best: 0.616 },
+      // One option per live mandate, same 0-17 point span as the other
+      // risk-preference questions.
+      { label: 'RISCH Balanced Portfolio', points: 0, worst: -0.233, exp: 0.102, best: 0.357 },
+      { label: 'RISCH Growth Portfolio', points: 6, worst: -0.346, exp: 0.114, best: 0.464 },
+      { label: 'RISCH Aggressive Portfolio', points: 11, worst: -0.456, exp: 0.124, best: 0.566 },
+      { label: 'RISCH Aggressive Plus Portfolio', points: 17, worst: -0.511, exp: 0.129, best: 0.616 },
     ],
   },
   {
@@ -79,8 +80,8 @@ const QUESTIONS = [
     type: 'simple',
     options: [
       { label: 'Maintain current allocation: no changes.', points: 16 },
-      { label: 'Wait at least three months before derisking.', points: 5 },
       { label: 'Wait at least one year before derisking.', points: 10 },
+      { label: 'Wait at least three months before derisking.', points: 5 },
       { label: 'Immediately move to cash / debt.', points: 0 },
     ],
   },
@@ -133,23 +134,23 @@ const TIER_ORDER = [1, 2, 3, 4];
 
 const TIERS = {
   1: {
-    name: 'RISCH Active Balanced',
-    short: 'Active Balanced', tag: 'TIER 1',
+    name: 'RISCH Balanced Portfolio',
+    short: 'RISCH Balanced Portfolio', tag: 'TIER 1',
     india: 38.21, intl: 12.10, debt: 43.81, cash: 5.88,
   },
   2: {
-    name: 'RISCH Active Growth',
-    short: 'Active Growth', tag: 'TIER 2',
+    name: 'RISCH Growth Portfolio',
+    short: 'RISCH Growth Portfolio', tag: 'TIER 2',
     india: 52.74, intl: 15.79, debt: 28.02, cash: 3.45,
   },
   3: {
-    name: 'RISCH Active Aggressive',
-    short: 'Active Aggressive', tag: 'TIER 3',
+    name: 'RISCH Aggressive Portfolio',
+    short: 'RISCH Aggressive Portfolio', tag: 'TIER 3',
     india: 66.69, intl: 19.36, debt: 11.71, cash: 2.24,
   },
   4: {
-    name: 'RISCH Active Aggressive Plus',
-    short: 'Active Aggressive Plus', tag: 'TIER 4',
+    name: 'RISCH Aggressive Plus Portfolio',
+    short: 'RISCH Aggressive Plus Portfolio', tag: 'TIER 4',
     india: 78.61, intl: 0, debt: 19.43, cash: 1.96,
     note: 'Domestic-only equity concentration. This may carry higher volatility than a globally diversified aggressive mandate.',
   },

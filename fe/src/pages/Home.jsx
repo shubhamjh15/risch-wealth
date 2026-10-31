@@ -14,9 +14,9 @@ import founderOffice from '../assets/founder-office.jpg';
 import { FAQS } from '../seo';
 import { FIRM } from '../data/firm';
 import { HERO, TOGETHER } from '../content/solutions';
-import { PRESS, pressDate } from '../data/press';
+import { PRESS, pressDate, pressImg } from '../data/press';
 
-// The home page. Warm ivory, Manrope throughout, rounded media frames,
+// The home page. Warm ivory, Cormorant display over Figtree text, rounded media frames,
 // soft daylight footage (public/visuals), and the 3D
 // allocation scene. The rest of the site shares this kit (src/v3/).
 // The compounding illustration that used to sit after "Whom we serve" was
@@ -29,7 +29,7 @@ const STATS = [
   { n: YEARS, unit: 'years', l: 'Founder’s career in private banking' },
   { n: FIRM.foundedYear, l: 'RISCH Wealth founded in Bengaluru', static: true },
   { n: 0, l: 'In-house products. Nothing of our own to sell' },
-  { n: 3, unit: 'routes', l: 'Mutual funds, PMS and AIFs' },
+  { n: 4, unit: 'routes', l: 'Mutual funds, SIFs, PMS and AIFs' },
 ];
 
 // The founder's career as the About page sets it out (firm-supplied).
@@ -45,7 +45,10 @@ const ON_RECORD = {
 // Editorial pictures for the press cards (illustrative, not from the articles).
 const PRESS_ART = ['wing-clouds', 'sea-plane', 'reel-horizon', 'sky-sun', 'resort-aerial', 'stage-course', 'reel-legacy'];
 
-const MOSAIC = ['wall-6', 'wall-1', 'wall-3', 'wall-2', 'wall-7'];
+// Legacy mosaic, cropped to 800x1000. Pexels Licence: legacy-h1 32427301 (sky
+// toned down to match the others), legacy-b2 39854948, legacy-d3 39181093,
+// legacy-e4 12720684, legacy-b5 11004123.
+const MOSAIC = ['legacy-h1', 'legacy-b2', 'legacy-d3', 'legacy-e4', 'legacy-b5'];
 
 function Head({ num, label, title, children, center = false }) {
   return (
@@ -149,7 +152,7 @@ export default function Home() {
         {/* ============ WHAT WE PROVIDE ============ */}
         <section className="v3-sec v3-sec-tight">
           <div className="v3-wrap">
-            <Head num="02" label="What we provide" title="Three routes. One coherent portfolio.">
+            <Head num="02" label="What we provide" title="Four ways to invest. One portfolio that fits together.">
               <p className="v3-head-sub" data-reveal>{TOGETHER.blocksIntro}</p>
             </Head>
           </div>
@@ -170,7 +173,7 @@ export default function Home() {
         {/* ============ WHOM WE SERVE ============ */}
         <section className="v3-sec">
           <div className="v3-wrap">
-            <Head num="05" label="Whom we serve" title="For wealth that has outgrown simple answers." />
+            <Head num="05" label="Whom we serve" title="For wealth that needs more than quick answers." />
             <ServeSticky />
           </div>
         </section>
@@ -244,7 +247,7 @@ export default function Home() {
               {PRESS.filter((p) => p.kind === 'press').slice(0, 7).map((p, k) => (
                 <li key={p.url} className={k === 0 ? 'is-lead' : undefined}>
                   <a href={p.url} target="_blank" rel="noopener noreferrer">
-                    <span className="v3-press-art" data-drift><img src={`${MEDIA}/${PRESS_ART[k]}.jpg`} alt="" loading="lazy" width="1280" height="720" /></span>
+                    <span className="v3-press-art" data-drift><img src={pressImg(p) || `${MEDIA}/${PRESS_ART[k]}.jpg`} alt="" loading="lazy" width="1280" height="720" /></span>
                     <span className="v3-press-chip">{p.outlet}</span>
                     <span className="v3-press-body">
                       <span className="v3-press-date">{pressDate(p)}</span>

@@ -27,10 +27,10 @@ export default function ReportPage4({ meta }) {
       <div className="r-section">
         <h3 className="r-title">Section: Methodology &amp; Important Disclosures</h3>
         <div className="disclosure-box">
-          <p><strong>Diagnostic framework &amp; scoring.</strong> This questionnaire synthesizes three principal dimensions: liquidity time horizon, expected return vs. drawdown tolerance, and behavioural loss aversion. Resulting scores map across a continuum from Conservative to Aggressive.</p>
+          <p><strong>Diagnostic framework &amp; scoring.</strong> This questionnaire synthesizes three principal dimensions: liquidity time horizon, expected return vs. drawdown tolerance, and behavioural loss aversion. Resulting scores map across a continuum of four portfolios, from RISCH Balanced to RISCH Aggressive Plus.</p>
           <p><strong>Holistic context.</strong> This questionnaire is a foundational tool. Overall net worth, debt obligations, non-liquid holdings, tax considerations and bespoke liquidity milestones should be reviewed before any allocation is finalised.</p>
           <p><strong>General disclaimer.</strong> This report is for informational purposes only and does not constitute investment advice. Investments in securities, mutual funds, portfolio services and alternative assets are subject to market risk, including possible loss of principal invested.</p>
-          <p><strong>No guarantee of returns.</strong> Past performance is not an indicator or guarantee of future returns. Portfolio names (RISCH Active Balanced, RISCH Active Growth, RISCH Active Aggressive, RISCH Active Aggressive Plus) do not represent or guarantee performance results.</p>
+          <p><strong>No guarantee of returns.</strong> Past performance is not an indicator or guarantee of future returns. Portfolio names (RISCH Balanced Portfolio, RISCH Growth Portfolio, RISCH Aggressive Portfolio, RISCH Aggressive Plus Portfolio) do not represent or guarantee performance results.</p>
           <p><strong>Conflict of interest.</strong> RISCH Wealth holds no proprietary product to sell. Any institutional holdings or third-party arrangements are managed under information barriers to prevent conflicts of interest.</p>
         </div>
       </div>

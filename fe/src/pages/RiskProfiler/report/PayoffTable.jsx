@@ -4,7 +4,7 @@ export default function PayoffTable({ portfolios, amount, selectedLabel }) {
   return (
     <table className="payoff-table">
       <thead>
-        <tr><th>Portfolio</th><th>Worst Case</th><th>Expected Value</th><th>Best Case</th></tr>
+        <tr><th>Portfolio</th><th>Worst case</th><th>Expected</th><th>Best case</th></tr>
       </thead>
       <tbody>
         {portfolios.map((p) => {

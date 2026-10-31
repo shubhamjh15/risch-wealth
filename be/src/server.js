@@ -7,6 +7,7 @@ import adminRoutes from './admin/routes.js';
 import clientRoutes from './client/routes.js';
 import staffRoutes from './staff/routes.js';
 import testimonialRoutes from './testimonials/routes.js';
+import testimonialReview from './testimonials/review.js';
 import orderRoutes from './admin/orders.js';
 import { scheduleNavRefresh } from './portfolio/amfi.js';
 import { migrate, waitForDatabase } from './db/migrate.js';
@@ -54,6 +55,9 @@ app.use(cors({
     callback(err);
   },
 }));
+// Testimonials can carry a portrait (a resized JPEG, well under 400 KB);
+// everything else is small. The first parser to run wins.
+app.use('/api/testimonials', express.json({ limit: '600kb' }));
 app.use(express.json({ limit: '20kb' }));
 
 app.get('/health', (req, res) => res.json({ ok: true }));
@@ -69,6 +73,9 @@ app.use('/api/auth', requireJson, authRoutes);
 app.use('/api/admin', requireJson, adminRoutes, orderRoutes);
 app.use('/api/client', requireJson, clientRoutes);
 app.use('/api/staff', requireJson, staffRoutes);
+// The email's Approve / Reject pages post a plain HTML form, so they sit
+// before requireJson; each action needs a signed token (review.js).
+app.use('/api/testimonials/review', testimonialReview);
 app.use('/api/testimonials', requireJson, testimonialRoutes);
 
 // Catches the CORS rejection above (and anything else unhandled) so we

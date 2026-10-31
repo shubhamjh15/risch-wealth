@@ -23,7 +23,7 @@ function buildSections() {
     },
     {
       title: 'The risk assessment: methodology and scope',
-      body: 'The eight-question assessment synthesises two principal dimensions: liquidity time horizon and drawdown tolerance, informed by behavioural loss aversion. Resulting scores map across a continuum from Conservative to Aggressive, and the output is a preliminary allocation, not a final recommendation.',
+      body: 'The eight-question assessment synthesises two principal dimensions: liquidity time horizon and drawdown tolerance, informed by behavioural loss aversion. Resulting scores map across a continuum of four portfolios, from RISCH Balanced to RISCH Aggressive Plus, and the output is a preliminary allocation, not a final recommendation.',
     },
     {
       title: 'Context this tool cannot capture',
@@ -51,7 +51,7 @@ function buildSections() {
     },
     {
       title: 'No guarantee of returns',
-      body: 'Past performance is not an indicator or guarantee of future returns. Portfolio names shown in a proposal (RISCH Active Balanced, RISCH Active Growth, RISCH Active Aggressive, RISCH Active Aggressive Plus) are labels for an allocation mandate and do not themselves represent or guarantee any performance outcome.',
+      body: 'Past performance is not an indicator or guarantee of future returns. Portfolio names shown in a proposal (RISCH Balanced Portfolio, RISCH Growth Portfolio, RISCH Aggressive Portfolio, RISCH Aggressive Plus Portfolio) are labels for an allocation mandate and do not themselves represent or guarantee any performance outcome.',
     },
     {
       title: 'Confidentiality of client information',

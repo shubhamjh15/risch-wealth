@@ -37,6 +37,7 @@ export const TESTIMONIAL_GROUPS = [
   'Private Clients & Families',
   'NRIs & Global Indians',
   'Family Offices',
+  'Other',
 ];
 
 export const TESTIMONIALS = [
