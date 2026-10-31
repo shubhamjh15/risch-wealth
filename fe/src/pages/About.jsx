@@ -44,7 +44,7 @@ const FOUNDER = {
     { href: 'https://www.linkedin.com/in/rishiraj-maheshwari-81240b5/', label: 'LinkedIn', pill: true },
     { href: FIRM.phoneHref, label: `Call ${FIRM.phone}` },
   ],
-  history: `Before founding **RISCH** in ${FIRM.foundedYear}, Rishiraj spent two decades in private banking at **Nuvama**, **ICICI Securities**, **RBS**, **Edelweiss** and **Indiabulls**.`,
+  history: `Before founding **RISCH** in ${FIRM.foundedYear}, Rishiraj spent two decades in private banking at **Nuvama Private Wealth** (Family Office), **ICICI Securities** (Private Wealth Management), **RBS** (Royal Bank of Scotland, Wealth Management), **Edelweiss Financial Services** and **Indiabulls Securities Ltd**.`,
   career: [
     { firm: 'RISCH Wealth', role: 'Founder & Chief Executive Officer', where: `Bengaluru · since ${FIRM.foundedYear}`, now: true },
     { firm: 'Nuvama Private Wealth & Family Office', role: 'Vice President', where: 'Mumbai' },
@@ -54,7 +54,7 @@ const FOUNDER = {
     { firm: 'Indiabulls Securities', role: 'Relationship Manager', where: 'Bengaluru' },
   ],
   education: [
-    { what: 'MBA, Marketing & Systems', where: 'Canara Bank School of Management Studies, Bangalore University' },
+    { what: 'MBA, Marketing & Systems', where: 'Canara Bank School of Management Studies, University Department, Bangalore' },
     { what: 'Bachelor of Computer Applications', where: 'Prestige Institute of Management & Research' },
   ],
   extra: {
