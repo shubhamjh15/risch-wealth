@@ -125,14 +125,14 @@ function Person({ p, tint = false }) {
             <p className="v3-exp-sent" data-reveal>
               {p.history.split(/\*\*(.+?)\*\*/).map((t, k) => (k % 2 ? <b key={k}>{t}</b> : t))}
             </p>
-          </div>
-          <aside className="v3-exp-side" data-reveal>
-            <div>
+            <div className="v3-exp-edurow" data-reveal>
               <p className="v3-exp-h">Education</p>
               <ul className="v3-exp-edu">
                 {p.education.map((e) => <li key={e.what}><b>{e.what}</b><span>{e.where}</span>{e.note && <small>{e.note}</small>}</li>)}
               </ul>
             </div>
+          </div>
+          <aside className="v3-exp-side" data-reveal>
             <div>
               <p className="v3-exp-h">{p.extra.h}</p>
               {p.extra.quote
