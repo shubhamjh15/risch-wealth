@@ -39,7 +39,7 @@ const FOUNDER = {
     `Rishiraj founded RISCH Wealth in ${FIRM.foundedYear} on one conviction: wealth management must go beyond products and market cycles, and become a disciplined, enduring partnership built around the client’s interests.`,
     'Over two decades in India’s private banking and institutional wealth management, he has worked with promoters, corporate leaders and ultra-high-net-worth families on asset allocation, business liquidity and the passing of wealth between generations. At RISCH he leads the investment philosophy and multi-asset allocation: a clear view of risk, diversification, valuation discipline and a margin of safety.',
   ],
-  facts: [['20+', 'years in private banking'], ['7', 'institutions'], [String(FIRM.foundedYear), 'founded RISCH']],
+  facts: [['20+', 'years in private banking'], ['6', 'institutions'], [String(FIRM.foundedYear), 'founded RISCH']],
   links: [
     { href: 'https://www.linkedin.com/in/rishiraj-maheshwari-81240b5/', label: 'LinkedIn', pill: true },
     { href: FIRM.phoneHref, label: `Call ${FIRM.phone}` },
@@ -48,10 +48,9 @@ const FOUNDER = {
     { firm: 'RISCH Wealth', role: 'Founder & Chief Executive Officer', where: `Bengaluru · since ${FIRM.foundedYear}`, now: true },
     { firm: 'Nuvama Private Wealth & Family Office', role: 'Vice President', where: 'Mumbai' },
     { firm: 'ICICI Securities', role: 'Senior Private Banker, Private Wealth Management', where: 'Bengaluru' },
-    { firm: 'The Royal Bank of Scotland (RBS)', role: 'Wealth Management' },
-    { firm: 'Unicon Investment Solutions', role: 'Assistant Vice President, Private Wealth Management, South', where: 'Bengaluru' },
-    { firm: 'Edelweiss Financial Services', role: 'Senior Relationship Manager' },
-    { firm: 'Indiabulls Securities', role: 'Relationship Manager' },
+    { firm: 'The Royal Bank of Scotland (RBS)', role: 'Wealth Management', where: 'Bengaluru' },
+    { firm: 'Edelweiss Financial Services', role: 'Senior Relationship Manager', where: 'Bengaluru' },
+    { firm: 'Indiabulls Securities', role: 'Relationship Manager', where: 'Bengaluru' },
   ],
   education: [
     { what: 'MBA, Marketing & Systems', where: 'Canara Bank School of Management Studies, Bangalore University', note: 'First Division' },
