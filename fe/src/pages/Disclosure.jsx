@@ -80,6 +80,61 @@ function buildSections() {
     });
   }
 
+  // Commission disclosure (SEBI/IMD/CIR No. 4/168230/09; all-trail model
+  // since SEBI's October 2018 TER circular).
+  const rateTable = FIRM.commissionRates && (
+    <>
+      <table className="v3-legal-table">
+        <thead><tr><th>Scheme category</th><th>Annual trail (Top 30 cities)</th></tr></thead>
+        <tbody>
+          {FIRM.commissionRates.map((g) => [
+            <tr className="is-group" key={g.group}><td colSpan={2}>{g.group}</td></tr>,
+            ...g.rows.map(([name, rate]) => <tr key={g.group + name}><td>{name}</td><td>{rate}</td></tr>),
+          ])}
+        </tbody>
+      </table>
+      {FIRM.commissionRatesAsOf && <p style={{ fontSize: 13.5 }}>Rates as of {FIRM.commissionRatesAsOf}.</p>}
+    </>
+  );
+  sections.push(
+    {
+      title: 'Commission earned on mutual funds',
+      body: (
+        <>
+          <p>{FIRM.legalName} is offered commission on mutual fund business sourced under its own ARN. The commission varies from fund house to fund house and from scheme to scheme. In line with SEBI circular SEBI/IMD/CIR No. 4/168230/09, the commission earned from the asset management companies whose products we distribute is disclosed below.</p>
+          {rateTable || <p>The scheme-category rate ranges currently applicable are available on request at {FIRM.email}.</p>}
+        </>
+      ),
+    },
+    {
+      title: 'Basis of the rates disclosed',
+      body: (
+        <ul>
+          <li>They refer to the Top 30 (T30) cities as defined by AMFI; commission may be higher for investments from Beyond 30 (B30) cities.</li>
+          <li>They are set by agreement between {FIRM.legalName} and each AMC, and may change without prior notice.</li>
+          <li>They are compiled on a best-effort basis and updated as and when revised rates are received from AMCs.</li>
+          <li>Scheme-level commission is available from your relationship manager on request.</li>
+        </ul>
+      ),
+    },
+    {
+      title: 'Regular plans, trail commission only',
+      body: 'As a mutual fund distributor, RISCH Wealth transacts in the Regular plans of mutual fund schemes, which carry distributor commission. Commission is paid by the AMC as a trail on assets invested; no upfront commission is paid to or received by RISCH Wealth. Every scheme also offers a Direct plan, with a lower expense ratio and no distributor commission; RISCH Wealth does not earn commission on Direct plans. Investors should check the exit load and total expense ratio (TER) applicable before investing.',
+    },
+    {
+      title: 'Commission on PMS and AIF',
+      body: 'Where RISCH Wealth distributes a portfolio management service or alternative investment fund, the fees or commission it receives from the portfolio manager or fund manager are disclosed to the client before investment, as required by the respective SEBI regulations.',
+    },
+    {
+      title: 'Verifying what we earn',
+      body: (
+        <>
+          The gross commission earned by {FIRM.legalName} in any financial year can be checked on AMFI’s website at <a href="https://www.amfiindia.com/commission-disclosure" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent-ink)', fontWeight: 600 }}>amfiindia.com/commission-disclosure</a>. The commission paid on your own investments is also shown in rupee terms in your Consolidated Account Statement.
+        </>
+      ),
+    },
+  );
+
   if (FIRM.grievance) {
     sections.push({ title: 'Grievance redressal', body: FIRM.grievance });
   }
@@ -107,8 +162,13 @@ function buildSections() {
     'Context this tool cannot capture': 'Methodology',
     'No proprietary products': 'Conflicts of Interest',
     'Bounded deviation': 'Portfolio Deviation Policy',
+    'Commission earned on mutual funds': 'Commission Disclosure',
+    'Basis of the rates disclosed': 'Commission Disclosure',
+    'Regular plans, trail commission only': 'Commission Disclosure',
+    'Commission on PMS and AIF': 'Commission Disclosure',
+    'Verifying what we earn': 'Commission Disclosure',
   };
-  const order = ['Regulatory Information', 'Risk Disclosure', 'Methodology', 'Conflicts of Interest', 'Portfolio Deviation Policy', 'Important Investor Information'];
+  const order = ['Regulatory Information', 'Commission Disclosure', 'Risk Disclosure', 'Methodology', 'Conflicts of Interest', 'Portfolio Deviation Policy', 'Important Investor Information'];
   let n = 0;
   return order
     .map((group) => ({

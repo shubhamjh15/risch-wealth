@@ -61,5 +61,12 @@ export const FIRM = {
   // shown on the site, but renew it before it expires.
   // Shown on the Disclosure page. Supplied by RISCH (October 2026); switch
   // the email to a domain address once one is set up.
-  grievance: 'For any complaint, write to or call our Grievance Officer, R K Maheshwari, at rischwealth@gmail.com or +91 94830 03456. If you are not satisfied with our response, you may raise it with the fund house or portfolio manager concerned, on SEBI’s SCORES portal (scores.sebi.gov.in), or through SMART ODR (smartodr.in).',
+  // Trail commission ranges (Top 30 cities) RISCH actually receives, per
+  // SEBI/IMD/CIR No. 4/168230/09. Take them from RISCH's current AMC
+  // brokerage structures; never copy another distributor's figures. Shape:
+  // [{ group: 'Equity Schemes', rows: [['Equity Funds', '0.20% to 1.75%'], ...] }]
+  // The table on the Disclosure page only appears once this is filled in.
+  commissionRates: null,
+  commissionRatesAsOf: null, // e.g. 'October 2026'
+  grievance:'For any complaint, write to or call our Grievance Officer, R K Maheshwari, at rischwealth@gmail.com or +91 94830 03456. If you are not satisfied with our response, you may raise it with the fund house or portfolio manager concerned, on SEBI’s SCORES portal (scores.sebi.gov.in), or through SMART ODR (smartodr.in).',
 };

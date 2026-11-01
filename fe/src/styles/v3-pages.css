@@ -354,6 +354,12 @@
 .v3-legal-clause p, .v3-legal-clause div{ font-size:15.5px; line-height:1.75; color:var(--ink-2); }
 .v3-legal-clause div p + p{ margin-top:12px; }
 .v3-legal-clause ul{ margin:10px 0 0; padding-left:20px; }
+.v3-legal-clause li + li{ margin-top:6px; }
+.v3-legal-table{ width:100%; border-collapse:collapse; margin:16px 0 8px; font-size:14.5px; }
+.v3-legal-table th{ text-align:left; font-size:12px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; color:var(--ink-2); padding:10px 12px; border-bottom:1px solid rgba(20,19,17,.18); }
+.v3-legal-table td{ padding:9px 12px; border-bottom:1px solid rgba(20,19,17,.07); }
+.v3-legal-table td:last-child, .v3-legal-table th:last-child{ text-align:right; white-space:nowrap; }
+.v3-legal-table tr.is-group td{ font-weight:600; color:var(--accent-ink); padding-top:16px; }
 
 /* ---------- sign-in pages ---------- */
 .v3-auth{ padding:clamp(110px, 14vh, 140px) 0 clamp(60px, 9vh, 110px); }
