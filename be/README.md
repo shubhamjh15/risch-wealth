@@ -22,7 +22,7 @@ In dev, the frontend talks to this over Vite's dev-server proxy (see
 
 In production this runs as a Docker container (see `Dockerfile` here and
 `docker-compose.yml` at the repo root) — you normally won't run this
-directly on the server. Full steps: `../deploy/README.md`.
+directly on the server. Full steps: `../DEPLOY.md`.
 
 ### Environment variables (`.env`, see `.env.example`)
 
@@ -336,11 +336,9 @@ about how it's deployed and reached.
   search engines don't crawl these endpoints.
 - The frontend container's nginx now gzips responses, including JSON
   from `/api/` (`gzip_types` includes `application/json`).
-- Prepared, not yet applied (it needs a manual step on the server, see
-  `../deploy/README.md`): HTTP/2 on the host nginx, plus a
-  `www.rischwealth.com` → `rischwealth.com` redirect. Once that's live,
-  every browser request comes from `https://rischwealth.com`, which the
-  default `CORS_ORIGIN` already allows.
+- HTTP/2 on the host nginx, plus a `www.rischwealth.com` →
+  `rischwealth.com` redirect, so every browser request comes from
+  `https://rischwealth.com`, which the default `CORS_ORIGIN` already allows.
 
 **Production actually running on Docker**
 - Docker Engine + Compose plugin installed on the server

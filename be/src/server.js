@@ -25,8 +25,8 @@ const HOST = process.env.HOST || '127.0.0.1';
 
 // We're behind nginx, so trust its X-Forwarded-* headers (correct
 // req.ip / req.protocol for logging and any future rate limiting).
-// TRUST_PROXY = number of proxies in front of us: 1 behind nginx; more
-// on hosts that add their own (Cloudflare Pages -> Render).
+// TRUST_PROXY = number of proxies in front of us. docker-compose.yml sets 2
+// (host nginx, then the frontend container's nginx).
 app.set('trust proxy', Number(process.env.TRUST_PROXY) || 1);
 
 // Same-origin requests (the normal case: nginx serves the frontend and

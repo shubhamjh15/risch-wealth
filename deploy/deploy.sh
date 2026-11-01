@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Deploys this working tree to production (see DEPLOY.md). Run from the repo
+# Deploys this working tree to a server that's already running (see DEPLOY.md;
+# a new server's first deploy is in DEPLOY-AMD-MICRO.md). Run from the repo
 # root in Git Bash, with Docker Desktop running:
 #   bash deploy/deploy.sh
 #
@@ -29,7 +30,7 @@ POSTGRES_PASSWORD=unused docker compose -p risch-wealth build
 echo "3/5 Copying docker-compose.yml"
 scp -q -i "$KEY" docker-compose.yml "$SERVER:~/risch-wealth/"
 
-echo "4/5 Sending images (a few minutes)"
+echo "4/5 Sending images (10+ minutes, depending on the upload speed)"
 docker save risch-wealth-frontend:latest risch-wealth-backend:latest | gzip -1 | remote 'gunzip | sudo docker load'
 
 echo "5/5 Restarting the app"

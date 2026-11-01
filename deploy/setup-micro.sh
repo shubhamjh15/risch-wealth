@@ -5,7 +5,8 @@
 #
 # The Micro is too small to build the images itself, so they are built on an
 # x86 machine and copied over (see DEPLOY-AMD-MICRO.md). This script only
-# prepares the host: swap, Docker, nginx, certbot and the firewall.
+# prepares the host: swap, Docker, nginx, certbot, the firewall and the
+# nightly database backup.
 set -euo pipefail
 
 # 1 GB RAM is not enough for Postgres + Node + nginx on its own.
@@ -38,5 +39,12 @@ done
 sudo netfilter-persistent save
 
 mkdir -p ~/risch-wealth
+
+# Nightly database dump, 14 days kept. Only on this server: copy them off too.
+sudo mkdir -p /var/backups/risch
+sudo chown "$USER" /var/backups/risch
+(crontab -l 2>/dev/null | grep -v '/var/backups/risch' || true
+ echo "15 2 * * * cd $HOME/risch-wealth && docker compose exec -T db pg_dump -U risch -Fc risch > /var/backups/risch/risch-\$(date +\%F).dump && find /var/backups/risch -name '*.dump' -mtime +14 -delete") | crontab -
+
 echo
 echo "Host ready. Log out and back in once so the docker group applies."

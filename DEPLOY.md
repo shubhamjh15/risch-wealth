@@ -1,82 +1,170 @@
 # Deploying rischwealth.com
 
-Production is one small Oracle server (Always Free, so it costs nothing):
+The one guide for shipping this site, written so a new session or person can
+do it without any other context. To build a replacement server or recover
+data, see [deploy/DEPLOY-AMD-MICRO.md](deploy/DEPLOY-AMD-MICRO.md).
+
+## Context
+
+RISCH Wealth is a Bengaluru wealth firm (AMFI mutual fund and APMI PMS
+distributor). The site is a React frontend, an Express API and Postgres, all
+in Docker.
+
+In October 2026 production moved to a new Oracle account. The client will not
+use Oracle Pay As You Go, because they don't want a card that can be charged
+automatically, so everything must stay inside Always Free. Free ARM (A1)
+capacity in Hyderabad was unavailable, so the site runs on the much smaller
+free x86 Micro. That is why images are built on the PC: 1 GB of RAM can't build
+the frontend. Don't suggest anything paid without saying what it costs.
+
+```
+Internet -> Cloudflare DNS (DNS only, no proxy)
+         -> host nginx on the server (TLS, redirects)        port 443
+         -> frontend container (nginx + prerendered React)   127.0.0.1:8080
+         -> backend container (Express), /api only           internal
+         -> db container (Postgres 17, volume risch-wealth_pgdata)
+```
 
 | | |
 |---|---|
-| Server | `ubuntu@140.245.220.59` (Oracle AMD Micro, Hyderabad, 1 GB RAM) |
-| SSH key | `C:\Users\jha77\risch_key` |
-| App folder on the server | `~/risch-wealth` (only `docker-compose.yml` and `.env`) |
-| Temporary link | https://risch.140-245-220-59.sslip.io |
+| Live site | https://rischwealth.com |
+| Server | `ubuntu@140.245.220.59`, Oracle `risch-micro`, `VM.Standard.E2.1.Micro`, Hyderabad, 1 GB RAM + 4 GB swap |
+| SSH key | `C:\Users\jha77\risch_key` on the PC |
+| App folder on the server | `~/risch-wealth`: only `docker-compose.yml` and `.env`, no git checkout |
+| Host nginx site | `/etc/nginx/sites-available/risch-wealth`, plus certificates from certbot |
+| DNS | Cloudflare account `Rischwealth@gmail.com`: A record `rischwealth.com`, CNAME `www`. Keep them **DNS only** |
+| Git | Push to remote `mine` (`shubhamjh15/risch-wealth`), branch `main`. This repo commits as `shubhamjh15`. Remote `origin` (`omkatiyar`) is read-only for this account |
 
-## Deploy the latest changes
+## Rules for whoever deploys
+
+- **Deploy only when asked to deploy.** "Can we deploy?" is a question, not a
+  go-ahead.
+- **Commit and push first**, so `main` matches what goes live. The script ships
+  the working folder, including anything uncommitted.
+- **Never run `docker compose down -v`** on the server: it deletes the database.
+- **Use a throwaway copy for anything that writes data** (see "Test before
+  deploying"). Don't create test accounts or testimonials on the live site.
+
+## Deploy
 
 On the PC, in Git Bash, from the repo root, with Docker Desktop running:
 
 ```bash
+git status                # should be clean
+git log -1 --oneline      # this is what will go live
 bash deploy/deploy.sh
 ```
 
-That's all. It takes about 5 minutes and:
+The script:
 
 1. backs up the live database to `/var/backups/risch/pre-deploy-<date>.dump`
 2. builds the frontend and backend images on the PC
 3. copies `docker-compose.yml` to the server
-4. sends the images to the server
-5. restarts the app (new database migrations run on start) and checks a few pages
+4. streams the images to the server
+5. restarts what changed (migrations run when the backend starts) and checks
+   a few pages against the server directly
 
-Whatever is in the working folder gets deployed, committed or not. Commit
-and push first so `main` matches what is live.
+**Allow 10 to 30 minutes.** Building is quick, but the upload depends on the
+PC's internet connection. The site stays up throughout, with only a few seconds
+of downtime at the restart. If an agent runs it, run it in the background, and
+don't pipe it through `tail`, or there's no progress to read.
 
-Then hard-refresh the browser (Ctrl+Shift+R).
-
-## Why not build on the server
-
-The server has 1 GB of RAM, which is not enough to build the frontend. The
-PC is the same kind of processor (x86), so images built here run there.
-
-## Server settings (.env)
-
-Settings live in `~/risch-wealth/.env` on the server, never in git:
-
-```bash
-ssh -i ~/risch_key ubuntu@140.245.220.59
-nano ~/risch-wealth/.env
-```
-
-| Setting | What it is |
-|---|---|
-| `POSTGRES_PASSWORD` | Database password. Already set; never change it casually |
-| `SMTP_PASS` | Gmail App Password for `rischwealth@gmail.com`. Without it no emails are sent (testimonials still wait in the staff portal) |
-| `SMTP_USER`, `MAIL_TO` | Sending and receiving address, default `rischwealth@gmail.com` |
-| `TESTIMONIAL_LINK_SECRET` | Optional; signs the Approve/Reject links in testimonial emails |
-
-After editing, apply it with
-`cd ~/risch-wealth && sudo docker compose up -d --no-build`.
-
-A Gmail App Password is made at Google Account → Security → 2-Step
-Verification → App passwords.
+Then hard-refresh the browser (Ctrl+Shift+R). Old tabs keep showing old code.
 
 ## Check that it worked
 
 ```bash
+curl -s https://rischwealth.com/health      # {"ok":true}
 ssh -i ~/risch_key ubuntu@140.245.220.59
 cd ~/risch-wealth
-sudo docker compose ps                 # db (healthy), backend, frontend: Up
-sudo docker compose logs -f backend    # errors, "Applied migration ...", mail problems
+sudo docker compose ps                      # db (healthy), backend and frontend Up
+sudo docker compose logs backend --since 10m
+```
+
+Good to know:
+
+- `backend: Up 3 hours` right after a deploy is normal when its code didn't
+  change. Compose only recreates what changed.
+- Don't compare image IDs to see what's running: the running container's ID
+  can differ from the tagged one even when the code is the same. To be sure,
+  compare file hashes between the container and the commit, ignoring line
+  endings (the images are built from Windows files with CRLF).
+- `/client-portal` and `/employee-portal` redirect to login when logged out,
+  and their API calls return 401 first. That is correct, not an error.
+- A browser visit sees 404 at `/nope` on purpose; unknown pages are real 404s.
+
+After a change to login, orders or testimonials, ask the user to try it with
+a real account. Agents can't read the production database: the auto-mode safety
+check blocks it, and that block shouldn't be worked around.
+
+## Test before deploying
+
+Run a full throwaway copy on the PC. Port 5432 is taken by another project
+here, so use an override file kept **outside** the repo:
+
+```yaml
+# compose.e2e.yml
+services:
+  db:
+    ports: !reset []
+  frontend:
+    ports: !override ["127.0.0.1:8091:80"]
+```
+
+```bash
+POSTGRES_PASSWORD=e2etest123 docker compose -p risch-e2e -f docker-compose.yml -f compose.e2e.yml up -d --build
+docker exec risch-e2e-backend-1 node src/db/userAdmin.js create-admin ADM1 admin@e2e.test "E2E Admin"   # prints a password
+# test at http://127.0.0.1:8091
+POSTGRES_PASSWORD=e2etest123 docker compose -p risch-e2e -f docker-compose.yml -f compose.e2e.yml down -v
+```
+
+The `-p risch-e2e` matters: `down -v` then only touches the throwaway copy. It
+has no mail password, so emails are only logged. API calls that change data
+must send `Content-Type: application/json`, or they get a 415.
+
+## Server settings (.env)
+
+These live in `~/risch-wealth/.env` on the server, never in git.
+
+| Setting | What it is |
+|---|---|
+| `POSTGRES_PASSWORD` | Database password. Set when the database was created; changing only this line breaks the backend (see the new-server guide for rotating it) |
+| `SMTP_PASS` | Gmail App Password for `rischwealth@gmail.com` (Google Account > Security > 2-Step Verification > App passwords). Without it no mail is sent, and testimonials still wait in the staff portal |
+| `SMTP_USER`, `MAIL_TO` | Sender and recipient, both default to `rischwealth@gmail.com` |
+| `CORS_ORIGIN` | Extra origins allowed to call the API |
+| `TESTIMONIAL_LINK_SECRET` | Optional. Signs the Approve/Reject links in emails. If unset it's derived from the database password, so changing that password breaks links already sent |
+
+Apply changes with `cd ~/risch-wealth && sudo docker compose up -d --no-build`.
+
+`TRUST_PROXY` is set to 2 in `docker-compose.yml`: there are two nginx hops in
+front of the backend. Rate limits and session IPs depend on it, so change it
+only if the number of proxies changes. With the wrong value, every visitor
+appears to share one IP.
+
+## Everyday commands
+
+On the server, in `~/risch-wealth`:
+
+```bash
+sudo docker compose exec backend npm run user:list
+sudo docker compose exec backend npm run user:create-admin -- <EMPID> <email> "<Full Name>"
+sudo docker compose exec backend npm run user:disable -- <email or EMPID>
+sudo docker compose logs backend | grep NAV     # the NAV import needs outbound HTTPS to portal.amfiindia.com
+sudo docker compose restart                     # restart without rebuilding
 ```
 
 ## If a deploy breaks something
-
-Check out the last good commit, deploy again, and if the database was changed,
-restore the backup taken just before the deploy:
 
 ```bash
 git checkout <last-good-commit>
 bash deploy/deploy.sh
 git checkout main
+```
 
-# only if the data needs rolling back too, on the server:
+Only if the data must be rolled back too (**this loses anything saved since the
+backup**), on the server:
+
+```bash
 cd ~/risch-wealth
 sudo docker compose stop backend
 sudo docker compose exec -T db psql -U risch -d postgres -c "DROP DATABASE risch" -c "CREATE DATABASE risch OWNER risch"
@@ -84,17 +172,34 @@ sudo docker compose exec -T db pg_restore -U risch -d risch --no-owner < /var/ba
 sudo docker compose start backend
 ```
 
-**Never** run `docker compose down -v`: it deletes the database.
-
 ## Backups
 
-- Every night at 02:15 the database is dumped to `/var/backups/risch` (14 days kept).
-- Every deploy adds a `pre-deploy-*` dump in the same folder.
-- Copy one to the PC now and then:
-  `scp -i ~/risch_key "ubuntu@140.245.220.59:/var/backups/risch/*.dump" ~/risch-backups/`
+- Every night at 02:15 the database is dumped to `/var/backups/risch`, and
+  dumps older than 14 days are deleted. Each deploy adds a `pre-deploy-*` dump.
+- **These are only on the server.** Oracle can reclaim idle Always Free
+  servers, which would take the backups with it, so copy them off regularly:
 
-## Setting up a new server from scratch
+```bash
+scp -i ~/risch_key "ubuntu@140.245.220.59:/var/backups/risch/*.dump" ~/risch-backups/
+```
 
-If the server is lost or moved (Oracle can reclaim idle free servers), follow
-[deploy/DEPLOY-AMD-MICRO.md](deploy/DEPLOY-AMD-MICRO.md): network rules, host
-setup script, first deploy, nginx/TLS and restoring the database.
+## Open items (as of 2026-11-01)
+
+Delete each line here once it's done.
+
+- **`TRUST_PROXY` fix not live yet:** it's in `main`, but the server still runs
+  without it, so all visitors share one rate limit (3 testimonials an hour and
+  20 login attempts per 15 minutes, site-wide). The next deploy applies it.
+- **Old server:** `80.225.229.175` is still running and served the site until
+  DNS moved on 2026-11-01. The new database came from a disk image of Oct 20.
+  Confirm nothing was added on the old site after that, and only then shut it
+  down.
+- **Off-server backups:** not set up. The plan was a nightly upload to a
+  `risch-backups` Oracle bucket through a write-only pre-authenticated request.
+- **Temporary link:** https://risch.140-245-220-59.sslip.io and the bare IP are
+  served by the nginx site `test-ip`. Once nobody uses them:
+  `sudo rm /etc/nginx/sites-enabled/test-ip && sudo systemctl reload nginx`.
+- **Export file:** delete `risch-image.qcow2` from the `risch-export` bucket
+  once the old server's data question is settled.
+- **Compliance wording:** the home page says "We manage portfolios", but RISCH
+  is a distributor, not a portfolio manager. The client should review it.

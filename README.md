@@ -7,17 +7,17 @@ risch-wealth/
 ├── fe/                 React.js frontend (Dockerized) — see fe/README.md
 ├── be/                 Node.js/Express backend (Dockerized) — see be/README.md
 ├── docker-compose.yml  runs both containers, restart: unless-stopped
-└── deploy/             host nginx (TLS) + step-by-step server setup, see deploy/README.md
+├── DEPLOY.md           how to deploy; start here
+└── deploy/             deploy script, host nginx, new-server guide
 ```
 
 ## Production
 
-Hosted on a single Ubuntu server (`80.225.229.175`), behind nginx at
-`https://rischwealth.com`. The app itself runs as two Docker containers
-(`docker compose up -d --build` — that's the whole deploy command); host
-nginx only terminates TLS and proxies everything to the frontend
-container. See `deploy/README.md` for the full setup, including the
-one-time nginx + DNS + certbot steps.
+Hosted on one free Oracle server behind nginx at `https://rischwealth.com`.
+The app runs as Docker containers (frontend, backend, Postgres); host nginx
+only terminates TLS and proxies to the frontend container. Images are built on
+a PC and shipped, because the server is too small to build them.
+See [DEPLOY.md](DEPLOY.md) for context and the one-command deploy.
 
 ## Status
 
