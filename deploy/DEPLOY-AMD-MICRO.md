@@ -49,8 +49,19 @@ ssh -i ~/risch_key ubuntu@SERVER 'cd ~/risch-wealth && sudo docker compose up -d
 
 The `-p risch-wealth` name matters: compose on the server looks for images
 called `risch-wealth-frontend` and `risch-wealth-backend`, because its folder is
-`risch-wealth`. Add `SMTP_PASS` to `.env` afterwards (see DEPLOY.md). Later
-releases use `deploy/deploy.sh` with `SERVER=ubuntu@<ip>`, or update its default.
+`risch-wealth`. Add `SMTP_PASS` to `.env` afterwards (see DEPLOY.md).
+
+Then point auto-deploy at the new server, or the next push to `main` will fail
+or go to the old one:
+
+1. Update the default `SERVER` in `deploy/deploy.sh`.
+2. Replace the IP and host key in `.github/workflows/deploy.yml`, using the
+   ed25519 line from `ssh-keyscan -t ed25519 SERVER`. Check it against the
+   server's own console, not just the scan.
+3. Let Actions log in. Run this yourself, since agents are blocked from adding
+   SSH keys:
+   `cat ~/risch_deploy_key.pub | ssh -i ~/risch_key ubuntu@SERVER 'cat >> ~/.ssh/authorized_keys'`.
+   The private half is already the repo secret `DEPLOY_SSH_KEY`.
 
 ## 4. Restore the data
 

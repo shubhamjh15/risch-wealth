@@ -7,7 +7,9 @@ risch-wealth/
 ├── fe/                 React.js frontend (Dockerized) — see fe/README.md
 ├── be/                 Node.js/Express backend (Dockerized) — see be/README.md
 ├── docker-compose.yml  runs both containers, restart: unless-stopped
+├── CLAUDE.md           the rules, read automatically by Claude Code sessions
 ├── DEPLOY.md           how to deploy; start here
+├── .github/workflows/  deploys every push to main
 └── deploy/             deploy script, host nginx, new-server guide
 ```
 
@@ -15,9 +17,10 @@ risch-wealth/
 
 Hosted on one free Oracle server behind nginx at `https://rischwealth.com`.
 The app runs as Docker containers (frontend, backend, Postgres); host nginx
-only terminates TLS and proxies to the frontend container. Images are built on
-a PC and shipped, because the server is too small to build them.
-See [DEPLOY.md](DEPLOY.md) for context and the one-command deploy.
+only terminates TLS and proxies to the frontend container. **Every push to
+`main` deploys automatically**: GitHub Actions builds the images and ships them,
+because the server is too small to build them.
+See [DEPLOY.md](DEPLOY.md) for context and details.
 
 ## Status
 

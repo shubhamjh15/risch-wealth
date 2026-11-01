@@ -14,8 +14,9 @@ In October 2026 production moved to a new Oracle account. The client will not
 use Oracle Pay As You Go, because they don't want a card that can be charged
 automatically, so everything must stay inside Always Free. Free ARM (A1)
 capacity in Hyderabad was unavailable, so the site runs on the much smaller
-free x86 Micro. That is why images are built on the PC: 1 GB of RAM can't build
-the frontend. Don't suggest anything paid without saying what it costs.
+free x86 Micro. That is why images are built elsewhere and shipped to it: 1 GB
+of RAM can't build the frontend. Since 2026-11-01 GitHub Actions does this on
+every push to `main`. Don't suggest anything paid without saying what it costs.
 
 ```
 Internet -> Cloudflare DNS (DNS only, no proxy)
@@ -33,13 +34,16 @@ Internet -> Cloudflare DNS (DNS only, no proxy)
 | App folder on the server | `~/risch-wealth`: only `docker-compose.yml` and `.env`, no git checkout |
 | Host nginx site | `/etc/nginx/sites-available/risch-wealth`, plus certificates from certbot |
 | DNS | Cloudflare account `Rischwealth@gmail.com`: A record `rischwealth.com`, CNAME `www`. Keep them **DNS only** |
-| Git | Push to remote `mine` (`shubhamjh15/risch-wealth`), branch `main`. This repo commits as `shubhamjh15`. Remote `origin` (`omkatiyar`) is read-only for this account |
+| Git | Work on `redesign`; `main` on remote `mine` (`shubhamjh15/risch-wealth`) is what's live. This repo commits as `shubhamjh15`. Remote `origin` (`omkatiyar`) is read-only for this account |
 
 ## Rules for whoever deploys
 
 - **Pushing to `main` deploys to the live site**, within minutes. Push to `main`
-  only when asked to deploy. "Can we deploy?" is a question, not a go-ahead.
-  Work on another branch until then.
+  only when asked to deploy, or for a push that only changes `.md` files. "Can
+  we deploy?" is a question, not a go-ahead. Work on `redesign` until then.
+- **Agents are blocked** by the auto-mode safety check from reading the
+  production database, adding SSH keys to the server and running
+  `deploy.sh --rollback`. Don't work around that: give the user the command.
 - **Never run `docker compose down -v`** on the server: it deletes the database.
 - **Use a throwaway copy for anything that writes data** (see "Test before
   deploying"). Don't create test accounts or testimonials on the live site.
@@ -49,15 +53,25 @@ Internet -> Cloudflare DNS (DNS only, no proxy)
 Push to `main` on the `mine` remote:
 
 ```bash
-git push mine main
+git push mine redesign redesign:main
 ```
 
 GitHub Actions ([.github/workflows/deploy.yml](.github/workflows/deploy.yml))
-then runs `deploy/deploy.sh`. Follow it at
+then runs `deploy/deploy.sh`, in **about 2 minutes**. Follow it at
 https://github.com/shubhamjh15/risch-wealth/actions. A failed run shows red and
 GitHub emails the person who pushed. Pushes that change only `.md` files don't
 deploy, and two quick pushes deploy one after the other. To re-run without a new
 commit, use **Run workflow** on that page.
+
+An agent can watch the run without logging in, while the repo is public (`gh` is
+not logged in on the PC):
+
+```bash
+curl -s "https://api.github.com/repos/shubhamjh15/risch-wealth/actions/runs?per_page=1" | grep -E '"(head_sha|status|conclusion)"'
+```
+
+Only the app goes out this way. Changes to `.env` or to the host nginx site
+(`deploy/nginx.conf`) are made by hand on the server.
 
 The script:
 
@@ -108,7 +122,8 @@ Good to know:
 - Don't compare image IDs to see what's running: the running container's ID
   can differ from the tagged one even when the code is the same. To be sure,
   compare file hashes between the container and the commit, ignoring line
-  endings (the images are built from Windows files with CRLF).
+  endings (images built by hand on the PC come from Windows files with CRLF;
+  those built by Actions have LF).
 - `/client-portal` and `/employee-portal` redirect to login when logged out,
   and their API calls return 401 first. That is correct, not an error.
 - A browser visit sees 404 at `/nope` on purpose; unknown pages are real 404s.
@@ -213,6 +228,14 @@ scp -i ~/risch_key "ubuntu@140.245.220.59:/var/backups/risch/*.dump" ~/risch-bac
 
 Delete each line here once it's done.
 
+- **Rollback not proven on a broken release:** the automatic rollback ran on
+  2026-11-01 after a check made to fail, but with identical images on both sides.
+  No rollback has yet swapped between two different versions. After the next
+  real failure or `--rollback`, confirm the running image changed, then delete
+  this line.
+- **Public repo:** client names and portraits are still in this repo's code and
+  history, and in the LinkedIn list in `README.md`, all publicly readable. Make
+  it private, which still leaves Actions 2,000 free minutes a month.
 - **Testimonials are anonymous for now:** at the client's request, the names,
   portraits and employers came off on 2026-11-01 until real testimonials arrive
   (see `fe/src/data/testimonials.js`). The quotes that remain are still

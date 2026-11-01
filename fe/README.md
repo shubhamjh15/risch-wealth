@@ -30,7 +30,7 @@ In production this doesn't run `npm run dev`/`preview` — it's built into
 a Docker image (`Dockerfile`) that bundles the static build with its own
 nginx, which also proxies `/api` to the backend container
 (`docker/nginx.conf`). Run both containers via `docker-compose.yml` at
-the repo root. Full steps: `../DEPLOY.md`.
+the repo root. Pushing to `main` deploys it. Full steps: `../DEPLOY.md`.
 
 ## Structure
 

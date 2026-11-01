@@ -351,5 +351,6 @@ about how it's deployed and reached.
   pre-switch config is backed up at `~/risch-wealth-nginx.backup`.
 - Check it's live with `curl -s https://rischwealth.com/health`, which
   should return `{"ok":true}`, not HTML.
-- Deploy: `git pull && docker compose up -d --build` from the repo root.
-  `docker compose restart` doesn't pick up code changes.
+- Deploy: push to `main`; see `../DEPLOY.md`. The server has no git checkout
+  and is too small to build, and `docker compose restart` doesn't pick up
+  code changes.
