@@ -335,6 +335,8 @@ html:has(.v3) body{ background:#EEE8DF; }
 .v3-client-photo img{ width:100%; height:100%; object-fit:cover; pointer-events:none; }
 .v3-client-mono{ position:absolute; inset:0; display:grid; place-items:center; font-size:120px; font-weight:200; letter-spacing:-.05em; color:var(--accent-ink); }
 .v3-client-group{ position:absolute; left:12px; top:12px; padding:7px 12px; border-radius:999px; background:rgba(255,255,255,.88); backdrop-filter:blur(8px); font-size:11px; font-weight:700; letter-spacing:.06em; }
+/* a card with no portrait: the profile sits above the words */
+.v3-client-group.is-plain{ position:static; align-self:flex-start; margin:10px 10px 0; background:var(--bg); }
 .v3-client blockquote{ margin:0; padding:0 10px; flex:1; }
 .v3-client blockquote p{ font-size:17px; line-height:1.5; color:var(--ink-2); }
 .v3-client-who{ display:grid; gap:3px; padding:0 10px; }

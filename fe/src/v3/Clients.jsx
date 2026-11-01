@@ -13,7 +13,7 @@ const ALL = [
   ...TESTIMONIALS.filter((t) => !t.lead && !t.photo),
 ];
 const GROUPS = TESTIMONIAL_GROUPS.filter((g) => ALL.some((t) => t.group === g));
-const key = (t) => t.name + t.quote.slice(0, 16);
+const key = (t) => t.quote.slice(0, 32);
 const SPEED = 26; // px per second: a slow, steady drift
 const LOOP_MIN = 4; // fewer cards than this simply sit still
 
@@ -112,15 +112,17 @@ export default function Clients() {
 
   const cards = (copy) => list.map((t) => (
     <li key={`${copy}-${key(t)}`} className="v3-client" aria-hidden={copy ? true : undefined}>
-      <div className="v3-client-photo">
-        {t.photo
-          ? <img src={t.photo} alt={copy ? '' : t.name} width="400" height="400" loading="lazy" draggable="false" />
-          : <span className="v3-client-mono" aria-hidden="true">{t.initial}</span>}
-        <span className="v3-client-group">{t.group}</span>
-      </div>
+      {t.photo || t.initial ? (
+        <div className="v3-client-photo">
+          {t.photo
+            ? <img src={t.photo} alt={copy ? '' : t.name} width="400" height="400" loading="lazy" draggable="false" />
+            : <span className="v3-client-mono" aria-hidden="true">{t.initial}</span>}
+          <span className="v3-client-group">{t.group}</span>
+        </div>
+      ) : <span className="v3-client-group is-plain">{t.group}</span>}
       <blockquote><p>&ldquo;{t.quote}&rdquo;</p></blockquote>
       <div className="v3-client-who">
-        <b>{t.name}</b>
+        {t.name && <b>{t.name}</b>}
         <span>{t.credentials?.join(', ') || t.role}</span>
         {t.place && <small>{t.place}</small>}
       </div>

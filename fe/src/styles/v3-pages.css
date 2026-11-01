@@ -237,6 +237,8 @@
 .v3-featured{ display:grid; grid-template-columns:4fr 7fr; gap:clamp(36px, 6vw, 110px); align-items:center; margin:0; }
 .v3-featured-photo{ position:relative; aspect-ratio:1; border-radius:var(--r); overflow:hidden; background:linear-gradient(140deg, #EFE7DB, #E0D4C3); }
 .v3-featured-photo img{ width:100%; height:100%; object-fit:cover; }
+.v3-featured.is-plain{ grid-template-columns:minmax(0, 1100px); }
+.v3-featured.is-plain .v3-quote-group{ display:block; margin-top:14px; padding:0; background:none; }
 .v3-featured-text{ position:relative; }
 .v3-featured-mark{ position:absolute; left:-.08em; top:-.42em; font-size:clamp(120px, 12vw, 200px); font-weight:200; line-height:1; color:rgba(227,106,26,.2); pointer-events:none; }
 .v3-featured blockquote{ position:relative; margin:0 0 32px; font-size:clamp(26px, 2.8vw, 44px); font-weight:300; line-height:1.22; letter-spacing:-.03em; }

@@ -8,6 +8,7 @@ import { apiUrl, listTestimonials, submitTestimonial } from '../api/authApi';
 
 const ALL = 'All profiles';
 const LEAD = TESTIMONIALS.find((t) => t.lead) ?? TESTIMONIALS[0];
+const LEAD_PIC = LEAD.photo || LEAD.initial;
 // Accounts with a portrait first, then monograms, each in data-file order.
 const CURATED = [...TESTIMONIALS.filter((t) => t !== LEAD && t.photo), ...TESTIMONIALS.filter((t) => t !== LEAD && !t.photo)];
 const QUOTE_MAX = 800;
@@ -39,7 +40,7 @@ async function squarePhoto(file) {
 function Who({ t }) {
   return (
     <div className="v3-quote-who">
-      <b>{t.name}</b>
+      {t.name && <b>{t.name}</b>}
       <span>{(t.credentials ?? [t.role]).join(', ')}</span>
       {t.place && <small>{t.place}</small>}
     </div>
@@ -81,17 +82,22 @@ export default function Testimonials() {
       {/* ============ FEATURED ============ */}
       <section className="v3-sec">
         <div className="v3-wrap">
-          <figure className="v3-featured">
-            <div className="v3-featured-photo" data-reveal>
-              {LEAD.photo
-                ? <img src={LEAD.photo} alt={LEAD.name} width="400" height="400" />
-                : <span className="v3-client-mono">{LEAD.initial}</span>}
-              <span className="v3-client-group">{LEAD.group}</span>
-            </div>
+          <figure className={'v3-featured' + (LEAD_PIC ? '' : ' is-plain')}>
+            {LEAD_PIC && (
+              <div className="v3-featured-photo" data-reveal>
+                {LEAD.photo
+                  ? <img src={LEAD.photo} alt={LEAD.name} width="400" height="400" />
+                  : <span className="v3-client-mono">{LEAD.initial}</span>}
+                <span className="v3-client-group">{LEAD.group}</span>
+              </div>
+            )}
             <div className="v3-featured-text">
               <span className="v3-featured-mark" aria-hidden="true">&ldquo;</span>
               <blockquote data-split>{LEAD.quote}</blockquote>
-              <figcaption data-reveal><Who t={LEAD} /></figcaption>
+              <figcaption data-reveal>
+                <Who t={LEAD} />
+                {!LEAD_PIC && <span className="v3-quote-group">{LEAD.group}</span>}
+              </figcaption>
             </div>
           </figure>
         </div>
@@ -113,7 +119,7 @@ export default function Testimonials() {
           {/* keyed on the filter so the cards animate in again on each change */}
           <ul className="v3-quotes" key={filter}>
             {shown.map((t, i) => (
-              <li className="v3-quote" key={t.key ?? t.name + t.quote.slice(0, 12)} style={{ '--i': i }}>
+              <li className="v3-quote" key={t.key ?? t.quote.slice(0, 32)} style={{ '--i': i }}>
                 <div className="v3-quote-head">
                   <span className="v3-quote-mark" aria-hidden="true">&ldquo;</span>
                   <span className="v3-quote-group">{t.group}</span>
@@ -122,7 +128,7 @@ export default function Testimonials() {
                 <div className="v3-quote-foot">
                   {t.photo
                     ? <img src={t.photo} alt="" width="96" height="96" loading="lazy" />
-                    : <span className="v3-quote-mono" aria-hidden="true">{t.initial}</span>}
+                    : t.initial && <span className="v3-quote-mono" aria-hidden="true">{t.initial}</span>}
                   <Who t={t} />
                 </div>
               </li>
