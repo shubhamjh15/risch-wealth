@@ -66,7 +66,30 @@ export const FIRM = {
   // brokerage structures; never copy another distributor's figures. Shape:
   // [{ group: 'Equity Schemes', rows: [['Equity Funds', '0.20% to 1.75%'], ...] }]
   // The table on the Disclosure page only appears once this is filled in.
-  commissionRates: null,
+  // DRAFT: industry ranges in the format of a peer distributor's disclosure.
+  // Must be checked against RISCH's own AMC brokerage before go-live.
+  commissionRates: [
+    { group: 'Equity Schemes', rows: [['Equity Funds', '0.20% to 1.75%']] },
+    { group: 'Hybrid Schemes', rows: [
+      ['Arbitrage Funds', '0.45% to 0.80%'],
+      ['Conservative Hybrid Funds', '0.20% to 1.45%'],
+      ['Other Hybrid Funds', '0.25% to 1.75%'],
+    ] },
+    { group: 'Debt Schemes', rows: [
+      ['Overnight & Liquid Funds', '0.01% to 0.20%'],
+      ['Ultra Short, Low, Money Market & Short Duration Funds', '0.05% to 1.30%'],
+      ['Credit Risk Funds', '0.50% to 1.20%'],
+      ['Gilt Funds', '0.10% to 1.00%'],
+      ['Floater Funds', '0.15% to 0.68%'],
+      ['Medium, Medium to Long, Long & Dynamic Duration Funds', '0.12% to 1.25%'],
+      ['Corporate Bond, Banking & PSU Funds', '0.09% to 0.75%'],
+    ] },
+    { group: 'Other Schemes', rows: [
+      ['Index Funds / ETFs', '0.03% to 1.10%'],
+      ['Fund of Funds', '0.05% to 1.25%'],
+      ['Retirement & Children’s Funds', '0.50% to 1.75%'],
+    ] },
+  ],
   commissionRatesAsOf: null, // e.g. 'October 2026'
   grievance:'For any complaint, write to or call our Grievance Officer, R K Maheshwari, at rischwealth@gmail.com or +91 94830 03456. If you are not satisfied with our response, you may raise it with the fund house or portfolio manager concerned, on SEBI’s SCORES portal (scores.sebi.gov.in), or through SMART ODR (smartodr.in).',
 };
