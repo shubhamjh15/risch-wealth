@@ -187,9 +187,6 @@ scp -i ~/risch_key "ubuntu@140.245.220.59:/var/backups/risch/*.dump" ~/risch-bac
 
 Delete each line here once it's done.
 
-- **`TRUST_PROXY` fix not live yet:** it's in `main`, but the server still runs
-  without it, so all visitors share one rate limit (3 testimonials an hour and
-  20 login attempts per 15 minutes, site-wide). The next deploy applies it.
 - **Old server:** `80.225.229.175` is still running and served the site until
   DNS moved on 2026-11-01. The new database came from a disk image of Oct 20.
   Confirm nothing was added on the old site after that, and only then shut it
