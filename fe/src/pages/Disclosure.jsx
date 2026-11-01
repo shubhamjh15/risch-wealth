@@ -112,6 +112,8 @@ function buildSections() {
         <ul>
           <li>They refer to the Top 30 (T30) cities as defined by AMFI; commission may be higher for investments from Beyond 30 (B30) cities.</li>
           <li>They are set by agreement between {FIRM.legalName} and each AMC, and may change without prior notice.</li>
+          <li>They are base trail rates, exclusive of GST. From 1 April 2026, GST on distributor commission is paid separately by the AMC, in line with the amended SEBI (Mutual Funds) Regulations and AMFI circular 135/BP/123/2025-26 dated 12 March 2026.</li>
+          <li>All commission is paid as trail only, in line with the AMFI Master Circular for MFDs (AMFI/MFD-CIR/32/2025-26, 14 January 2026).</li>
           <li>They are compiled on a best-effort basis and updated as and when revised rates are received from AMCs.</li>
           <li>Scheme-level commission is available from your relationship manager on request.</li>
         </ul>

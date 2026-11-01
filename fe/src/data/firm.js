@@ -66,8 +66,9 @@ export const FIRM = {
   // brokerage structures; never copy another distributor's figures. Shape:
   // [{ group: 'Equity Schemes', rows: [['Equity Funds', '0.20% to 1.75%'], ...] }]
   // The table on the Disclosure page only appears once this is filled in.
-  // DRAFT: industry ranges in the format of a peer distributor's disclosure.
-  // Must be checked against RISCH's own AMC brokerage before go-live.
+  // Ranges cross-checked against AMC brokerage sheets for FY 2026-27
+  // (Invesco, Quantum, Groww, Trust, Helios). Confirm against RISCH's own
+  // quarterly AMC brokerage before go-live. Base rates, excluding GST.
   commissionRates: [
     { group: 'Equity Schemes', rows: [['Equity Funds', '0.20% to 1.75%']] },
     { group: 'Hybrid Schemes', rows: [
