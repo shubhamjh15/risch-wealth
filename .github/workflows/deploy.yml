@@ -1,0 +1,39 @@
+# Every push to main goes live through deploy/deploy.sh (see DEPLOY.md). If the
+# site check fails afterwards, the script puts the previous version back and
+# this run goes red. Pushes that only change docs don't deploy.
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - '**.md'
+  workflow_dispatch:
+
+# Two quick pushes deploy one after the other, never on top of each other.
+concurrency:
+  group: production
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up SSH
+        env:
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$DEPLOY_SSH_KEY" > ~/.ssh/risch_deploy_key
+          chmod 600 ~/.ssh/risch_deploy_key
+          # The server's public host key, so nothing else can pose as it.
+          echo '140.245.220.59 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBBHLSMXOT1uqc46EgKq+Y2XuTdSnu1hhKXPSUQ+nYzD' >> ~/.ssh/known_hosts
+
+      - name: Deploy
+        run: KEY="$HOME/.ssh/risch_deploy_key" bash deploy/deploy.sh

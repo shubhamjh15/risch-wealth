@@ -37,39 +37,59 @@ Internet -> Cloudflare DNS (DNS only, no proxy)
 
 ## Rules for whoever deploys
 
-- **Deploy only when asked to deploy.** "Can we deploy?" is a question, not a
-  go-ahead.
-- **Commit and push first**, so `main` matches what goes live. The script ships
-  the working folder, including anything uncommitted.
+- **Pushing to `main` deploys to the live site**, within minutes. Push to `main`
+  only when asked to deploy. "Can we deploy?" is a question, not a go-ahead.
+  Work on another branch until then.
 - **Never run `docker compose down -v`** on the server: it deletes the database.
 - **Use a throwaway copy for anything that writes data** (see "Test before
   deploying"). Don't create test accounts or testimonials on the live site.
 
 ## Deploy
 
-On the PC, in Git Bash, from the repo root, with Docker Desktop running:
+Push to `main` on the `mine` remote:
 
 ```bash
-git status                # should be clean
-git log -1 --oneline      # this is what will go live
-bash deploy/deploy.sh
+git push mine main
 ```
+
+GitHub Actions ([.github/workflows/deploy.yml](.github/workflows/deploy.yml))
+then runs `deploy/deploy.sh`. Follow it at
+https://github.com/shubhamjh15/risch-wealth/actions. A failed run shows red and
+GitHub emails the person who pushed. Pushes that change only `.md` files don't
+deploy, and two quick pushes deploy one after the other. To re-run without a new
+commit, use **Run workflow** on that page.
 
 The script:
 
 1. backs up the live database to `/var/backups/risch/pre-deploy-<date>.dump`
-2. builds the frontend and backend images on the PC
-3. copies `docker-compose.yml` to the server
-4. streams the images to the server
+2. builds the frontend and backend images
+3. tags what's running as `:previous` and streams the new images to the server
+4. copies `docker-compose.yml` to the server
 5. restarts what changed (migrations run when the backend starts) and checks
-   a few pages against the server directly
+   that `/`, `/health`, `/testimonials` and `/api/testimonials` answer 200
 
-**Allow 10 to 30 minutes.** Building is quick, but the upload depends on the
-PC's internet connection. The site stays up throughout, with only a few seconds
-of downtime at the restart. If an agent runs it, run it in the background, and
-don't pipe it through `tail`, or there's no progress to read.
+If a check fails, it puts the previous version back and the run goes red. The
+site stays up throughout, with only a few seconds of downtime at the restart.
 
 Then hard-refresh the browser (Ctrl+Shift+R). Old tabs keep showing old code.
+
+**By hand, if GitHub is unavailable.** On the PC, in Git Bash, from the repo
+root, with Docker Desktop running, on the commit that `main` points to:
+
+```bash
+git status                # should be clean: uncommitted changes would go live too
+bash deploy/deploy.sh
+```
+
+This takes 10 to 30 minutes, because the upload depends on the PC's connection.
+If an agent runs it, run it in the background, and don't pipe it through `tail`.
+
+**What Actions needs** (already set up): the repo secret `DEPLOY_SSH_KEY` holds
+a key used only for this, whose public half is in the server's
+`~/.ssh/authorized_keys` as `github-actions-deploy@risch-wealth`, and the
+server's host key is pinned in the workflow. A new server means updating both.
+To cut off Actions' access, delete that line from `authorized_keys`. The private
+key is also at `C:\Users\jha77\risch_deploy_key` on the PC.
 
 ## Check that it worked
 
@@ -155,13 +175,19 @@ sudo docker compose restart                     # restart without rebuilding
 
 ## If a deploy breaks something
 
+A failed check rolls back by itself. If the checks passed but something is still
+wrong, go back to the version before the last deploy straight away (on the PC,
+no build or upload):
+
 ```bash
-git checkout <last-good-commit>
-bash deploy/deploy.sh
-git checkout main
+bash deploy/deploy.sh --rollback
 ```
 
-Only if the data must be rolled back too (**this loses anything saved since the
+Then fix `main`, because the next push deploys whatever it holds. To undo a bad
+commit: `git revert <commit> && git push mine main`.
+
+Rolling back restores code only: migrations that already ran stay. Only if the
+data must be rolled back too (**this loses anything saved since the
 backup**), on the server:
 
 ```bash
@@ -187,6 +213,11 @@ scp -i ~/risch_key "ubuntu@140.245.220.59:/var/backups/risch/*.dump" ~/risch-bac
 
 Delete each line here once it's done.
 
+- **Testimonials are anonymous for now:** at the client's request, the names,
+  portraits and employers came off on 2026-11-01 until real testimonials arrive
+  (see `fe/src/data/testimonials.js`). The quotes that remain are still
+  placeholder copy, and should be replaced by real ones. `git revert cd1e35d`
+  brings the old cards back.
 - **Old server:** `80.225.229.175` is still running and served the site until
   DNS moved on 2026-11-01. The new database came from a disk image of Oct 20.
   Confirm nothing was added on the old site after that, and only then shut it
